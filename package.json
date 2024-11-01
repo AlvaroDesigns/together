@@ -3,7 +3,7 @@
   "private": false,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "together.alvarodesigns.com",
+  "homepage": "https://github.com/AlvaroDesigns/together",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
