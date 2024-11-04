@@ -1,8 +1,8 @@
+import { GoogleLogo } from "@/components/icons";
+import { subtitle } from "@/components/primitives";
+import { auth, provider } from "@/lib/firebaseConfig";
 import { Button, Checkbox, Input, Link } from "@nextui-org/react";
 import { signInWithPopup } from "firebase/auth";
-import { GoogleLogo } from "../components/icons";
-import { subtitle } from "../components/primitives";
-import { auth, provider } from "../lib/firebaseConfig";
 
 export default function Login() {
   const signInGoogle = async () => {
