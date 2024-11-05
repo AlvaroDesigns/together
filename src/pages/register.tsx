@@ -6,7 +6,7 @@ import { Button, Checkbox, Input, Link } from "@nextui-org/react";
 import { signInWithPopup } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
-export default function Login() {
+export default function Register() {
   const navigate = useNavigate();
 
   const signInGoogle = async () => {
