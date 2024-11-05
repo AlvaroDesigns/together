@@ -1,32 +1,12 @@
 import { Header } from "@/components";
-import { title } from "@/components/primitives";
 import { getStore } from "@/utils";
-import { useNavigate } from "react-router-dom";
 
 export default function Step2() {
   const name = getStore("name");
 
-  const navigate = useNavigate();
-
-  const handelPress = () => {
-    navigate("/crear-itinerario");
-  };
-
   return (
     <div className="h-screen flex flex-col">
-      <Header name={name} />
-      <div className="relative overflow-hidden text-left flex flex-col w-full px-4 mt-6 from-blue-800 to-purple-700 max-h-[100vh]">
-        <h1 className={title({ weight: "light" })}>
-          Explore the&nbsp; <span className={title()}>beautiful&nbsp;</span>
-          <span className={title({ color: "violet" })}>word!</span>
-        </h1>
-      </div>
-    </div>
-  );
-}
-
-/*
-      <div className="relative overflow-hidden flex w-full from-blue-800 to-purple-700 max-h-[100vh] justify-around bg-[url('https://www.civitatis.com/blog/wp-content/uploads/2012/01/shutterstock_1238373562-scaled.jpg')] bg-cover bg-center">
+      <div className="relative overflow-hidden flex w-full from-blue-800 to-purple-700 min-h-[300px] max-h-[300px] justify-around bg-[url('https://www.civitatis.com/blog/wp-content/uploads/2012/01/shutterstock_1238373562-scaled.jpg')] bg-cover bg-center">
         <div className="flex flex-col w-full">
           <Header name={name} />
           <div>
@@ -43,5 +23,6 @@ export default function Step2() {
           <div className="absolute -top-20 -right-20 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
         </div>
       </div>
-
-*/
+    </div>
+  );
+}
