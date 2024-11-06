@@ -43,7 +43,7 @@ export default function ModalItinerary({
                   radius="full"
                   label="Fecha del viaje"
                   classNames={{
-                    inputWrapper: "min-h-[60px]",
+                    inputWrapper: "!min-h-[60px]",
                   }}
                   visibleMonths={2}
                 />
@@ -54,7 +54,7 @@ export default function ModalItinerary({
                   radius="full"
                   type="text"
                   classNames={{
-                    inputWrapper: "min-h-[60px]",
+                    inputWrapper: "!min-h-[60px]",
                   }}
                   label="Url de la imagen"
                   fullWidth={true}

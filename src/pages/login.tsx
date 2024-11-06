@@ -85,7 +85,7 @@ export default function Login() {
                     type="email"
                     label="Correo"
                     classNames={{
-                      inputWrapper: "min-h-[60px]",
+                      inputWrapper: "!min-h-[60px] h-10",
                     }}
                     fullWidth={true}
                     errorMessage={fieldState.error?.message}
@@ -105,7 +105,7 @@ export default function Login() {
                     isRequired
                     radius="full"
                     classNames={{
-                      inputWrapper: "min-h-[60px]",
+                      inputWrapper: "!min-h-[60px]",
                     }}
                     type="password"
                     label="Contraseña"
