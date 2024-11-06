@@ -29,6 +29,9 @@ export default function ModalItinerary({
                   isRequired
                   radius="full"
                   type="text"
+                  classNames={{
+                    inputWrapper: "min-h-[60px]",
+                  }}
                   label="Nombre del itinerario"
                   fullWidth={true}
                   placeholder="Introducce tu titulo del itinerario"
@@ -36,8 +39,12 @@ export default function ModalItinerary({
               </div>
               <div className="flex flex-wrap w-full mb-2 md:flex-nowrap rounded-2xl">
                 <DateRangePicker
+                  isRequired
                   radius="full"
-                  label="Stay duration"
+                  label="Fecha del viaje"
+                  classNames={{
+                    inputWrapper: "min-h-[60px]",
+                  }}
                   visibleMonths={2}
                 />
               </div>
@@ -46,6 +53,9 @@ export default function ModalItinerary({
                   isRequired
                   radius="full"
                   type="text"
+                  classNames={{
+                    inputWrapper: "min-h-[60px]",
+                  }}
                   label="Url de la imagen"
                   fullWidth={true}
                   placeholder="Introducce tu imagen"
@@ -56,7 +66,7 @@ export default function ModalItinerary({
                 color="primary"
                 type="submit"
                 onPress={onClose}
-                className="bg-gradient-to-r from-[#FF1CF7] to-[#b249f8] h-14 "
+                className="bg-gradient-to-r from-[#FF1CF7] to-[#b249f8] h-14 min-h-[60px] hover:border-transparent"
               >
                 Save Itinerary
               </Button>

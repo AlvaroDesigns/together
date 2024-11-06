@@ -55,7 +55,7 @@ export default function Step1() {
   return (
     <div className="h-[100%] flex flex-col ">
       <Header name={name} />
-      <main className="dark text-foreground bg-background relative overflow-hidden text-left flex flex-col w-full px-4 pt-6 from-blue-800 to-purple-700 max-h-[100vh]">
+      <main className="text-foreground bg-background relative overflow-hidden text-left flex flex-col w-full px-4 pt-6 from-blue-800 to-purple-700 max-h-[100vh]">
         <h1 className={title({ weight: "light" })}>
           Explore the&nbsp; <span className={title()}>beautiful&nbsp;</span>
           <span className={title({ color: "violet" })}>word!</span>
@@ -104,7 +104,7 @@ export default function Step1() {
           color="primary"
           type="submit"
           onPress={handelPress}
-          className="bg-gradient-to-r from-[#FF1CF7] to-[#b249f8] h-14 mb-2 fixed bottom-5 w-[calc(100%-33px)]"
+          className="bg-gradient-to-r from-[#FF1CF7] to-[#b249f8] h-14 min-h-[60px] mb-2 fixed bottom-5 w-[calc(100%-33px)] hover:border-transparent"
         >
           Create new itinerary
         </Button>

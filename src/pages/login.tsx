@@ -72,7 +72,7 @@ export default function Login() {
         <form className="w-full max-w-[400px]">
           <h1 className={title({ color: "violet" })}>Hello Again!</h1>
           <p className={subtitle({ color: "black" })}>Top destinations</p>
-          <form onSubmit={handleSubmit(handlePress)}>
+          <form onSubmit={handleSubmit(handlePress)} className="mt-4">
             <div className="flex items-center mb-4 rounded-2xl">
               <Controller
                 name="email"
@@ -82,9 +82,11 @@ export default function Login() {
                     {...field}
                     isRequired
                     radius="full"
-                    className="mb-4"
                     type="email"
                     label="Correo"
+                    classNames={{
+                      inputWrapper: "min-h-[60px]",
+                    }}
                     fullWidth={true}
                     errorMessage={fieldState.error?.message}
                     value={field.value}
@@ -93,7 +95,7 @@ export default function Login() {
                 )}
               />
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center mb-4">
               <Controller
                 name="password"
                 control={control}
@@ -102,7 +104,9 @@ export default function Login() {
                     {...field}
                     isRequired
                     radius="full"
-                    className="mb-4"
+                    classNames={{
+                      inputWrapper: "min-h-[60px]",
+                    }}
                     type="password"
                     label="Contraseña"
                     fullWidth={true}
@@ -136,7 +140,7 @@ export default function Login() {
               radius="full"
               color="primary"
               type="submit"
-              className="bg-gradient-to-r from-[#FF1CF7] to-[#b249f8] w-full h-14 mb-2"
+              className="bg-gradient-to-r from-[#FF1CF7] to-[#b249f8] w-full h-14 min-h-[60px] mb-2"
               isLoading={isLoading}
             >
               Registrarme
@@ -147,7 +151,7 @@ export default function Login() {
           <Button
             radius="full"
             color="primary"
-            className="w-full mb-2 h-14"
+            className="w-full my-2 h-14 min-h-[60px]"
             onClick={signInGoogle}
           >
             <GoogleLogo />
