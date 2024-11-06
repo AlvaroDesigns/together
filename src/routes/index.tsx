@@ -11,6 +11,10 @@ export const router = createBrowserRouter([
     element: <Step1 />,
   },
   {
+    path: "/:userId",
+    element: <Step2 />,
+  },
+  {
     path: "/crear-itinerario",
     element: <Step2 />,
   },

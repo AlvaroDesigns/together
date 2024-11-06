@@ -1,5 +1,5 @@
 import { GoogleLogo } from "@/components/icons";
-import { subtitle } from "@/components/primitives";
+import { subtitle, title } from "@/components/primitives";
 import { auth, provider } from "@/lib/firebaseConfig";
 import { setStore } from "@/utils";
 import { Button, Checkbox, Input, Link } from "@nextui-org/react";
@@ -24,26 +24,24 @@ export default function Login() {
   };
 
   return (
-    <div className="h-screen md:flex">
-      <div className="relative overflow-hidden md:flex w-1/2 bg-gradient-to-tr from-blue-800 to-purple-700 i justify-around items-center hidden">
+    <main className="h-screen dark text-foreground bg-background md:flex">
+      <div className="relative items-center justify-around hidden w-1/2 overflow-hidden md:flex ">
         <div>
-          <h1 className="text-white font-bold text-4xl font-sans">GoFinance</h1>
-          <p className="text-white mt-1">
+          <h1 className="font-sans text-4xl font-bold text-white">GoFinance</h1>
+          <p className="mt-1 text-white">
             The most popular peer to peer lending at SEA
           </p>
         </div>
-        <div className="absolute -bottom-32 -left-40 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
-        <div className="absolute -bottom-40 -left-20 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
-        <div className="absolute -top-40 -right-0 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
-        <div className="absolute -top-20 -right-20 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
+        <div className="absolute border-4 border-t-8 rounded-full -bottom-32 -left-40 w-80 h-80 border-opacity-30"></div>
+        <div className="absolute border-4 border-t-8 rounded-full -bottom-40 -left-20 w-80 h-80 border-opacity-30"></div>
+        <div className="absolute border-4 border-t-8 rounded-full -top-40 -right-0 w-80 h-80 border-opacity-30"></div>
+        <div className="absolute border-4 border-t-8 rounded-full -top-20 -right-20 w-80 h-80 border-opacity-30"></div>
       </div>
-      <div className="flex md:w-1/2 justify-center py-10 items-center bg-white">
-        <form className="bg-white w-full max-w-[400px]">
-          <h1 className="text-gray-800 font-bold text-2xl mb-1">
-            Hello Again!
-          </h1>
-          <p className="text-sm font-normal text-gray-600 mb-7">Welcome Back</p>
-          <div className="flex items-center rounded-2xl mb-4">
+      <div className="flex items-center justify-center px-4 py-10 md:w-1/2">
+        <form className="w-full max-w-[400px]">
+          <h1 className={title({ color: "violet" })}>Hello Again!</h1>
+          <p className={subtitle({ color: "black" })}>Top destinations</p>
+          <div className="flex items-center mb-4 rounded-2xl">
             <Input
               isRequired
               radius="full"
@@ -64,7 +62,7 @@ export default function Login() {
               placeholder="Por favor, introduce tu contraseña"
             />
           </div>
-          <div className="flex items-center flex-row justify-between mb-4">
+          <div className="flex flex-row items-center justify-between mb-4">
             <Checkbox size="sm" className="text-gray-600" defaultSelected>
               Remember me
             </Checkbox>
@@ -92,6 +90,6 @@ export default function Login() {
           </Button>
         </form>
       </div>
-    </div>
+    </main>
   );
 }
