@@ -55,7 +55,7 @@ export default function Login() {
   };
 
   return (
-    <main className="h-screen dark text-foreground bg-background md:flex">
+    <main className="h-screen text-foreground bg-background md:flex">
       <div className="relative items-center justify-around hidden w-1/2 overflow-hidden md:flex ">
         <div>
           <h1 className="font-sans text-4xl font-bold text-white">GoFinance</h1>

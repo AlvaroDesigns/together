@@ -103,7 +103,7 @@ export default function Step1() {
           radius="full"
           color="primary"
           type="submit"
-          onPress={handelPress}
+          onClick={handelPress}
           className="bg-gradient-to-r from-[#FF1CF7] to-[#b249f8] h-14 min-h-[60px] mb-2 fixed bottom-5 w-[calc(100%-33px)] hover:border-transparent"
         >
           Create new itinerary
