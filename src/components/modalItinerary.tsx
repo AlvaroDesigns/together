@@ -8,9 +8,15 @@ import {
   ModalHeader,
 } from "@nextui-org/react";
 
-export default function ModalItinerary({ isOpen, onClose }) {
+export default function ModalItinerary({
+  isOpen,
+  onClose,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+}) {
   return (
-    <Modal size="full" isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} placement="bottom-center">
       <ModalContent>
         {(onClose) => (
           <>
@@ -18,7 +24,7 @@ export default function ModalItinerary({ isOpen, onClose }) {
               Create Itinerario
             </ModalHeader>
             <ModalBody>
-              <div className="flex items-center mb-2rounded-2xl">
+              <div className="flex items-center mb-2 rounded-2xl">
                 <Input
                   isRequired
                   radius="full"
@@ -28,10 +34,14 @@ export default function ModalItinerary({ isOpen, onClose }) {
                   placeholder="Introducce tu titulo del itinerario"
                 />
               </div>
-              <div className="flex flex-wrap w-full gap-4 md:flex-nowrap mb-2rounded-2xl">
-                <DateRangePicker label="Stay duration" visibleMonths={2} />
+              <div className="flex flex-wrap w-full mb-2 md:flex-nowrap rounded-2xl">
+                <DateRangePicker
+                  radius="full"
+                  label="Stay duration"
+                  visibleMonths={2}
+                />
               </div>
-              <div className="flex items-center mb-2rounded-2xl">
+              <div className="flex items-center mb-3 rounded-2xl">
                 <Input
                   isRequired
                   radius="full"
@@ -42,8 +52,11 @@ export default function ModalItinerary({ isOpen, onClose }) {
                 />
               </div>
               <Button
-                className="bg-gradient-to-r from-[#FF1CF7] to-[#b249f8] w-full h-14 mb-2"
+                radius="full"
+                color="primary"
+                type="submit"
                 onPress={onClose}
+                className="bg-gradient-to-r from-[#FF1CF7] to-[#b249f8] h-14 "
               >
                 Save Itinerary
               </Button>

@@ -1,13 +1,44 @@
 import { GoogleLogo } from "@/components/icons";
 import { subtitle, title } from "@/components/primitives";
+import { login } from "@/helpers/schema";
+import { useForm, useLoading } from "@/hooks";
 import { auth, provider } from "@/lib/firebaseConfig";
 import { setStore } from "@/utils";
 import { Button, Checkbox, Input, Link } from "@nextui-org/react";
 import { signInWithPopup } from "firebase/auth";
+import { useCallback } from "react";
+import { Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const navigate = useNavigate();
+
+  const { isLoading, startLoading, stopLoading } = useLoading();
+
+  const { control, errors, handleSubmit } = useForm({
+    values: { email: "", password: "", remember: true },
+    schema: login,
+  });
+
+  const handlePress = useCallback(
+    async (value: unknown) => {
+      const error = Object.entries(errors).length !== 0;
+      console.log(value);
+      /* Exit */
+      if (error) return;
+
+      /* Start Loading */
+      startLoading();
+
+      /* Set Data */
+      // setter({ contact: values });
+
+      /* Call API */
+
+      setTimeout(() => stopLoading(), 300);
+    },
+    [errors, startLoading, stopLoading]
+  );
 
   const signInGoogle = async () => {
     try {
@@ -41,43 +72,77 @@ export default function Login() {
         <form className="w-full max-w-[400px]">
           <h1 className={title({ color: "violet" })}>Hello Again!</h1>
           <p className={subtitle({ color: "black" })}>Top destinations</p>
-          <div className="flex items-center mb-4 rounded-2xl">
-            <Input
-              isRequired
+          <form onSubmit={handleSubmit(handlePress)}>
+            <div className="flex items-center mb-4 rounded-2xl">
+              <Controller
+                name="email"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <Input
+                    {...field}
+                    isRequired
+                    radius="full"
+                    className="mb-4"
+                    type="email"
+                    label="Correo"
+                    fullWidth={true}
+                    errorMessage={fieldState.error?.message}
+                    value={field.value}
+                    placeholder="Introducce tu correo electronico"
+                  />
+                )}
+              />
+            </div>
+            <div className="flex items-center">
+              <Controller
+                name="password"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <Input
+                    {...field}
+                    isRequired
+                    radius="full"
+                    className="mb-4"
+                    type="password"
+                    label="Contraseña"
+                    fullWidth={true}
+                    errorMessage={fieldState.error?.message}
+                    value={field.value}
+                    placeholder="Por favor, introduce tu contraseña"
+                  />
+                )}
+              />
+            </div>
+            <div className="flex flex-row items-center justify-between mb-4">
+              <Controller
+                name="remember"
+                control={control}
+                render={({ field }) => (
+                  <Checkbox
+                    {...field}
+                    size="sm"
+                    className="text-gray-600"
+                    defaultSelected
+                  >
+                    Remember me
+                  </Checkbox>
+                )}
+              />
+              <Link size="sm" className="mr-2 text-gray-600" href="#">
+                Forgot password
+              </Link>
+            </div>
+            <Button
               radius="full"
-              className="mb-4"
-              type="email"
-              label="Correo"
-              fullWidth={true}
-              placeholder="Introducce tu correo electronico"
-            />
-          </div>
-          <div className="flex items-center">
-            <Input
-              isRequired
-              radius="full"
-              className="mb-4"
-              type="password"
-              label="Contraseña"
-              placeholder="Por favor, introduce tu contraseña"
-            />
-          </div>
-          <div className="flex flex-row items-center justify-between mb-4">
-            <Checkbox size="sm" className="text-gray-600" defaultSelected>
-              Remember me
-            </Checkbox>
-            <Link size="sm" className="mr-2 text-gray-600" href="#">
-              Forgot password
-            </Link>
-          </div>
-          <Button
-            radius="full"
-            color="primary"
-            type="submit"
-            className="bg-gradient-to-r from-[#FF1CF7] to-[#b249f8] w-full h-14 mb-2"
-          >
-            Registrarme
-          </Button>
+              color="primary"
+              type="submit"
+              className="bg-gradient-to-r from-[#FF1CF7] to-[#b249f8] w-full h-14 mb-2"
+              isLoading={isLoading}
+            >
+              Registrarme
+            </Button>
+          </form>
+
           <p className={subtitle()}>OR</p>
           <Button
             radius="full"
