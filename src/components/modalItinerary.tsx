@@ -30,7 +30,7 @@ export default function ModalItinerary({
                   radius="full"
                   type="text"
                   classNames={{
-                    inputWrapper: "min-h-[60px]",
+                    inputWrapper: "!min-h-[60px]",
                   }}
                   label="Nombre del itinerario"
                   fullWidth={true}
