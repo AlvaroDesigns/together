@@ -19,16 +19,15 @@ module.exports = {
       layout: {}, // common layout options
       themes: {
         light: {
-          layout: {}, // light theme layout options
-          inputs: {
-            color: "red",
+          colors: {
+            primary: "#0072f5",
           },
         },
         dark: {
-          layout: {}, // dark theme layout options
-          // ...
+          colors: {
+            primary: "#0072f5",
+          },
         },
-        // ... custom themes
       },
     }),
   ],

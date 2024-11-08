@@ -21,19 +21,24 @@ export default function CardVertical({
         className="w-full h-[300px] col-span-12 sm:col-span-7"
       >
         <CardHeader className="absolute z-10 flex-col items-start top-1">
-          <h4 className="text-xl font-medium text-white/90">{title}</h4>
+          <h4 className="text-xl font-medium text-white/90 ">{title}</h4>
           {days && (
             <p className="font-bold uppercase text-tiny text-white/60">
               {days} días
             </p>
           )}
         </CardHeader>
-        <Image
-          removeWrapper
-          alt="Relaxing app background"
-          className="z-0 object-cover w-full h-full"
-          src={image}
-        />
+
+        <div className="relative w-full h-full overflow-hidden">
+          <Image
+            removeWrapper
+            alt="Relaxing app background"
+            className="z-0 object-cover w-full h-full "
+            src={image}
+          />
+
+          <div className="absolute inset-0 opacity-50 bg-gradient-to-b from-black to-transparent" />
+        </div>
       </Card>
     </div>
   );

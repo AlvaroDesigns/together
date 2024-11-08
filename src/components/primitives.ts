@@ -57,9 +57,14 @@ export const subtitle = tv({
       black: "dark:text-gray-600",
       white: "dark:text-gray-600",
     },
+    weight: {
+      light: "font-normal",
+      bold: "font-bold",
+      semibold: "font-semibold",
+    },
     size: {
-      xs: "text-xs font-normal",
-      sm: "text-[1rem] font-normal",
+      xs: "text-xs",
+      sm: "text-[1rem]",
       md: "text-[2.3rem] lg:text-5xl leading-9",
       lg: "text-4xl lg:text-6xl",
     },

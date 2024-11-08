@@ -3,6 +3,7 @@ import { subtitle, title } from "@/components/primitives";
 import { login } from "@/helpers/schema";
 import { useForm, useLoading } from "@/hooks";
 import { auth, provider } from "@/lib/firebaseConfig";
+import { useDataStore } from "@/stores";
 import { setStore } from "@/utils";
 import { Button, Checkbox, Input, Link } from "@nextui-org/react";
 import { signInWithPopup } from "firebase/auth";
@@ -14,13 +15,14 @@ export default function Login() {
   const navigate = useNavigate();
 
   const { isLoading, startLoading, stopLoading } = useLoading();
+  const setter = useDataStore((state) => state.setter);
 
   const { control, errors, handleSubmit } = useForm({
     values: { email: "", password: "", remember: true },
     schema: login,
   });
 
-  const handlePress = useCallback(
+  const onSubmit = useCallback(
     async (value: unknown) => {
       const error = Object.entries(errors).length !== 0;
       console.log(value);
@@ -47,6 +49,13 @@ export default function Login() {
       console.log("User Info:", user);
       if (result.user.email) {
         setStore("name", String(result.user.displayName));
+        setter({
+          user: {
+            name: result.user.displayName,
+            email: result.user.email,
+            avatar: result.user.photoURL,
+          },
+        });
         navigate("/home");
       }
     } catch (error) {
@@ -72,7 +81,7 @@ export default function Login() {
         <form className="w-full max-w-[400px]">
           <h1 className={title({ color: "violet" })}>Hello Again!</h1>
           <p className={subtitle({ color: "black" })}>Top destinations</p>
-          <form onSubmit={handleSubmit(handlePress)} className="mt-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="mt-4">
             <div className="flex items-center mb-4 rounded-2xl">
               <Controller
                 name="email"

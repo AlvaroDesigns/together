@@ -1,4 +1,6 @@
+import { useDataStore } from "@/stores";
 import {
+  Avatar,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -21,6 +23,8 @@ export const AcmeLogo = () => (
 );
 
 export default function Header({ name }: { name: string | undefined }) {
+  const user = useDataStore((state) => state.user);
+
   const navigate = useNavigate();
   const handelLogOut = () => {
     sessionStorage.removeItem("name");
@@ -30,15 +34,11 @@ export default function Header({ name }: { name: string | undefined }) {
 
   return (
     <Navbar>
-      <NavbarBrand>
-        <AcmeLogo />
-        <p className="font-bold text-inherit">ACME</p>
-      </NavbarBrand>
-
-      <NavbarContent as="div" justify="end">
+      <NavbarContent as="div" justify="start">
+        <Avatar src={user.avatar} size="md" />
         <Dropdown placement="bottom-end">
           <DropdownTrigger>
-            <div color="default">Hi {name}</div>
+            <div color="default">Hi {user.name}</div>
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
             <DropdownItem key="profile" className="gap-2 h-14">
@@ -57,6 +57,10 @@ export default function Header({ name }: { name: string | undefined }) {
           </DropdownMenu>
         </Dropdown>
       </NavbarContent>
+      <NavbarBrand>
+        <AcmeLogo />
+        <p className="font-bold text-inherit">ACME</p>
+      </NavbarBrand>
     </Navbar>
   );
 }
