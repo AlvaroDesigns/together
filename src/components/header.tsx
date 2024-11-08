@@ -10,19 +10,9 @@ import {
   NavbarContent,
 } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
+import { AcmeLogo } from "./icons";
 
-export const AcmeLogo = () => (
-  <svg fill="none" height="36" viewBox="0 0 32 32" width="36">
-    <path
-      clipRule="evenodd"
-      d="M17.6482 10.1305L15.8785 7.02583L7.02979 22.5499H10.5278L17.6482 10.1305ZM19.8798 14.0457L18.11 17.1983L19.394 19.4511H16.8453L15.1056 22.5499H24.7272L19.8798 14.0457Z"
-      fill="currentColor"
-      fillRule="evenodd"
-    />
-  </svg>
-);
-
-export default function Header({ name }: { name: string | undefined }) {
+export default function Header() {
   const user = useDataStore((state) => state.user);
 
   const navigate = useNavigate();
@@ -31,14 +21,19 @@ export default function Header({ name }: { name: string | undefined }) {
 
     navigate("/");
   };
-
+  // <span>Let's make the best itinerary</span>
   return (
     <Navbar>
-      <NavbarContent as="div" justify="start">
-        <Avatar src={user.avatar} size="md" />
+      <NavbarContent as="div" justify="start" className="w-full">
         <Dropdown placement="bottom-end">
           <DropdownTrigger>
-            <div color="default">Hi {user.name}</div>
+            <div className="flex items-center">
+              <Avatar src={user.avatar} size="md" />
+              <div className="flex flex-row items-start ml-3 default whitespace-nowrap">
+                <span>Hello,</span>
+                <span className="font-semibold">{user.name}</span>
+              </div>
+            </div>
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
             <DropdownItem key="profile" className="gap-2 h-14">
@@ -57,9 +52,8 @@ export default function Header({ name }: { name: string | undefined }) {
           </DropdownMenu>
         </Dropdown>
       </NavbarContent>
-      <NavbarBrand>
+      <NavbarBrand className="justify-end">
         <AcmeLogo />
-        <p className="font-bold text-inherit">ACME</p>
       </NavbarBrand>
     </Navbar>
   );

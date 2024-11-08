@@ -1,6 +1,5 @@
 import { Card, Header, ModalItinerary } from "@/components";
 import { subtitle, title } from "@/components/primitives";
-import { getStore } from "@/utils";
 import { Button, Link, useDisclosure } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 const DATA = [
@@ -28,7 +27,6 @@ const DATA = [
 ];
 
 export default function Step1() {
-  const name = getStore("name");
   const { onOpen, isOpen, onClose } = useDisclosure();
 
   const navigate = useNavigate();
@@ -54,8 +52,8 @@ export default function Step1() {
 
   return (
     <div className="h-[100%] flex flex-col ">
-      <Header name={name} />
-      <main className="text-foreground bg-background relative overflow-hidden text-left flex flex-col w-full px-4 pt-6 max-h-[100vh]">
+      <Header />
+      <main className="text-foreground bg-background relative overflow-hidden text-left flex flex-col w-full px-4 pt-6 max-h-[100%] mb-28">
         <h1 className={title({ weight: "light" })}>
           Explore the&nbsp; <span className={title()}>beautiful&nbsp;</span>
           <span className={title({ color: "violet" })}>word!</span>
@@ -63,7 +61,12 @@ export default function Step1() {
         <div className="mt-6">
           <div className="flex flex-row whitespace-nowrap">
             <p className={subtitle()}>Ultimo destinos</p>
-            <Link size="sm" className="mr-2 text-gray-600" href="#">
+            <Link
+              size="sm"
+              underline="always"
+              className="mr-2 text-gray-600"
+              href="#"
+            >
               View All
             </Link>
           </div>
@@ -82,7 +85,12 @@ export default function Step1() {
         <div className="mt-6">
           <div className="flex flex-row whitespace-nowrap">
             <p className={subtitle()}>Top destinations</p>
-            <Link size="sm" className="mr-2 text-gray-600" href="#">
+            <Link
+              size="sm"
+              underline="always"
+              className="mr-2 text-gray-600"
+              href="#"
+            >
               View All
             </Link>
           </div>

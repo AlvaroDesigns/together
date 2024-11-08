@@ -8,6 +8,7 @@ import {
   MapPinIcon,
 } from "@heroicons/react/24/outline";
 
+import { AcmeLogo } from "@/components/icons";
 import { format } from "@formkit/tempo";
 import {
   Accordion,
@@ -175,11 +176,14 @@ export default function Step2() {
     <div className="flex flex-col h-screen">
       <section className="relative overflow-hidden flex flex-col justify-start w-full min-h-[250px] max-h-[250px] bg-[url('https://www.civitatis.com/blog/wp-content/uploads/2012/01/shutterstock_1238373562-scaled.jpg')] bg-cover bg-center">
         <div className="absolute inset-0 opacity-50 bg-gradient-to-b from-black to-transparent" />
-        <div className="relative z-auto h-10 px-3 mt-2 ">
+        <div className="relative z-auto flex flex-row justify-between h-10 px-3 mt-2 ">
           <ArrowLeftIcon
             className="m-1 text-white size-8"
             onClick={handelGoBack}
           />
+          <div className="flex text-white">
+            <AcmeLogo />
+          </div>
         </div>
         <div className="relative z-auto flex flex-col w-full">
           <div className="mt-8">
