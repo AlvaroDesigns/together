@@ -32,7 +32,7 @@ const DATA = {
   items: [
     {
       type: "flight",
-      startDate: "2025/12/04",
+      startDate: "2025/12/02",
       endDate: null,
       departure: "Palma de Mallorca",
       destination: "Venecia",
@@ -96,14 +96,14 @@ const DATA = {
       ],
       image_url:
         "https://cf.bstatic.com/xdata/images/hotel/150x150/357739635.jpg?k=f52fc47c7dbc4aa00754caea5f2187b5036fb8884d8ac3233e08bf3d53cbbcd8&o=",
-      city_name: "Venecia",
+      city_name: "Cracovia",
       region: "Pequeña Polonia",
       country: "Polonia",
       name: "ROYAL Apartments",
     },
     {
       type: "trip",
-      startDate: "2025/12/02",
+      startDate: "2025/12/05",
       endDate: null,
       departure: null,
       destination: "Día por venecia",
@@ -319,9 +319,9 @@ export default function Step2() {
                                 className={`${subtitle({
                                   weight: "light",
                                   size: "sm",
-                                })} flex items-center`}
+                                })} flex items-start`}
                               >
-                                <MapPinIcon className="mr-1 dark:text-gray-600 size-5" />
+                                <MapPinIcon className="mt-1 mr-1 dark:text-gray-600 size-5" />
                                 {item.city_name}, {item.region},{" "}
                                 {item.country?.substring(0, 2).toUpperCase()}
                               </p>
@@ -362,9 +362,9 @@ export default function Step2() {
                                 className={`${subtitle({
                                   weight: "light",
                                   size: "sm",
-                                })} flex items-center`}
+                                })} flex items-start`}
                               >
-                                <ClockIcon className="mr-1 dark:text-gray-600 size-5" />
+                                <ClockIcon className="mt-1 mr-1 dark:text-gray-600 size-5" />
                                 Duración 45 minutos - 3 horas
                                 {item.country?.substring(0, 2).toUpperCase()}
                               </p>
@@ -399,7 +399,7 @@ export default function Step2() {
                             aria-label="Ver más información"
                             classNames={{
                               trigger:
-                                "bg-transparent px-0 hover:border-transparent focus:outline-0 pb-0",
+                                "bg-transparent px-0 hover:border-transparent focus:outline-0 focus-visible:outline-0 pb-0",
                               content: "flex flex-col gap-4 mt-2",
                             }}
                             title="Ver más información"
