@@ -41,6 +41,26 @@ const DATA = {
       description: null,
     },
     {
+      type: "transfer",
+      startDate: "2025/12/02",
+      endDate: null,
+      departure: null,
+      destination: null,
+      stars: 4,
+      placeUrl: null,
+      numberFlight: null,
+      description: [
+        "Llegada al aeropuerto de Treviso, para ir al centro coger el bus línea 351 de ATVO que te deja en la Piazzale Roma (a media hora del hotel andando). Una vez en la Piazzale Roma hay que coger el Vaporetto hasta las cercanías del hotel. Por las calles de Venecia no circulan los coches.",
+        "El transporte público es fluvial.",
+      ],
+      image_url: "/transfers.jpg",
+      city_name: "Venecia",
+      region: "Véneto",
+      country: "Italia",
+      name: "Transfer Aeropuerto de Treviso",
+      collapse: true,
+    },
+    {
       type: "hotel",
       startDate: "2025/12/02",
       endDate: "2025/12/04",
@@ -82,6 +102,27 @@ const DATA = {
       destination: "Kraków",
       numberFlight: "FR2028",
       description: null,
+    },
+    {
+      type: "transfer",
+      startDate: "2025/12/02",
+      endDate: null,
+      departure: null,
+      destination: null,
+      stars: 4,
+      placeUrl: null,
+      numberFlight: null,
+      description: [
+        "Para llegar del aeropuerto al centro coger un bus: La línea 208 tiene un frecuencia de salida de una hora y te deja en la Estación Central de trenes de Cracovia (Kraków Glówny)",
+        "O coger tren que tarda 18 minutos y sale por unos 9 PLN (unos dos euros) o 16 PLN, si compras ida y vuelta.",
+        "Este tren que sale cada 30 minutos del aeropuerto y opera de las 04h a las 23h, te dejará en la estación Kraków Glówny, situada cerca de la Barbacana.",
+      ],
+      image_url: "/transfers.jpg",
+      city_name: "Venecia",
+      region: "Véneto",
+      country: "Italia",
+      name: "Transfer Aeropuerto de Cracovia",
+      collapse: true,
     },
     {
       type: "hotel",
@@ -345,6 +386,40 @@ export default function Step2() {
                           </div>
                         </article>
                       )}
+                      {item.type === "transfer" && (
+                        <article
+                          className={`${title({
+                            size: "xs",
+                          })} flex items-start `}
+                        >
+                          <div className="flex items-center mb-1">
+                            <Image
+                              width={100}
+                              height={100}
+                              className="min-w-[100px]"
+                              alt="AIR company"
+                              src={item.image_url || "dummy.jpg"}
+                            />
+
+                            <div className="ml-4">
+                              {item.name}
+
+                              {item.placeUrl && (
+                                <Link
+                                  isBlock
+                                  showAnchorIcon
+                                  className="p-0"
+                                  target="_blank"
+                                  href={`https://www.google.com/maps/search/?api=1&query=${item.name}`}
+                                  color="foreground"
+                                >
+                                  Enlace a Google Maps
+                                </Link>
+                              )}
+                            </div>
+                          </div>
+                        </article>
+                      )}
                       {item.type === "trip" && (
                         <article
                           className={`${title({
@@ -396,6 +471,7 @@ export default function Step2() {
                         <Accordion
                           showDivider={false}
                           isCompact={true}
+                          defaultExpandedKeys={[item?.collapse ? "1" : "null"]}
                           className="p-0 m-0"
                         >
                           <AccordionItem

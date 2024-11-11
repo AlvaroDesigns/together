@@ -34,9 +34,11 @@ export default function Login() {
       startLoading();
 
       /* Set Data */
+      console.log("value", value);
       setter({
         user: {
           email: value.email,
+          remember: true,
         },
       });
       navigate(ROUTES.HOME);
@@ -60,6 +62,7 @@ export default function Login() {
             name: result.user.displayName,
             email: result.user.email,
             avatar: result.user.photoURL,
+            remember: true,
           },
         });
         navigate(ROUTES.HOME);

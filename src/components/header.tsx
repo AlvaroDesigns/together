@@ -28,7 +28,7 @@ export default function Header() {
         <Dropdown placement="bottom-end">
           <DropdownTrigger>
             <div className="flex items-center">
-              <Avatar src={user.avatar} size="md" />
+              <Avatar src={user.avatar} size="md" name="Jane" />
               <div className="flex flex-row items-start ml-3 default whitespace-nowrap">
                 <span>Hello,</span>
                 <span className="font-semibold">{user.name}</span>
