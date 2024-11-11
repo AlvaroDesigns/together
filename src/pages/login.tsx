@@ -1,5 +1,6 @@
 import { GoogleLogo } from "@/components/icons";
 import { subtitle, title } from "@/components/primitives";
+import { ROUTES } from "@/constants";
 import { login } from "@/helpers/schema";
 import { useForm, useLoading } from "@/hooks";
 import { auth, provider } from "@/lib/firebaseConfig";
@@ -25,7 +26,7 @@ export default function Login() {
   const onSubmit = useCallback(
     async (value: unknown) => {
       const error = Object.entries(errors).length !== 0;
-      console.log(value);
+      console.log(value, error);
       /* Exit */
       if (error) return;
 
@@ -33,7 +34,12 @@ export default function Login() {
       startLoading();
 
       /* Set Data */
-      // setter({ contact: values });
+      setter({
+        user: {
+          email: value.email,
+        },
+      });
+      navigate(ROUTES.HOME);
 
       /* Call API */
 
@@ -56,7 +62,7 @@ export default function Login() {
             avatar: result.user.photoURL,
           },
         });
-        navigate("/home");
+        navigate(ROUTES.HOME);
       }
     } catch (error) {
       console.error("Error al iniciar sesión con Google:", error);
@@ -78,83 +84,96 @@ export default function Login() {
         <div className="absolute border-4 border-t-8 rounded-full -top-20 -right-20 w-80 h-80 border-opacity-30"></div>
       </div>
       <div className="flex items-center justify-center px-4 py-10 md:w-1/2">
-        <form className="w-full max-w-[400px]">
+        <div className="w-full max-w-[400px]">
           <h1 className={title({ color: "violet" })}>Hello Again!</h1>
           <p className={subtitle({ color: "black" })}>Top destinations</p>
-          <form onSubmit={handleSubmit(onSubmit)} className="mt-4">
-            <div className="flex items-center mb-4 rounded-2xl">
-              <Controller
-                name="email"
-                control={control}
-                render={({ field, fieldState }) => (
-                  <Input
-                    {...field}
-                    isRequired
-                    radius="full"
-                    type="email"
-                    label="Correo"
-                    classNames={{
-                      inputWrapper: "!min-h-[60px] h-10",
-                    }}
-                    fullWidth={true}
-                    errorMessage={fieldState.error?.message}
-                    value={field.value}
-                    placeholder="Introducce tu correo electronico"
-                  />
-                )}
-              />
-            </div>
-            <div className="flex items-center mb-4">
-              <Controller
-                name="password"
-                control={control}
-                render={({ field, fieldState }) => (
-                  <Input
-                    {...field}
-                    isRequired
-                    radius="full"
-                    classNames={{
-                      inputWrapper: "!min-h-[60px]",
-                    }}
-                    type="password"
-                    label="Contraseña"
-                    fullWidth={true}
-                    errorMessage={fieldState.error?.message}
-                    value={field.value}
-                    placeholder="Por favor, introduce tu contraseña"
-                  />
-                )}
-              />
-            </div>
-            <div className="flex flex-row items-center justify-between mb-4">
-              <Controller
-                name="remember"
-                control={control}
-                render={({ field }) => (
-                  <Checkbox
-                    {...field}
-                    size="sm"
-                    className="text-gray-600"
-                    defaultSelected
-                  >
-                    Remember me
-                  </Checkbox>
-                )}
-              />
-              <Link size="sm" className="mr-2 text-gray-600" href="#">
-                Forgot password
-              </Link>
-            </div>
-            <Button
-              radius="full"
-              color="primary"
-              type="submit"
-              className="bg-gradient-to-r text-white from-[#FF1CF7] to-[#b249f8] w-full h-14 min-h-[60px] mb-2"
-              isLoading={isLoading}
-            >
-              Registrarme
-            </Button>
-          </form>
+          <div className="flex items-center my-4 rounded-2xl">
+            <Controller
+              name="email"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Input
+                  {...field}
+                  isRequired
+                  radius="full"
+                  type="email"
+                  label="Correo"
+                  classNames={{
+                    inputWrapper: "!min-h-[60px] h-10",
+                  }}
+                  fullWidth={true}
+                  isInvalid={Boolean(fieldState.error?.message)}
+                  color={fieldState.error?.message ? "danger" : "default"}
+                  errorMessage={fieldState.error?.message}
+                  value={field.value}
+                  placeholder="Introducce tu correo electronico"
+                />
+              )}
+            />
+          </div>
+          <div className="flex items-center mb-4">
+            <Controller
+              name="password"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Input
+                  {...field}
+                  isRequired
+                  radius="full"
+                  classNames={{
+                    inputWrapper: "!min-h-[60px]",
+                  }}
+                  type="password"
+                  label="Contraseña"
+                  fullWidth={true}
+                  isInvalid={Boolean(fieldState.error?.message)}
+                  color={fieldState.error?.message ? "danger" : "default"}
+                  errorMessage={fieldState.error?.message}
+                  value={field.value}
+                  placeholder="Por favor, introduce tu contraseña"
+                />
+              )}
+            />
+          </div>
+          <div className="flex flex-row items-center justify-between mb-4">
+            <Controller
+              name="remember"
+              control={control}
+              render={({ field }) => (
+                <Checkbox
+                  {...field}
+                  size="sm"
+                  className="text-gray-600"
+                  defaultSelected
+                >
+                  Remember me
+                </Checkbox>
+              )}
+            />
+            <Link size="sm" className="mr-2 text-gray-600" href="#">
+              Forgot password
+            </Link>
+          </div>
+          <Button
+            radius="full"
+            color="primary"
+            type="submit"
+            className="bg-gradient-to-r text-white from-[#FF1CF7] to-[#b249f8] w-full h-14 min-h-[60px] mb-2"
+            isLoading={isLoading}
+            onClick={handleSubmit(onSubmit)}
+          >
+            Inicar sesión
+          </Button>
+          <Button
+            radius="full"
+            color="primary"
+            type="submit"
+            className="border-2 border-[#b249f8] bg-transparent w-full h-14 min-h-[60px] mb-2"
+            isLoading={isLoading}
+            onClick={() => navigate(ROUTES.REGISTER)}
+          >
+            Registrarme
+          </Button>
 
           <p className={subtitle()}>OR</p>
           <Button
@@ -166,7 +185,7 @@ export default function Login() {
             <GoogleLogo />
             Continue with Google
           </Button>
-        </form>
+        </div>
       </div>
     </main>
   );

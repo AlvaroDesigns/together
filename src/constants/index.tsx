@@ -39,13 +39,10 @@ export const HUBSPOT_THANKS: string =
 
 /* URLS */
 export const BASE_ROUTE: string = "/seguro-orfandad";
-export const ROUTES: Record<number, string> = {
-  1: "datos-contacto",
-  2: "datos-personales",
-  3: "datos-postales",
-  4: "formalizacion",
-  5: "formalizacion_rechazada",
-  6: "promocion_no_encontrada",
+export const ROUTES: Record<string, string> = {
+  HOME: "home",
+  REGISTER: "registrame",
+  ITINERARY: "crear-itinerario",
 };
 
 export const ENDPOINT: Record<string, string> = {

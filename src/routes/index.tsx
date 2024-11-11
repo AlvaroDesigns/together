@@ -1,4 +1,5 @@
-import { Login, Step1, Step2 } from "@/pages";
+import { ROUTES } from "@/constants";
+import { Login, Register, Step1, Step2 } from "@/pages";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
 export const router = createBrowserRouter([
@@ -7,7 +8,11 @@ export const router = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: "/home",
+    path: ROUTES.REGISTER,
+    element: <Register />,
+  },
+  {
+    path: ROUTES.HOME,
     element: <Step1 />,
   },
   {
@@ -15,7 +20,7 @@ export const router = createBrowserRouter([
     element: <Step2 />,
   },
   {
-    path: "/crear-itinerario",
+    path: ROUTES.ITINERARY,
     element: <Step2 />,
   },
   {

@@ -29,7 +29,6 @@ export const register = yup.object().shape({
 export const login = yup.object().shape({
   email: yup
     .string()
-    .min(6, LITERALS.NUMBER_VALUE.replace("[number]", "6"))
     .email(LITERALS.ERROR_LABEL)
     .required(LITERALS.REQUEST_LABEL)
     .matches(REGEX.EMAIL, LITERALS.ERROR_LABEL),
