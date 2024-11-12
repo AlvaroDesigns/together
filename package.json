@@ -1,20 +1,19 @@
 {
   "name": "together-travel",
+  "version": "1.0.0",
   "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "deploy": "turbo deploy --no-daemon"
   },
   "devDependencies": {
     "prettier": "^3.2.5",
     "turbo": "^2.2.3"
-  },
-  "prisma": {
-    "binaryTargets": [
-      "native",
-      "darwin-arm64"
-    ]
   }
 }
