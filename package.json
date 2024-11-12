@@ -11,5 +11,10 @@
     "prettier": "^3.2.5",
     "turbo": "^2.2.3"
   },
-  "packageManager": "pnpm@8.15.6"
+  "prisma": {
+    "binaryTargets": [
+      "native",
+      "darwin-arm64"
+    ]
+  }
 }
