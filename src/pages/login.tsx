@@ -161,7 +161,7 @@ export default function Login() {
             radius="full"
             color="primary"
             type="submit"
-            className="bg-gradient-to-r text-white from-[#FF1CF7] to-[#b249f8] w-full h-14 min-h-[60px] mb-2"
+            className="bg-gradient-to-r text-md text-white from-[#FF1CF7] to-[#b249f8] w-full h-14 min-h-[60px] mb-2"
             isLoading={isLoading}
             onClick={handleSubmit(onSubmit)}
           >
@@ -171,7 +171,7 @@ export default function Login() {
             radius="full"
             color="primary"
             type="submit"
-            className="border-2 border-[#b249f8] bg-transparent w-full h-14 min-h-[60px] mb-2"
+            className="border-2 border-[#b249f8] text-md bg-transparent w-full h-14 min-h-[60px] mb-2"
             onClick={() => navigate(ROUTES.REGISTER)}
           >
             Registrarme
@@ -181,7 +181,7 @@ export default function Login() {
           <Button
             radius="full"
             color="primary"
-            className="w-full my-2 h-14 min-h-[60px] text-white"
+            className="w-full my-2 h-14 min-h-[60px] text-white text-md"
             onClick={signInGoogle}
           >
             <GoogleLogo />

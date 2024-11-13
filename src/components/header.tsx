@@ -5,12 +5,12 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
+  Image,
   Navbar,
   NavbarBrand,
   NavbarContent,
 } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
-import { AcmeLogo } from "./icons";
 
 export default function Header() {
   const user = useDataStore((state) => state.user);
@@ -21,7 +21,7 @@ export default function Header() {
 
     navigate("/");
   };
-  // <span>Let's make the best itinerary</span>
+
   return (
     <Navbar>
       <NavbarContent as="div" justify="start" className="w-full">
@@ -29,9 +29,9 @@ export default function Header() {
           <DropdownTrigger>
             <div className="flex items-center">
               <Avatar src={user.avatar} size="md" name="Jane" />
-              <div className="flex flex-row items-start ml-3 default whitespace-nowrap">
-                <span>Hello,</span>
-                <span className="font-semibold">{user.name}</span>
+              <div className="flex flex-col items-start ml-3 default whitespace-nowrap">
+                <span className="font-semibold">Hello, {user.name || 'Name'}</span>
+                <span className="text-xs">Welcome to togeher travel</span>
               </div>
             </div>
           </DropdownTrigger>
@@ -53,7 +53,12 @@ export default function Header() {
         </Dropdown>
       </NavbarContent>
       <NavbarBrand className="justify-end">
-        <AcmeLogo />
+        <Image
+            removeWrapper
+            alt="together"
+            className="z-0 object-cover w-32 h-full"
+            src='../../logo.png'
+          />
       </NavbarBrand>
     </Navbar>
   );

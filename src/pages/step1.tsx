@@ -112,7 +112,7 @@ export default function Step1() {
           color="primary"
           type="submit"
           onClick={handelPress}
-          className="bg-gradient-to-r from-[#FF1CF7] to-[#b249f8] text-white h-14 min-h-[60px] mb-2 fixed bottom-5 w-[calc(100%-33px)] hover:border-transparent"
+          className="bg-gradient-to-r text-md from-[#FF1CF7] to-[#b249f8] text-white h-14 min-h-[60px] mb-2 fixed bottom-5 w-[calc(100%-33px)] hover:border-transparent"
         >
           Create new itinerary
         </Button>

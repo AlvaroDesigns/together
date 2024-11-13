@@ -180,7 +180,7 @@ export default function Login() {
             radius="full"
             color="primary"
             type="submit"
-            className="bg-gradient-to-r text-white from-[#FF1CF7] to-[#b249f8] w-full h-14 min-h-[60px] mb-2"
+            className="bg-gradient-to-r text-white from-[#FF1CF7] text-md to-[#b249f8] w-full h-14 min-h-[60px] mb-2"
             isLoading={isLoading}
             onClick={handleSubmit(onSubmit)}
           >
@@ -190,7 +190,7 @@ export default function Login() {
           <Button
             radius="full"
             color="primary"
-            className="w-full my-2 h-14 min-h-[60px] text-white"
+            className="w-full my-2 h-14 min-h-[60px] text-md text-white"
             onClick={signInGoogle}
           >
             <GoogleLogo />
