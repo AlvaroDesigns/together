@@ -3,9 +3,8 @@
  *************************/
 
 /* QueryParams */
-export const SCHOOL_PARAMS: string = "image";
-export const DATE_PARAMS: string = "endDate";
 
+export const AUHT_NAME = "auth";
 export const IS_APP: string = "mobile";
 export const COUNTRY_ES: string = "E-ESPAÑA";
 
@@ -46,12 +45,9 @@ export const ROUTES: Record<string, string> = {
 };
 
 export const ENDPOINT: Record<string, string> = {
-  CONFIGURATION: "configuration/orphanhoodlists",
-  REGIONS: "configuration/regions",
-  STREET_TYPES: "configuration/streettypes",
-  LEAD: "orphanhood/leadoffer",
-  UPDATE_LEAD: "orphanhood/updateleadoffer",
-  FORMALIZATION: "orphanhood/sign",
+  AUTH: "auth/login",
+  USER: "v1/user",
+  ITINERARY: "v1/itinerary",
 };
 
 /* GTM */

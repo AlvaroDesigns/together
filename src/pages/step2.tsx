@@ -2,13 +2,15 @@ import { subtitle, title } from "@/components/primitives";
 import { capitalCase, resolverAirFly } from "@/utils";
 import {
   ArrowDownRightIcon,
-  ArrowLeftIcon,
   ArrowUpRightIcon,
   ClockIcon,
   MapPinIcon,
 } from "@heroicons/react/24/outline";
 
-import { AcmeLogo } from "@/components/icons";
+import { Header } from "@/components";
+import { ENDPOINT } from "@/constants";
+import { useLoading } from "@/hooks";
+import Services from "@/services";
 import { format } from "@formkit/tempo";
 import {
   Accordion,
@@ -19,6 +21,7 @@ import {
   Image,
   Link,
 } from "@nextui-org/react";
+import { AxiosResponse } from "axios";
 import { useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -181,6 +184,8 @@ const DATA = {
 
 export default function Step2() {
   const navigate = useNavigate();
+
+  const { isLoading, startLoading, stopLoading } = useLoading();
   const options = {
     method: "GET",
     url: `https://booking-com18.p.rapidapi.com/stays/auto-complete?query=${"grupotel+acapulco"}&languageCode=es-es
@@ -201,6 +206,27 @@ export default function Step2() {
   */
 
   useEffect(() => {
+    /* Start Loading */
+    startLoading();
+
+    /* Call API */
+    Services()
+      .get(`${ENDPOINT.ITINERARY}/3`)
+      .then((res: AxiosResponse) => {
+        const { status, data } = res;
+
+        if (status !== 200) {
+          return console.log("Error");
+        }
+
+        /* Set */
+        console.log(data);
+      })
+      .catch((error) => console.log("Error", error))
+      .finally(() => stopLoading());
+  }, []);
+  /*
+  useEffect(() => {
     try {
       // const response = axios.request(options);
       console.log(response);
@@ -208,24 +234,23 @@ export default function Step2() {
       console.error(error);
     }
   }, []);
-
+*/
   const handelGoBack = useCallback(() => {
     navigate(-1);
   }, []);
-
-  return (
-    <div className="flex flex-col h-screen">
-      <section className="relative overflow-hidden flex flex-col justify-start w-full min-h-[250px] max-h-[250px] bg-[url('https://www.civitatis.com/blog/wp-content/uploads/2012/01/shutterstock_1238373562-scaled.jpg')] bg-cover bg-center">
-        <div className="absolute inset-0 opacity-50 bg-gradient-to-b from-black to-transparent" />
-        <div className="relative z-auto flex flex-row justify-between h-10 px-3 mt-2 ">
-          <ArrowLeftIcon
+  /**
+ * 
+ *           <ArrowLeftIcon
             className="m-1 text-white size-8"
             onClick={handelGoBack}
           />
-          <div className="flex text-white">
-            <AcmeLogo />
-          </div>
-        </div>
+ */
+  return (
+    <div className="flex flex-col h-screen">
+      <Header />
+      <section className="relative overflow-hidden flex flex-col justify-start w-full min-h-[250px] max-h-[250px] bg-[url('https://www.civitatis.com/blog/wp-content/uploads/2012/01/shutterstock_1238373562-scaled.jpg')] bg-cover bg-center">
+        <div className="absolute inset-0 opacity-50 bg-gradient-to-b from-black to-transparent" />
+        <div className="relative z-auto flex flex-row justify-between h-10 px-3 mt-2 "></div>
         <div className="relative z-auto flex flex-col w-full">
           <div className="mt-8">
             <p className="mt-1 text-white">
@@ -241,14 +266,14 @@ export default function Step2() {
         </div>
       </section>
       <div
-        className="h-[270px] z-[1000] mb-2 flex"
+        className="h-[270px] z-[30] mb-2 flex"
         data-height="250"
         data-front=""
         data-style="curve"
         data-position="bottom"
       >
         <svg
-          className="absolute w-full left-0 top-[220px] h-[5%] transform rotate-180 scale-y-[-1]"
+          className="absolute w-full left-0 top-[280px] h-[5%] transform rotate-180 scale-y-[-1]"
           aria-hidden="true"
           fill="#ffffff"
           xmlns="http://www.w3.org/2000/svg"
@@ -500,4 +525,7 @@ export default function Step2() {
       </section>
     </div>
   );
+}
+function startLoading() {
+  throw new Error("Function not implemented.");
 }

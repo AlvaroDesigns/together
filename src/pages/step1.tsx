@@ -1,6 +1,21 @@
-import { Card, Header, ModalItinerary } from "@/components";
+import { Card, Header } from "@/components";
+import {
+  CardHeader,
+  Image,
+  Card as NextCard,
+  Skeleton,
+} from "@nextui-org/react";
+
+import DrawerItinerary from "@/components/drawerItinerary";
 import { subtitle, title } from "@/components/primitives";
-import { Button, Link, useDisclosure } from "@nextui-org/react";
+import { ENDPOINT } from "@/constants";
+import { useLoading } from "@/hooks";
+import Services from "@/services";
+import { useDataStore } from "@/stores";
+import { sendEventError } from "@/utils";
+import { Link } from "@nextui-org/react";
+import { AxiosResponse } from "axios";
+import { Key, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 const DATA = [
   {
@@ -27,13 +42,94 @@ const DATA = [
 ];
 
 export default function Step1() {
-  const { onOpen, isOpen, onClose } = useDisclosure();
+  const { setter, home } = useDataStore((state) => state);
 
+  const { isLoading, startLoading, stopLoading } = useLoading();
+
+  useEffect(() => {
+    /* Start Loading */
+    startLoading();
+
+    /* Call API */
+    Services()
+      .get(`${ENDPOINT.USER}/${home.email}`)
+      .then((res: AxiosResponse) => {
+        const { status, data } = res;
+
+        if (status === 401) sendEventError();
+
+        if (status !== 200) {
+          return console.log("Error");
+        }
+
+        /* Set */
+        setter({ home: { name: data.name, itinerary: data.itinerary } });
+      })
+      .catch((error) => console.log("Error", error))
+      .finally(() => stopLoading());
+  }, []);
+
+  return (
+    <div className="h-[100%] flex flex-col ">
+      <Header />
+      <main className="text-foreground bg-background relative overflow-hidden text-left flex flex-col w-full px-4 pt-6 max-h-[100%] mb-28 h-[100%]">
+        <h1 className={title({ weight: "light" })}>
+          Explora el&nbsp; <span className={title()}>maravilloso&nbsp;</span>
+          <span className={title({ color: "green" })}>mundo!</span>
+        </h1>
+        <div className="mt-6">
+          <div className="flex flex-row whitespace-nowrap">
+            <p className={subtitle()}>Ultimos destinos</p>
+            {(home?.itinerary?.length ?? 0) < 0 && (
+              <Link
+                size="sm"
+                underline="always"
+                className="mr-2 text-gray-600"
+                href="#"
+              >
+                View All
+              </Link>
+            )}
+          </div>
+          <div className="flex flex-row gap-4 mt-4 overflow-x-auto">
+            <Cards itinerary={home.itinerary} loading={isLoading} />
+          </div>
+        </div>
+        <div className="mt-6">
+          <div className="flex flex-row whitespace-nowrap">
+            <p className={subtitle()}>Top destinations</p>
+            <Link
+              size="sm"
+              underline="always"
+              className="mr-2 text-gray-600"
+              href="#"
+            >
+              View All
+            </Link>
+          </div>
+          <div className="flex flex-row gap-4 mt-4 overflow-x-auto">
+            <Cards itinerary={DATA} loading={isLoading} />
+          </div>
+        </div>
+        <DrawerItinerary />
+      </main>
+    </div>
+  );
+}
+
+interface ItineraryItem {
+  title: string | undefined;
+  days: number | undefined;
+  image: string | undefined;
+}
+
+interface CardsProps {
+  itinerary: ItineraryItem[] | undefined;
+  loading: boolean;
+}
+
+const Cards: React.FC<CardsProps> = ({ itinerary, loading = true }) => {
   const navigate = useNavigate();
-
-  const handelPress = () => {
-    onOpen();
-  };
 
   const handelCardOnPress = ({
     title,
@@ -50,74 +146,80 @@ export default function Step1() {
     navigate(`/${formatUrl}_${days}_dias`);
   };
 
-  return (
-    <div className="h-[100%] flex flex-col ">
-      <Header />
-      <main className="text-foreground bg-background relative overflow-hidden text-left flex flex-col w-full px-4 pt-6 max-h-[100%] mb-28">
-        <h1 className={title({ weight: "light" })}>
-          Explore the&nbsp; <span className={title()}>beautiful&nbsp;</span>
-          <span className={title({ color: "violet" })}>word!</span>
-        </h1>
-        <div className="mt-6">
-          <div className="flex flex-row whitespace-nowrap">
-            <p className={subtitle()}>Ultimo destinos</p>
-            <Link
-              size="sm"
-              underline="always"
-              className="mr-2 text-gray-600"
-              href="#"
-            >
-              View All
-            </Link>
-          </div>
-          <div className="flex flex-row gap-4 mt-4 overflow-x-auto">
-            {DATA.map((item, index) => (
-              <Card
-                key={index}
-                title={item?.title}
-                days={item.days}
-                image={item.image}
-                onClick={() => handelCardOnPress(item)}
-              />
-            ))}
-          </div>
-        </div>
-        <div className="mt-6">
-          <div className="flex flex-row whitespace-nowrap">
-            <p className={subtitle()}>Top destinations</p>
-            <Link
-              size="sm"
-              underline="always"
-              className="mr-2 text-gray-600"
-              href="#"
-            >
-              View All
-            </Link>
-          </div>
-          <div className="flex flex-row gap-4 mt-4 overflow-x-auto">
-            {Array(4)
-              .fill(0)
-              .map((_, index) => (
-                <Card
-                  key={index}
-                  title={undefined}
-                  days={null}
-                  image={undefined}
-                />
-              ))}
-          </div>
-        </div>
-        <Button
-          radius="full"
-          color="primary"
-          type="submit"
-          onClick={handelPress}
-          className="bg-gradient-to-r text-md from-[#FF1CF7] to-[#b249f8] text-white h-14 min-h-[60px] mb-2 fixed bottom-5 w-[calc(100%-33px)] hover:border-transparent"
+  if (loading || itinerary?.length === undefined) {
+    return Array(3)
+      .fill(0)
+      .map((_, index) => (
+        <div
+          className="w-[200px] min-w-[200px] space-y-5 relative"
+          key={`skeleton-${index}`}
         >
-          Create new itinerary
-        </Button>
-        <ModalItinerary isOpen={isOpen} onClose={onClose} />
-      </main>
-    </div>
+          <NextCard
+            className="w-[200px] min-w-[200px] space-y-5 p-4 relative bg-neutral-500"
+            radius="lg"
+          >
+            <Skeleton className="rounded-lg" isLoaded={false}>
+              <div className="h-24 rounded-lg bg-default-300" />
+            </Skeleton>
+            <div className="space-y-3">
+              <Skeleton className="w-3/5 rounded-lg">
+                <div className="w-3/5 h-3 rounded-lg bg-default-200" />
+              </Skeleton>
+              <Skeleton className="w-4/5 rounded-lg">
+                <div className="w-4/5 h-3 rounded-lg bg-default-200" />
+              </Skeleton>
+              <Skeleton className="w-2/5 rounded-lg">
+                <div className="w-2/5 h-3 rounded-lg bg-default-300" />
+              </Skeleton>
+            </div>
+          </NextCard>
+        </div>
+      ));
+  }
+
+  if (itinerary?.length === 0) {
+    return (
+      <>
+        <NextCard
+          isFooterBlurred
+          className="w-full h-[200px] col-span-12 sm:col-span-7 relative"
+        >
+          <div className="absolute inset-0 z-0 bg-black/50"></div>
+
+          <CardHeader className="absolute z-10 flex-col items-start top-1">
+            <p className="font-bold uppercase text-tiny text-white/60">
+              Todavia no tienes tu plan de viaje
+            </p>
+            <h4 className="text-xl font-medium text-white/90">
+              A que esperas para crearlo
+            </h4>
+          </CardHeader>
+
+          <Image
+            removeWrapper
+            alt="Relaxing app background"
+            className="z-0 object-cover w-full h-full opacity-70"
+            src="/female-travelers-waving-cars-road-small.jpg"
+          />
+        </NextCard>
+      </>
+    );
+  }
+
+  return (
+    <>
+      {itinerary?.map((item: ItineraryItem, index: Key | null | undefined) => (
+        <Card
+          key={index}
+          title={item?.title}
+          days={item.days}
+          image={item.image}
+          onClick={() =>
+            item?.title &&
+            handelCardOnPress({ title: item.title, days: item.days ?? 0 })
+          }
+        />
+      ))}
+    </>
   );
-}
+};

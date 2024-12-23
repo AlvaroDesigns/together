@@ -1,29 +1,41 @@
 import { create } from "zustand";
-import { devtools } from "zustand/middleware";
+import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
-import { DataState } from "./index.types";
+import { DataState, HomeTypes, UserTypes } from "./index.types";
 
-const userData = {
+const userData: UserTypes = {
   name: undefined,
-  email: "",
+  email: undefined,
   avatar: undefined,
+  remember: false,
+};
+
+const homeData: HomeTypes = {
+  name: undefined,
+  email: undefined,
+  itinerary: undefined,
 };
 
 export const useDataStore = create<DataState>()(
-  devtools(
-    immer((set) => ({
-      user: userData,
-      setter: (value: any) =>
-        set(
-          (state) => ({
-            ...state,
-            ...value,
-            user: { ...state?.user, ...value?.user },
-          }),
-          false,
-          "Set data"
-        ),
-    })),
-    { name: "data-storage" }
+  persist(
+    devtools(
+      immer((set) => ({
+        user: userData,
+        home: homeData,
+        setter: (value: any) =>
+          set(
+            (state) => ({
+              ...state,
+              ...value,
+              user: { ...state?.user, ...value?.user },
+              home: { ...state?.home, ...value?.home },
+            }),
+            false,
+            "Set data"
+          ),
+        reset: () => set({ home: homeData }),
+      }))
+    ),
+    { name: "data-storage", storage: createJSONStorage(() => sessionStorage) }
   )
 );

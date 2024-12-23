@@ -5,7 +5,6 @@ import { login } from "@/helpers/schema";
 import { useForm, useLoading } from "@/hooks";
 import { auth, provider } from "@/lib/firebaseConfig";
 import { useDataStore } from "@/stores";
-import { setStore } from "@/utils";
 import { Button, Checkbox, Input, Link } from "@nextui-org/react";
 import { signInWithPopup } from "firebase/auth";
 import { useCallback } from "react";
@@ -54,7 +53,6 @@ export default function Login() {
       const user = result.user;
       console.log("User Info:", user);
       if (result.user.email) {
-        setStore("name", String(result.user.displayName));
         setter({
           user: {
             name: result.user.displayName,
@@ -85,7 +83,7 @@ export default function Login() {
       </div>
       <div className="flex items-center justify-center px-4 py-10 md:w-1/2">
         <div className="w-full max-w-[400px]">
-          <h1 className={title({ color: "violet" })}>Bienvenido!</h1>
+          <h1 className={title({ color: "green" })}>Bienvenido!</h1>
           <p className={subtitle({ color: "black" })}>Crea tu cuenta</p>
           <div className="flex items-center my-4 rounded-2xl">
             <Controller
@@ -159,14 +157,15 @@ export default function Login() {
               )}
             />
           </div>
-          <div className="flex flex-row items-center justify-between mb-4 text-left">
+          <div className="flex flex-row justify-between mb-4 text-sm items-left ft text-sx">
             <Controller
               name="remember"
               control={control}
               render={({ field }) => (
                 <Checkbox
                   {...field}
-                  size="md"
+                  size="sm"
+                  color="default"
                   className="text-gray-600"
                   defaultSelected
                 >
@@ -180,7 +179,7 @@ export default function Login() {
             radius="full"
             color="primary"
             type="submit"
-            className="bg-gradient-to-r text-white from-[#FF1CF7] text-md to-[#b249f8] w-full h-14 min-h-[60px] mb-2"
+            className="bg-gradient-to-r text-white from-[#009688] text-md to-[#009688] w-full h-14 min-h-[60px] mb-2"
             isLoading={isLoading}
             onClick={handleSubmit(onSubmit)}
           >

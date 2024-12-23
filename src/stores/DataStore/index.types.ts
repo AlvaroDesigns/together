@@ -9,13 +9,32 @@ export type FieldType =
   | "loader"
   | "error";
 
-interface UsertData {
+export interface UserTypes {
   name: string | undefined;
   email: string | undefined;
   avatar: string | undefined;
+  remember: boolean;
+}
+
+interface HomeItineraryTypes {
+  title: string | undefined;
+  days: number;
+  date: string | undefined;
+  startDate: string | undefined;
+  endDate: string | undefined;
+  image: string | undefined;
+  userId: number;
+}
+
+export interface HomeTypes {
+  name: string | undefined;
+  email: string | undefined;
+  itinerary: HomeItineraryTypes[] | undefined;
 }
 
 export interface DataState {
-  user: UsertData;
-  setter: (data: any) => void;
+  user: UserTypes;
+  home: HomeTypes;
+  setter: (data: unknown) => void;
+  reset(): void;
 }

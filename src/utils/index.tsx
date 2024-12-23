@@ -1,11 +1,32 @@
-// Carga y muestra mensajes almacenados en localStorage
-export const getStore = (key: string) => {
-  return sessionStorage?.getItem(key) ?? undefined;
-};
+import { AUHT_NAME } from "@/constants";
 
 // Carga y muestra mensajes almacenados en localStorage
-export const setStore = (key: string, value: string) => {
-  return sessionStorage?.setItem(key, value) ?? undefined;
+export const getAuth = (name: string) => {
+  return localStorage.getItem(name);
+};
+// Carga y muestra mensajes almacenados en localStorage
+export const setAuth = (name: string, value: string) => {
+  return localStorage?.setItem(name, String(value));
+};
+
+// Romove datos almacenados en localStorage
+export const removeAuth = (name: string) => {
+  return localStorage?.removeItem(name);
+};
+/* Send Event Error */
+export const sendEventError = () => {
+  removeAuth(AUHT_NAME);
+  window.location.assign("/");
+};
+
+export const betweenDates = (start: string, end: string) => {
+  // Calcular la diferencia en milisegundos
+  const differenceInMs = new Date(end).getTime() - new Date(start).getTime();
+
+  // Convertir a días
+  const differenceInDays = differenceInMs / (1000 * 60 * 60 * 24);
+
+  return differenceInDays;
 };
 
 export const capitalCase = (value: string) => {

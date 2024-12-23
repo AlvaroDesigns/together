@@ -36,7 +36,39 @@ export const login = yup.object().shape({
     .string()
     .required(LITERALS.REQUEST_LABEL)
     .matches(REGEX.PASSWORD, LITERALS.ERROR_LABEL),
-  remember: yup.bool().optional().oneOf([true], LITERALS.REQUEST_LABEL),
+  remember: yup.boolean().optional(),
+});
+
+export const createItinerary = yup.object().shape({
+  title: yup
+    .string()
+    .min(3, LITERALS.NUMBER_VALUE.replace("[number]", "3"))
+    .required(LITERALS.REQUEST_LABEL)
+    .matches(REGEX.ALPHABETIC, LITERALS.ERROR_LABEL),
+  dates: yup
+    .object({
+      start: yup
+        .date()
+        .typeError("La fecha de inicio no es válida")
+        .required("Debe seleccionar una fecha de inicio"),
+      end: yup
+        .date()
+        .typeError("La fecha de fin no es válida")
+        .required("Debe seleccionar una fecha de fin")
+        .test(
+          "is-after-start",
+          "La fecha de fin debe ser posterior o igual a la fecha de inicio",
+          function (end) {
+            const { start } = this.parent; // Accede al valor de `start` dentro del mismo objeto
+            return !start || !end || end >= start;
+          }
+        ),
+    })
+    .required("Debe seleccionar un rango de fechas"),
+  image: yup
+    .string()
+    .min(3, LITERALS.NUMBER_VALUE.replace("[number]", "3"))
+    .required(LITERALS.REQUEST_LABEL),
 });
 
 export const personalSchema = yup.object().shape({

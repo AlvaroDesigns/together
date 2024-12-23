@@ -66,9 +66,9 @@ export default function ModalItinerary({
                 color="primary"
                 type="submit"
                 onPress={onClose}
-                className="bg-gradient-to-r from-[#FF1CF7] to-[#b249f8] h-14 min-h-[60px] hover:border-transparent"
+                className="bg-gradient-to-r text-md from-[#009688] to-[#009688] text-white h-14 min-h-[60px] hover:border-transparent"
               >
-                Save Itinerary
+                Guardar itinerario
               </Button>
             </ModalBody>
           </>

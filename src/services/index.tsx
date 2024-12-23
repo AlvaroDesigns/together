@@ -1,18 +1,29 @@
+import { AUHT_NAME } from "@/constants";
+import { getAuth } from "@/utils";
 import axios, { AxiosResponse } from "axios";
 
 const controllers: { [key: string]: AbortController } = {};
 
-const Services = (headers: object, url?: string) => {
+const Services = (headers?: object) => {
+  /**
+   * BASE URL
+   */
+  const BASE_URL = import.meta.env.VITE_API_BFF_URL;
+  /**
+   * GET TOKEN
+   */
+  const TOKEN = getAuth(AUHT_NAME) ? getAuth(AUHT_NAME) : "";
   /**
    * Axios
    **/
   const instance = axios.create({
-    baseURL: url,
+    baseURL: BASE_URL,
     headers: {
       ...headers,
-      "Access-Control-Allow-Origin": url,
+      "Access-Control-Allow-Origin": BASE_URL,
       "Access-Control-Allow-Credentials": true,
       "Content-Type": "application/json",
+      Authorization: `Bearer ${TOKEN}`,
       Accept: "*/*",
     },
   });
@@ -31,7 +42,7 @@ const Services = (headers: object, url?: string) => {
       url: string,
       payload?: object,
       id?: string
-    ): Promise<AxiosResponse<any, any>> => {
+    ): Promise<AxiosResponse<any>> => {
       const signal = createAbortController(id);
 
       return await instance

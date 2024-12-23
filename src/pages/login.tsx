@@ -1,12 +1,14 @@
 import { GoogleLogo } from "@/components/icons";
 import { subtitle, title } from "@/components/primitives";
-import { ROUTES } from "@/constants";
+import { AUHT_NAME, ENDPOINT, ROUTES } from "@/constants";
 import { login } from "@/helpers/schema";
 import { useForm, useLoading } from "@/hooks";
 import { auth, provider } from "@/lib/firebaseConfig";
+import Services from "@/services";
 import { useDataStore } from "@/stores";
-import { setStore } from "@/utils";
+import { setAuth } from "@/utils";
 import { Button, Checkbox, Input, Link } from "@nextui-org/react";
+import { AxiosResponse } from "axios";
 import { signInWithPopup } from "firebase/auth";
 import { useCallback } from "react";
 import { Controller } from "react-hook-form";
@@ -16,38 +18,51 @@ export default function Login() {
   const navigate = useNavigate();
 
   const { isLoading, startLoading, stopLoading } = useLoading();
-  const setter = useDataStore((state) => state.setter);
+  const { setter, user } = useDataStore((state) => state);
 
-  const { control, errors, handleSubmit } = useForm({
-    values: { email: "", password: "", remember: true },
+  const { control, errors, handleSubmit, watch } = useForm({
+    values: user,
     schema: login,
   });
 
   const onSubmit = useCallback(
-    async (value: unknown) => {
+    async (value: { email: string; password: string; remember: boolean }) => {
       const error = Object.entries(errors).length !== 0;
-      console.log(value, error);
+
       /* Exit */
       if (error) return;
 
       /* Start Loading */
       startLoading();
 
-      /* Set Data */
-      console.log("value", value);
-      setter({
-        user: {
-          email: value.email,
-          remember: true,
-        },
-      });
-      navigate(ROUTES.HOME);
-
       /* Call API */
+      Services()
+        .post(ENDPOINT.AUTH, {
+          email: value.email,
+          password: value.password,
+        })
+        .then((res: AxiosResponse) => {
+          const { status, data } = res;
+          if (status !== 201) {
+            return console.log("Error");
+          }
 
-      setTimeout(() => stopLoading(), 300);
+          /* Set */
+          const values = value.remember === true ? {} : value;
+          setter({
+            user: values,
+            home: {
+              email: value.email,
+            },
+          });
+
+          setAuth(AUHT_NAME, data.access_token);
+          navigate(ROUTES.HOME);
+        })
+        .catch((error) => console.log("Error", error))
+        .finally(() => stopLoading());
     },
-    [errors, startLoading, stopLoading]
+    [errors, setter, user, watch]
   );
 
   const signInGoogle = async () => {
@@ -56,7 +71,6 @@ export default function Login() {
       const user = result.user;
       console.log("User Info:", user);
       if (result.user.email) {
-        setStore("name", String(result.user.displayName));
         setter({
           user: {
             name: result.user.displayName,
@@ -88,7 +102,7 @@ export default function Login() {
       </div>
       <div className="flex items-center justify-center px-4 py-10 md:w-1/2">
         <div className="w-full max-w-[400px]">
-          <h1 className={title({ color: "violet" })}>Hello Again!</h1>
+          <h1 className={title({ color: "green" })}>Hello Again!</h1>
           <p className={subtitle({ color: "black" })}>Top destinations</p>
           <div className="flex items-center my-4 rounded-2xl">
             <Controller
@@ -146,6 +160,7 @@ export default function Login() {
                 <Checkbox
                   {...field}
                   size="sm"
+                  color="default"
                   className="text-gray-600"
                   defaultSelected
                 >
@@ -161,9 +176,9 @@ export default function Login() {
             radius="full"
             color="primary"
             type="submit"
-            className="bg-gradient-to-r text-md text-white from-[#FF1CF7] to-[#b249f8] w-full h-14 min-h-[60px] mb-2"
+            className="bg-gradient-to-r text-white from-[#009688] to-[#009688] w-full h-14 min-h-[60px] mb-2"
             isLoading={isLoading}
-            onClick={handleSubmit(onSubmit)}
+            onPress={handleSubmit(onSubmit)}
           >
             Inicar sesión
           </Button>
@@ -171,8 +186,8 @@ export default function Login() {
             radius="full"
             color="primary"
             type="submit"
-            className="border-2 border-[#b249f8] text-md bg-transparent w-full h-14 min-h-[60px] mb-2"
-            onClick={() => navigate(ROUTES.REGISTER)}
+            className="border-2 border-[#009688] bg-transparent w-full h-14 min-h-[60px] mb-2"
+            onPress={() => navigate(ROUTES.REGISTER)}
           >
             Registrarme
           </Button>
@@ -181,8 +196,8 @@ export default function Login() {
           <Button
             radius="full"
             color="primary"
-            className="w-full my-2 h-14 min-h-[60px] text-white text-md"
-            onClick={signInGoogle}
+            className="w-full my-2 h-14 min-h-[60px] text-white"
+            onPress={signInGoogle}
           >
             <GoogleLogo />
             Continue with Google
