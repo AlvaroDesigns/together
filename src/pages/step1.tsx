@@ -4,19 +4,22 @@ import {
   Image,
   Card as NextCard,
   Skeleton,
+  useDisclosure,
 } from "@nextui-org/react";
 
 import DrawerItinerary from "@/components/drawerItinerary";
+import OnBoarding from "@/components/onBoarding";
 import { subtitle, title } from "@/components/primitives";
-import { ENDPOINT } from "@/constants";
+import { ENDPOINT, ON_BOARDNG } from "@/constants";
 import { useLoading } from "@/hooks";
 import Services from "@/services";
-import { useDataStore } from "@/stores";
-import { sendEventError } from "@/utils";
+import { useDataStore, useUserStore } from "@/stores";
+import { getAuth } from "@/utils";
 import { Link } from "@nextui-org/react";
 import { AxiosResponse } from "axios";
 import { Key, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
 const DATA = [
   {
     id: 1,
@@ -43,27 +46,34 @@ const DATA = [
 
 export default function Step1() {
   const { setter, home } = useDataStore((state) => state);
+  const { setter: setUser, user } = useUserStore((state) => state);
 
+  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
   const { isLoading, startLoading, stopLoading } = useLoading();
+  const onBoarding = getAuth(ON_BOARDNG);
 
   useEffect(() => {
+    /* Start On Boarding */
+    if (!onBoarding) {
+      onOpen();
+    }
+
     /* Start Loading */
     startLoading();
 
     /* Call API */
     Services()
-      .get(`${ENDPOINT.USER}/${home.email}`)
+      .get(`${ENDPOINT.USER}/${user.email}`)
       .then((res: AxiosResponse) => {
         const { status, data } = res;
-
-        if (status === 401) sendEventError();
 
         if (status !== 200) {
           return console.log("Error");
         }
 
         /* Set */
-        setter({ home: { name: data.name, itinerary: data.itinerary } });
+        setUser({ user: { ...user, name: data.name } });
+        setter({ home: { itinerary: data.itinerary } });
       })
       .catch((error) => console.log("Error", error))
       .finally(() => stopLoading());
@@ -72,7 +82,7 @@ export default function Step1() {
   return (
     <div className="h-[100%] flex flex-col ">
       <Header />
-      <main className="text-foreground bg-background relative overflow-hidden text-left flex flex-col w-full px-4 pt-6 max-h-[100%] mb-28 h-[100%]">
+      <div className="text-foreground relative overflow-hidden text-left flex flex-col w-full px-4 pt-6 max-h-[100%] mb-28 h-[100%]">
         <h1 className={title({ weight: "light" })}>
           Explora el&nbsp; <span className={title()}>maravilloso&nbsp;</span>
           <span className={title({ color: "green" })}>mundo!</span>
@@ -80,7 +90,7 @@ export default function Step1() {
         <div className="mt-6">
           <div className="flex flex-row whitespace-nowrap">
             <p className={subtitle()}>Ultimos destinos</p>
-            {(home?.itinerary?.length ?? 0) < 0 && (
+            {(home?.itinerary?.length ?? 0) > 0 && (
               <Link
                 size="sm"
                 underline="always"
@@ -92,7 +102,10 @@ export default function Step1() {
             )}
           </div>
           <div className="flex flex-row gap-4 mt-4 overflow-x-auto">
-            <Cards itinerary={home.itinerary} loading={isLoading} />
+            <Cards
+              itinerary={home.itinerary?.toReversed()}
+              loading={isLoading}
+            />
           </div>
         </div>
         <div className="mt-6">
@@ -112,7 +125,12 @@ export default function Step1() {
           </div>
         </div>
         <DrawerItinerary />
-      </main>
+        <OnBoarding
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          onClose={onClose}
+        />
+      </div>
     </div>
   );
 }
@@ -177,7 +195,7 @@ const Cards: React.FC<CardsProps> = ({ itinerary, loading = true }) => {
       ));
   }
 
-  if (itinerary?.length === 0) {
+  if (itinerary === undefined) {
     return (
       <>
         <NextCard
@@ -194,7 +212,6 @@ const Cards: React.FC<CardsProps> = ({ itinerary, loading = true }) => {
               A que esperas para crearlo
             </h4>
           </CardHeader>
-
           <Image
             removeWrapper
             alt="Relaxing app background"

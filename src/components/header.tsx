@@ -1,26 +1,30 @@
-import { useDataStore } from "@/stores";
+import { useUserStore } from "@/stores";
 import { Image, Navbar, NavbarBrand, NavbarContent } from "@nextui-org/react";
 
+import { useNavigate } from "react-router-dom";
 import DrawerCustom from "./drawer";
 
 export default function Header() {
-  const { home, user } = useDataStore((state) => state);
+  const { user } = useUserStore((state) => state);
+  const navigate = useNavigate();
 
   return (
-    <Navbar className="border-slate-200 border-b-1 order-b">
+    <Navbar className="dark:border-slate-200 border-b-1 order-b">
       <NavbarBrand className="justify-start">
         <Image
           removeWrapper
           alt="together"
           className="z-0 object-cover w-32 h-full"
           src="../../logo.png"
+          onClick={() => navigate("/home")}
         />
       </NavbarBrand>
       <NavbarContent as="div" justify="end" className="w-full">
         <DrawerCustom
           user={{
-            name: home?.name || "Nombre",
+            name: user?.name || "Nombre",
             email: user?.email || "Email",
+            avatar: user?.avatar,
           }}
         />
       </NavbarContent>

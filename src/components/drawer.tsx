@@ -12,6 +12,7 @@ import {
 import {
   Avatar,
   Button,
+  Chip,
   Drawer,
   DrawerBody,
   DrawerContent,
@@ -30,7 +31,7 @@ import { version } from "../../package.json";
 export default function DrawerCustom({
   user,
 }: {
-  user: { name: string; email: string };
+  user: { name: string; email: string; avatar?: string };
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -43,7 +44,7 @@ export default function DrawerCustom({
 
     navigate("/");
   };
-
+  console.log("user", user);
   return (
     <>
       <Button
@@ -56,8 +57,9 @@ export default function DrawerCustom({
         hideCloseButton
         backdrop="blur"
         radius="none"
+        size="full"
         classNames={{
-          base: "data-[placement=right]:sm:m-2 data-[placement=left]:sm:m-2",
+          base: "data-[placement=right]:sm:m-2 data-[placement=left]:sm:m- 2",
         }}
         isOpen={isOpen}
         onOpenChange={onOpenChange}
@@ -81,9 +83,10 @@ export default function DrawerCustom({
               <DrawerBody className="pt-16">
                 <div className="flex flex-col items-center justify-center w-full pt-4">
                   <Avatar
-                    className="w-32 h-32 text-large"
-                    name="NextUI"
-                    src="https://i.pravatar.cc/150?u=a04258114e29026708c"
+                    showFallback
+                    className="w-32 h-32 text-6xl"
+                    name={user.name.charAt(0)}
+                    src={user.avatar}
                   />
                   <div className="flex flex-col items-center mt-4 default whitespace-nowrap">
                     <span className="text-xl font-semibold">
@@ -99,25 +102,31 @@ export default function DrawerCustom({
                       variant="flat"
                     >
                       <ListboxItem
-                        key="new"
-                        className="flex items-center pb-3"
+                        key="account"
+                        className="flex items-center pb-3 "
                         showDivider
                         startContent={<UserIcon className="m-1 size-6" />}
                         endContent={<ChevronRightIcon className="m-1 size-6" />}
                       >
                         <span className="my-5 text-medium">Mi cuenta</span>
+                        <Chip isDisabled color="default" className="ml-2">
+                          Next Feb
+                        </Chip>
                       </ListboxItem>
                       <ListboxItem
-                        key="copy"
+                        key="friends"
                         className="flex items-center py-3"
                         showDivider
                         startContent={<UserGroupIcon className="m-1 size-6" />}
                         endContent={<ChevronRightIcon className="m-1 size-6" />}
                       >
                         <span className="text-medium">Invitar amigos</span>
+                        <Chip isDisabled color="default" className="ml-2">
+                          Next Feb
+                        </Chip>
                       </ListboxItem>
                       <ListboxItem
-                        key="edit"
+                        key="secure"
                         className="flex items-center py-3"
                         showDivider
                         startContent={
@@ -126,15 +135,21 @@ export default function DrawerCustom({
                         endContent={<ChevronRightIcon className="m-1 size-6" />}
                       >
                         <span className="text-medium">Seguridad</span>
+                        <Chip isDisabled color="default" className="ml-2">
+                          Next Feb
+                        </Chip>
                       </ListboxItem>
                       <ListboxItem
-                        key="edit"
+                        key="news"
                         className="flex items-center py-3"
                         showDivider
                         startContent={<NewspaperIcon className="m-1 size-6" />}
                         endContent={<ChevronRightIcon className="m-1 size-6" />}
                       >
                         <span className="text-medium">Noticias</span>
+                        <Chip isDisabled color="default" className="ml-2">
+                          Next Feb
+                        </Chip>
                       </ListboxItem>
                       <ListboxItem
                         key="delete"
@@ -165,7 +180,7 @@ export default function DrawerCustom({
                   href="mailto:hello@nextui.org"
                   size="sm"
                 >
-                  Versión {version}
+                  Versión apha-{version}
                 </Link>
               </DrawerFooter>
             </>

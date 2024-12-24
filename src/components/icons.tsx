@@ -214,7 +214,7 @@ export const NextUILogo: React.FC<IconSvgProps> = (props) => {
 };
 
 export const GoogleLogo: React.FC<IconSvgProps> = (props) => {
-  const { width, height = 60 } = props;
+  const { width, height = 20 } = props;
 
   return (
     <svg

@@ -22,26 +22,17 @@ export default function DrawerItinerary() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
   const { isLoading, startLoading, stopLoading } = useLoading();
-  const { control, errors, handleSubmit, watch } = useForm({
+  const { control, errors, handleSubmit } = useForm({
     values: "",
     schema: createItinerary,
   });
-  console.log("errors", watch());
+
   const onSubmit = useCallback(async (value: any) => {
     const error = Object.entries(errors).length !== 0;
     console.log("error", error, value);
 
     /* Exit */
     if (error) return;
-
-    console.log("value", {
-      title: value.title,
-      days: betweenDates(value.dates.start, value.dates.end),
-      startDate: value.dates.start,
-      endDate: value.dates.end,
-      image: value.image,
-      date: new Date(),
-    });
 
     /* Start Loading */
     startLoading();

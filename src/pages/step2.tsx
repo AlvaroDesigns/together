@@ -11,6 +11,7 @@ import { Header } from "@/components";
 import { ENDPOINT } from "@/constants";
 import { useLoading } from "@/hooks";
 import Services from "@/services";
+import { useDataStore } from "@/stores";
 import { format } from "@formkit/tempo";
 import {
   Accordion,
@@ -21,6 +22,7 @@ import {
   Image,
   Link,
 } from "@nextui-org/react";
+import { useTheme } from "@nextui-org/use-theme";
 import { AxiosResponse } from "axios";
 import { useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -183,6 +185,9 @@ const DATA = {
 };
 
 export default function Step2() {
+  const { theme } = useTheme();
+
+  const { setter, itinerary } = useDataStore((state) => state);
   const navigate = useNavigate();
 
   const { isLoading, startLoading, stopLoading } = useLoading();
@@ -220,6 +225,7 @@ export default function Step2() {
         }
 
         /* Set */
+        setter({ itinerary: data });
         console.log(data);
       })
       .catch((error) => console.log("Error", error))
@@ -245,37 +251,50 @@ export default function Step2() {
             onClick={handelGoBack}
           />
  */
+
   return (
     <div className="flex flex-col h-screen">
       <Header />
-      <section className="relative overflow-hidden flex flex-col justify-start w-full min-h-[250px] max-h-[250px] bg-[url('https://www.civitatis.com/blog/wp-content/uploads/2012/01/shutterstock_1238373562-scaled.jpg')] bg-cover bg-center">
-        <div className="absolute inset-0 opacity-50 bg-gradient-to-b from-black to-transparent" />
-        <div className="relative z-auto flex flex-row justify-between h-10 px-3 mt-2 "></div>
-        <div className="relative z-auto flex flex-col w-full">
-          <div className="mt-8">
+      <section className="relative overflow-hidden flex flex-col justify-start w-full min-h-[250px] max-h-[250px]">
+        <div className="absolute inset-0 z-20 opacity-50 bg-gradient-to-b from-black to-transparent" />
+        <Card
+          isFooterBlurred
+          radius="none"
+          className="w-full h-[300px] col-span-12 sm:col-span-7"
+        >
+          <CardBody className="absolute z-30 flex flex-col items-center w-full mt-8 top-1">
             <p className="mt-1 text-white">
-              {DATA.startDate} {DATA.endDate && `to ${DATA.endDate}`}
+              {itinerary?.startDate &&
+                format(new Date(itinerary.startDate), "DD-MM-YYYY")}{" "}
+              {itinerary?.endDate &&
+                `a ${format(new Date(itinerary.endDate), "DD-MM-YYYY")}`}
             </p>
             <h1 className="font-sans text-4xl font-bold text-white">
-              {DATA.title}
+              {itinerary?.title}
             </h1>
             <p className="mt-1 text-white">
-              {DATA.days} Días · A tu aire flexible
+              {itinerary?.days} Días · A tu aire flexible
             </p>
-          </div>
-        </div>
+          </CardBody>
+          <Image
+            removeWrapper
+            radius="none"
+            alt="Relaxing app background"
+            className="z-0 object-cover w-full h-full"
+            src={itinerary?.image}
+          />
+        </Card>
       </section>
       <div
         className="h-[270px] z-[30] mb-2 flex"
         data-height="250"
-        data-front=""
         data-style="curve"
         data-position="bottom"
       >
         <svg
           className="absolute w-full left-0 top-[280px] h-[5%] transform rotate-180 scale-y-[-1]"
           aria-hidden="true"
-          fill="#ffffff"
+          fill={`${theme === "dark" ? "#000" : "#fff"}`}
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1000 100"
           preserveAspectRatio="none"
@@ -525,7 +544,4 @@ export default function Step2() {
       </section>
     </div>
   );
-}
-function startLoading() {
-  throw new Error("Function not implemented.");
 }

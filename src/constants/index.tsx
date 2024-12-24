@@ -5,6 +5,7 @@
 /* QueryParams */
 
 export const AUHT_NAME = "auth";
+export const ON_BOARDNG = "onBoarding";
 export const IS_APP: string = "mobile";
 export const COUNTRY_ES: string = "E-ESPAÑA";
 

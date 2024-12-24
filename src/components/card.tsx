@@ -36,7 +36,6 @@ export default function CardVertical({
             className="z-0 object-cover w-full h-full"
             src={image}
           />
-
           <div className="absolute inset-0 opacity-50 bg-gradient-to-b from-black to-transparent" />
         </div>
       </Card>

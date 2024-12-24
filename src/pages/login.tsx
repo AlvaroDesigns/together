@@ -1,3 +1,4 @@
+import Button from "@/components/button";
 import { GoogleLogo } from "@/components/icons";
 import { subtitle, title } from "@/components/primitives";
 import { AUHT_NAME, ENDPOINT, ROUTES } from "@/constants";
@@ -5,28 +6,36 @@ import { login } from "@/helpers/schema";
 import { useForm, useLoading } from "@/hooks";
 import { auth, provider } from "@/lib/firebaseConfig";
 import Services from "@/services";
-import { useDataStore } from "@/stores";
+import { useUserStore } from "@/stores";
 import { setAuth } from "@/utils";
-import { Button, Checkbox, Input, Link } from "@nextui-org/react";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import { Button as ButtonUI, Checkbox, Input, Link } from "@nextui-org/react";
 import { AxiosResponse } from "axios";
 import { signInWithPopup } from "firebase/auth";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const navigate = useNavigate();
 
+  const [hide, setHide] = useState(true);
   const { isLoading, startLoading, stopLoading } = useLoading();
-  const { setter, user } = useDataStore((state) => state);
+  const { setter, user } = useUserStore((state) => state);
 
-  const { control, errors, handleSubmit, watch } = useForm({
+  const { control, errors, handleSubmit } = useForm({
     values: user,
     schema: login,
   });
 
   const onSubmit = useCallback(
-    async (value: { email: string; password: string; remember: boolean }) => {
+    async (value: {
+      avatar: string;
+      name: string;
+      email: string;
+      password: string;
+      remember: boolean;
+    }) => {
       const error = Object.entries(errors).length !== 0;
 
       /* Exit */
@@ -48,11 +57,12 @@ export default function Login() {
           }
 
           /* Set */
-          const values = value.remember === true ? {} : value;
           setter({
-            user: values,
-            home: {
+            user: {
+              name: value.name,
               email: value.email,
+              avatar: value.avatar,
+              remember: value.remember,
             },
           });
 
@@ -62,7 +72,7 @@ export default function Login() {
         .catch((error) => console.log("Error", error))
         .finally(() => stopLoading());
     },
-    [errors, setter, user, watch]
+    [errors, setter]
   );
 
   const signInGoogle = async () => {
@@ -87,7 +97,7 @@ export default function Login() {
   };
 
   return (
-    <main className="h-screen text-foreground bg-background md:flex">
+    <div className="h-screen text-foreground bg-background md:flex">
       <div className="relative items-center justify-around hidden w-1/2 overflow-hidden md:flex ">
         <div>
           <h1 className="font-sans text-4xl font-bold text-white">GoFinance</h1>
@@ -140,19 +150,28 @@ export default function Login() {
                   classNames={{
                     inputWrapper: "!min-h-[60px]",
                   }}
-                  type="password"
+                  type={hide ? "password" : "text"}
                   label="Contraseña"
                   fullWidth={true}
                   isInvalid={Boolean(fieldState.error?.message)}
                   color={fieldState.error?.message ? "danger" : "default"}
                   errorMessage={fieldState.error?.message}
+                  endContent={
+                    <div onClick={() => setHide(!hide)}>
+                      {hide ? (
+                        <EyeIcon className="m-1 size-6" />
+                      ) : (
+                        <EyeSlashIcon className="m-1 size-6" />
+                      )}
+                    </div>
+                  }
                   value={field.value}
                   placeholder="Por favor, introduce tu contraseña"
                 />
               )}
             />
           </div>
-          <div className="flex flex-row items-center justify-between mb-4">
+          <div className="flex flex-row items-center justify-between my-2">
             <Controller
               name="remember"
               control={control}
@@ -162,6 +181,7 @@ export default function Login() {
                   size="sm"
                   color="default"
                   className="text-gray-600"
+                  isSelected={field.value === undefined ? false : field.value}
                   defaultSelected
                 >
                   Remember me
@@ -172,38 +192,30 @@ export default function Login() {
               Forgot password
             </Link>
           </div>
-          <Button
-            radius="full"
-            color="primary"
-            type="submit"
-            className="bg-gradient-to-r text-white from-[#009688] to-[#009688] w-full h-14 min-h-[60px] mb-2"
-            isLoading={isLoading}
-            onPress={handleSubmit(onSubmit)}
-          >
-            Inicar sesión
-          </Button>
-          <Button
-            radius="full"
-            color="primary"
-            type="submit"
-            className="border-2 border-[#009688] bg-transparent w-full h-14 min-h-[60px] mb-2"
-            onPress={() => navigate(ROUTES.REGISTER)}
-          >
-            Registrarme
-          </Button>
+          <div className="flex flex-col gap-3 mt-4">
+            <Button isLoading={isLoading} onPress={handleSubmit(onSubmit)}>
+              Inicar sesión
+            </Button>
+            <Button
+              variant="bordered"
+              onPress={() => navigate(ROUTES.REGISTER)}
+            >
+              Registrarme
+            </Button>
+          </div>
 
           <p className={subtitle()}>OR</p>
-          <Button
+          <ButtonUI
             radius="full"
             color="primary"
-            className="w-full my-2 h-14 min-h-[60px] text-white"
+            className="w-full my-2 h-14 min-h-[60px] text-white "
             onPress={signInGoogle}
           >
             <GoogleLogo />
             Continue with Google
-          </Button>
+          </ButtonUI>
         </div>
       </div>
-    </main>
+    </div>
   );
 }
