@@ -135,7 +135,7 @@ export default function DrawerItinerary() {
                       {...field}
                       isRequired
                       radius="full"
-                      type="text"
+                      type="url"
                       label="Url de la imagen"
                       fullWidth={true}
                       placeholder="Introduce tu imagen"

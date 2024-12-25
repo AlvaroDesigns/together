@@ -173,7 +173,7 @@ export default function DrawerCustom({
                   href="mailto:hello@nextui.org"
                   size="sm"
                 >
-                  Together Travel 2025©
+                  © 2025 Together Labs Inc.
                 </Link>
                 <Link
                   className="text-default-400"

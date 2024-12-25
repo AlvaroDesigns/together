@@ -14,6 +14,7 @@ const itineraryData: ItineraryTypes = {
   startDate: "",
   endDate: "",
   image: "",
+  itemId: undefined,
 };
 
 export const useDataStore = create<DataState>()(

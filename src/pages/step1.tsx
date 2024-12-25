@@ -1,4 +1,3 @@
-import { Card, Header } from "@/components";
 import {
   CardHeader,
   Image,
@@ -7,8 +6,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 
-import DrawerItinerary from "@/components/drawerItinerary";
-import OnBoarding from "@/components/onBoarding";
+import { Card, DrawerItinerary, OnBoarding, RootLayout } from "@/components";
 import { subtitle, title } from "@/components/primitives";
 import { ENDPOINT, ON_BOARDNG } from "@/constants";
 import { useLoading } from "@/hooks";
@@ -17,7 +15,7 @@ import { useDataStore, useUserStore } from "@/stores";
 import { getAuth } from "@/utils";
 import { Link } from "@nextui-org/react";
 import { AxiosResponse } from "axios";
-import { Key, useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const DATA = [
@@ -80,9 +78,8 @@ export default function Step1() {
   }, []);
 
   return (
-    <div className="h-[100%] flex flex-col ">
-      <Header />
-      <div className="text-foreground relative overflow-hidden text-left flex flex-col w-full px-4 pt-6 max-h-[100%] mb-28 h-[100%]">
+    <RootLayout>
+      <div className="text-foreground relative overflow-hidden text-left flex flex-col w-full px-4 pt-6 max-h-[100%] mb-10 h-[100%]">
         <h1 className={title({ weight: "light" })}>
           Explora el&nbsp; <span className={title()}>maravilloso&nbsp;</span>
           <span className={title({ color: "green" })}>mundo!</span>
@@ -131,11 +128,12 @@ export default function Step1() {
           onClose={onClose}
         />
       </div>
-    </div>
+    </RootLayout>
   );
 }
 
 interface ItineraryItem {
+  id: number | null | undefined;
   title: string | undefined;
   days: number | undefined;
   image: string | undefined;
@@ -147,12 +145,15 @@ interface CardsProps {
 }
 
 const Cards: React.FC<CardsProps> = ({ itinerary, loading = true }) => {
+  const { setter } = useDataStore((state) => state);
   const navigate = useNavigate();
 
   const handelCardOnPress = ({
+    id,
     title,
     days,
   }: {
+    id: number | null | undefined;
     title: string;
     days: number;
   }) => {
@@ -161,6 +162,10 @@ const Cards: React.FC<CardsProps> = ({ itinerary, loading = true }) => {
       .replace(/ & /g, "_")
       .replace(/ /g, "_");
 
+    /* Set */
+    setter({ itinerary: { itemId: id } });
+
+    /* Navigate */
     navigate(`/${formatUrl}_${days}_dias`);
   };
 
@@ -225,16 +230,13 @@ const Cards: React.FC<CardsProps> = ({ itinerary, loading = true }) => {
 
   return (
     <>
-      {itinerary?.map((item: ItineraryItem, index: Key | null | undefined) => (
+      {itinerary?.map((item: ItineraryItem) => (
         <Card
-          key={index}
+          key={item?.id}
           title={item?.title}
           days={item.days}
           image={item.image}
-          onClick={() =>
-            item?.title &&
-            handelCardOnPress({ title: item.title, days: item.days ?? 0 })
-          }
+          onClick={() => item?.title && handelCardOnPress(item)}
         />
       ))}
     </>

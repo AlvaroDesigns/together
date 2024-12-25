@@ -19,6 +19,7 @@ export interface ItineraryTypes {
   startDate: string | undefined;
   endDate: string | undefined;
   image: string | undefined;
+  itemId: number | undefined;
 }
 
 export interface DataState {

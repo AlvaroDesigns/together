@@ -1,4 +1,4 @@
-import Button from "@/components/button";
+import { Button, Footer } from "@/components";
 import { GoogleLogo } from "@/components/icons";
 import { subtitle, title } from "@/components/primitives";
 import { AUHT_NAME, ENDPOINT, ROUTES } from "@/constants";
@@ -216,6 +216,7 @@ export default function Login() {
           </ButtonUI>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

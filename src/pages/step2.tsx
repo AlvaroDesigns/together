@@ -7,7 +7,8 @@ import {
   MapPinIcon,
 } from "@heroicons/react/24/outline";
 
-import { Header } from "@/components";
+import { DrawerFrom, RootLayout } from "@/components";
+
 import { ENDPOINT } from "@/constants";
 import { useLoading } from "@/hooks";
 import Services from "@/services";
@@ -16,11 +17,13 @@ import { format } from "@formkit/tempo";
 import {
   Accordion,
   AccordionItem,
+  Button,
   Card,
   CardBody,
   Divider,
   Image,
   Link,
+  useDisclosure,
 } from "@nextui-org/react";
 import { useTheme } from "@nextui-org/use-theme";
 import { AxiosResponse } from "axios";
@@ -187,6 +190,7 @@ const DATA = {
 export default function Step2() {
   const { theme } = useTheme();
 
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const { setter, itinerary } = useDataStore((state) => state);
   const navigate = useNavigate();
 
@@ -216,7 +220,7 @@ export default function Step2() {
 
     /* Call API */
     Services()
-      .get(`${ENDPOINT.ITINERARY}/3`)
+      .get(`${ENDPOINT.DETAILS}/${itinerary?.itemId}`)
       .then((res: AxiosResponse) => {
         const { status, data } = res;
 
@@ -253,8 +257,7 @@ export default function Step2() {
  */
 
   return (
-    <div className="flex flex-col h-screen">
-      <Header />
+    <RootLayout>
       <section className="relative overflow-hidden flex flex-col justify-start w-full min-h-[250px] max-h-[250px]">
         <div className="absolute inset-0 z-20 opacity-50 bg-gradient-to-b from-black to-transparent" />
         <Card
@@ -265,9 +268,9 @@ export default function Step2() {
           <CardBody className="absolute z-30 flex flex-col items-center w-full mt-8 top-1">
             <p className="mt-1 text-white">
               {itinerary?.startDate &&
-                format(new Date(itinerary.startDate), "DD-MM-YYYY")}{" "}
+                format(new Date(itinerary.startDate), "DD MMM YYYY")}{" "}
               {itinerary?.endDate &&
-                `a ${format(new Date(itinerary.endDate), "DD-MM-YYYY")}`}
+                `a ${format(new Date(itinerary.endDate), "DD MMM YYYY")}`}
             </p>
             <h1 className="font-sans text-4xl font-bold text-white">
               {itinerary?.title}
@@ -286,13 +289,13 @@ export default function Step2() {
         </Card>
       </section>
       <div
-        className="h-[270px] z-[30] mb-2 flex"
+        className="h-2 z-[30] mb-2 flex"
         data-height="250"
         data-style="curve"
         data-position="bottom"
       >
         <svg
-          className="absolute w-full left-0 top-[280px] h-[5%] transform rotate-180 scale-y-[-1]"
+          className="absolute w-full left-0 top-[270px] h-[70px] transform rotate-180 scale-y-[-1]"
           aria-hidden="true"
           fill={`${theme === "dark" ? "#000" : "#fff"}`}
           xmlns="http://www.w3.org/2000/svg"
@@ -302,7 +305,7 @@ export default function Step2() {
           <path d="M 0 0 c 0 0 200 50 500 50 s 500 -50 500 -50 v 101 h -1000 v -100 z" />
         </svg>
       </div>
-      <section className="relative mx-4">
+      <section className="relative flex flex-col mx-4">
         {DATA.items.map((item, index) => (
           <div className="mb-4" key={index}>
             <p
@@ -541,7 +544,16 @@ export default function Step2() {
             </Card>
           </div>
         ))}
+        <Button
+          radius="full"
+          color="primary"
+          className="bg-gradient-to-r z-50 text-md from-[#009688] to-[#009688] text-white h-14 min-h-[60px] fixed bottom-5 w-[calc(100%-33px)] hover:border-transparent"
+          onPress={onOpen}
+        >
+          Añadir sección
+        </Button>
+        <DrawerFrom isOpen={isOpen} onOpenChange={onOpenChange} />
       </section>
-    </div>
+    </RootLayout>
   );
 }

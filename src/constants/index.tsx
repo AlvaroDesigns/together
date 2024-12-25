@@ -49,6 +49,7 @@ export const ENDPOINT: Record<string, string> = {
   AUTH: "auth/login",
   USER: "v1/user",
   ITINERARY: "v1/itinerary",
+  DETAILS: "v1/itinerary/details",
 };
 
 /* GTM */
