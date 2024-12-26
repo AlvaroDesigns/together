@@ -44,7 +44,7 @@ export default function DrawerCustom({
 
     navigate("/");
   };
-  console.log("user", user);
+
   return (
     <>
       <Button

@@ -1,71 +1,63 @@
-import { Button, Label } from "@/components";
 import {
   Drawer,
   DrawerBody,
   DrawerContent,
   DrawerFooter,
   DrawerHeader,
-  Select,
-  SelectItem,
 } from "@nextui-org/react";
-import { useState } from "react";
-import SectionForm from "./form/sectionForm";
-
-// eslint-disable-next-line react-refresh/only-export-components
-export const trip = [
-  { key: "flight", label: "Vuelo" },
-  { key: "hotel", label: "Hotel" },
-  { key: "transfer", label: "Transfer" },
-  { key: "trip", label: "Actividad" },
-  { key: "rent", label: "Rent a car" },
-];
+import React from "react";
 
 interface DrawerFromProps {
+  backdrop?: "opaque" | "blur" | "transparent";
+  placement?: "left" | "right" | "top" | "bottom";
+  size?:
+    | "xs"
+    | "sm"
+    | "md"
+    | "lg"
+    | "xl"
+    | "2xl"
+    | "3xl"
+    | "4xl"
+    | "5xl"
+    | "full";
+  radius?: "none" | "sm" | "md" | "lg";
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
+  header: string;
+  body: React.ReactNode;
+  footer: React.ReactNode;
 }
 
-export default function DrawerFrom({ isOpen, onOpenChange }: DrawerFromProps) {
-  const [selected, setSelected] = useState("");
-  console.log("selected", isOpen);
+export default function DrawerFrom({
+  backdrop = "blur",
+  placement,
+  size = "xs",
+  radius = "none",
+  isOpen,
+  onOpenChange,
+  header,
+  body,
+  footer,
+}: DrawerFromProps) {
   return (
     <>
       <Drawer
         isOpen={isOpen}
-        size="xs"
-        backdrop="blur"
-        radius="none"
+        backdrop={backdrop}
+        placement={placement}
+        size={size}
+        radius={radius}
         onOpenChange={onOpenChange}
       >
         <DrawerContent>
-          {(onClose) => (
+          {() => (
             <>
               <DrawerHeader className="flex flex-col gap-1 mb-2 border-b">
-                Configura tu viaje
+                {header}
               </DrawerHeader>
-              <DrawerBody className="px-0">
-                <div className="flex flex-col mx-4">
-                  <Label>Tipo de actividad</Label>
-                  <Select
-                    className="max-w-xs"
-                    items={trip}
-                    label="Tipo"
-                    placeholder="Selecciona un tipo de viaje"
-                    variant="bordered"
-                    value={selected}
-                  >
-                    {(animal) => (
-                      <SelectItem onPress={() => setSelected(animal.key)}>
-                        {animal.label}
-                      </SelectItem>
-                    )}
-                  </Select>
-                </div>
-                <SectionForm variant={selected} />
-              </DrawerBody>
-              <DrawerFooter>
-                <Button onPress={onClose}>Guardar Actividad</Button>
-              </DrawerFooter>
+              <DrawerBody className="px-0">{body}</DrawerBody>
+              <DrawerFooter>{footer}</DrawerFooter>
             </>
           )}
         </DrawerContent>

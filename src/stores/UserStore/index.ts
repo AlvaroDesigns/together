@@ -7,6 +7,7 @@ const userData: UserTypes = {
   name: undefined,
   email: undefined,
   avatar: undefined,
+  userId: undefined,
   remember: false,
 };
 
