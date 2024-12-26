@@ -2,6 +2,7 @@ export interface UserTypes {
   name: string | undefined;
   email: string | undefined;
   avatar: string | undefined;
+  userId: string | undefined;
   remember: boolean;
 }
 

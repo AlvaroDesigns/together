@@ -5,210 +5,480 @@ import {
   Input,
   Radio,
   RadioGroup,
+  Select,
+  SelectItem,
   Textarea,
 } from "@nextui-org/react";
 
 import { Label, Stars } from "@/components";
+import { useForm } from "@/hooks";
+import { getLocalTimeZone, today } from "@internationalized/date";
+import { Controller } from "react-hook-form";
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const TRIP = [
+  { key: "flight", label: "Vuelo" },
+  { key: "hotel", label: "Hotel" },
+  { key: "transfer", label: "Transfer" },
+  { key: "trip", label: "Actividad" },
+  { key: "rent", label: "Rent a car" },
+];
+
+export const TRANSFER_DATA = [
+  { key: "Tren", label: "Tren" },
+  { key: "Bus", label: "Bus" },
+  { key: "Bicileta", label: "Bicicleta" },
+  { key: "Patinete", label: "Patinete" },
+  { key: "Uber", label: "Uber" },
+  { key: "Cabify", label: "Cabify" },
+  { key: "Bold", label: "Bold" },
+  { key: "Grab", label: "Grab" },
+  { key: "Taxi", label: "Taxi" },
+  { key: "Otros", label: "Otros" },
+];
 
 interface SectionFormProps {
-  isLoading?: boolean;
-  onPress?: (e: any) => void;
-  variant: "flight" | "transfer" | "hotel" | "trip" | "rent" | "";
+  control: ReturnType<typeof useForm>["control"];
+  reset: ReturnType<typeof useForm>["reset"];
+  type: "flight" | "hotel" | "transfer" | "trip" | "rent";
 }
 
-export default function SectionForm({ variant }: SectionFormProps) {
+export default function SectionForm({
+  control,
+  reset,
+  type,
+}: SectionFormProps) {
+  const handleChange = (item: { currentKey: string }) => {
+    if (type) {
+      reset({ type: item?.currentKey });
+    }
+  };
+
   return (
     <div className="flex flex-col gap-1">
-      {variant === "flight" && (
+      <div className="flex flex-col mx-4">
+        <Label>Tipo de actividad</Label>
+        <Controller
+          name="type"
+          control={control}
+          render={({ field, fieldState }) => (
+            <Select
+              {...field}
+              className="max-w-xs"
+              items={TRIP}
+              label="Tipo"
+              placeholder="Selecciona un tipo de viaje"
+              variant="bordered"
+              isInvalid={Boolean(fieldState.error?.message)}
+              color={fieldState.error?.message ? "danger" : "default"}
+              errorMessage={fieldState.error?.message}
+              onSelectionChange={handleChange}
+            >
+              {(animal) => <SelectItem>{animal.label}</SelectItem>}
+            </Select>
+          )}
+        />
+      </div>
+      {type === "flight" && (
         <>
           <Divider className="mt-5 mb-3" />
           <div className="flex flex-col mx-4">
             <Label>Fecha de salida</Label>
-            <DatePicker
-              variant="bordered"
-              label=" "
-              className="max-w-[284px]"
-              classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
+            <Controller
+              name="startDate"
+              control={control}
+              render={({ field, fieldState }) => (
+                <DatePicker
+                  {...field}
+                  variant="bordered"
+                  label=" "
+                  className="max-w-[284px]"
+                  classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
+                  fullWidth={true}
+                  isInvalid={Boolean(fieldState.error?.message)}
+                  color={fieldState.error?.message ? "danger" : "default"}
+                  errorMessage={fieldState.error?.message}
+                  minValue={today(getLocalTimeZone())}
+                  defaultValue={today(getLocalTimeZone())}
+                />
+              )}
             />
           </div>
           <Divider className="mt-5 mb-3" />
           <div className="flex flex-col mx-4">
             <Label>Numero de vuelo</Label>
-            <Input
-              type="text"
-              placeholder="Ejem: FR1234"
-              variant="bordered"
-              classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
+            <Controller
+              name="numberFlight"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Input
+                  {...field}
+                  variant="bordered"
+                  type="text"
+                  fullWidth={true}
+                  isInvalid={Boolean(fieldState.error?.message)}
+                  color={fieldState.error?.message ? "danger" : "default"}
+                  errorMessage={fieldState.error?.message}
+                  classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
+                  value={field.value}
+                  placeholder="Ej: FR1234"
+                />
+              )}
             />
           </div>
         </>
       )}
-      {variant === "transfer" && (
+      {type === "transfer" && (
         <>
           <Divider className="mt-5 mb-3" />
           <div className="flex flex-col mx-4">
             <Label>Fecha del servicio</Label>
-            <DatePicker
-              variant="bordered"
-              className="max-w-[284px]"
-              label=" "
+            <Controller
+              name="startDate"
+              control={control}
+              render={({ field, fieldState }) => (
+                <DatePicker
+                  {...field}
+                  variant="bordered"
+                  label=" "
+                  className="max-w-[284px]"
+                  classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
+                  fullWidth={true}
+                  isInvalid={Boolean(fieldState.error?.message)}
+                  color={fieldState.error?.message ? "danger" : "default"}
+                  errorMessage={fieldState.error?.message}
+                  minValue={today(getLocalTimeZone())}
+                  defaultValue={today(getLocalTimeZone())}
+                />
+              )}
             />
           </div>
           <Divider className="mt-5 mb-3" />
           <div className="flex flex-col mx-4">
             <Label>Nombre del Servicio</Label>
-            <Input
-              type="text"
-              variant="bordered"
-              placeholder="Ejem: Taxi Aeropuerto de Treviso"
-              classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
+            <Controller
+              name="transferName"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Select
+                  {...field}
+                  className="max-w-xs"
+                  items={TRANSFER_DATA}
+                  label="Tipo"
+                  placeholder="Selecciona un transporte"
+                  variant="bordered"
+                  isInvalid={Boolean(fieldState.error?.message)}
+                  color={fieldState.error?.message ? "danger" : "default"}
+                  errorMessage={fieldState.error?.message}
+                >
+                  {(animal) => (
+                    <SelectItem onPress={() => setSelected(animal.key)}>
+                      {animal.label}
+                    </SelectItem>
+                  )}
+                </Select>
+              )}
             />
           </div>
           <Divider className="mt-5 mb-3" />
           <div className="flex flex-col mx-4">
-            <Label>Fecha de entrada</Label>
-            <Textarea
-              className="max-w-xs"
-              variant="bordered"
-              placeholder="Enter tu descripcion"
+            <Label>Descripcion</Label>
+            <Controller
+              name="description"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Textarea
+                  {...field}
+                  variant="bordered"
+                  type="text"
+                  fullWidth={true}
+                  isInvalid={Boolean(fieldState.error?.message)}
+                  color={fieldState.error?.message ? "danger" : "default"}
+                  errorMessage={fieldState.error?.message}
+                  className="max-w-xs"
+                  classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
+                  placeholder="Enter tu descripcion"
+                />
+              )}
             />
           </div>
         </>
       )}
-      {variant === "hotel" && (
+      {type === "hotel" && (
         <>
           <Divider className="mt-5 mb-3" />
           <div className="flex flex-col mx-4">
             <Label>Fecha de entrada</Label>
-            <DatePicker
-              label=" "
-              variant="bordered"
-              className="max-w-[284px]"
+            <Controller
+              name="startDate"
+              control={control}
+              render={({ field, fieldState }) => (
+                <DatePicker
+                  {...field}
+                  variant="bordered"
+                  label=" "
+                  fullWidth={true}
+                  isInvalid={Boolean(fieldState.error?.message)}
+                  color={fieldState.error?.message ? "danger" : "default"}
+                  errorMessage={fieldState.error?.message}
+                  className="max-w-[284px]"
+                  minValue={today(getLocalTimeZone())}
+                  defaultValue={today(getLocalTimeZone())}
+                />
+              )}
             />
           </div>
           <Divider className="mt-5 mb-3" />
           <div className="flex flex-col mx-4">
             <Label>Fecha de salida</Label>
-            <DatePicker
-              label=" "
-              variant="bordered"
-              className="max-w-[284px]"
+            <Controller
+              name="endDate"
+              control={control}
+              render={({ field, fieldState }) => (
+                <DatePicker
+                  {...field}
+                  variant="bordered"
+                  label=" "
+                  fullWidth={true}
+                  isInvalid={Boolean(fieldState.error?.message)}
+                  color={fieldState.error?.message ? "danger" : "default"}
+                  errorMessage={fieldState.error?.message}
+                  className="max-w-[284px]"
+                  minValue={today(getLocalTimeZone())}
+                  defaultValue={today(getLocalTimeZone())}
+                />
+              )}
             />
           </div>
           <Divider className="mt-5 mb-3" />
           <div className="flex flex-col mx-4">
             <Label>Nombre del hotel</Label>
-            <Input
-              type="text"
-              variant="bordered"
-              placeholder="Ejem: Hotel Roma"
-              classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
+            <Controller
+              name="name"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Input
+                  {...field}
+                  variant="bordered"
+                  type="text"
+                  fullWidth={true}
+                  isInvalid={Boolean(fieldState.error?.message)}
+                  color={fieldState.error?.message ? "danger" : "default"}
+                  errorMessage={fieldState.error?.message}
+                  classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
+                  placeholder="Ej: Hotel Roma"
+                />
+              )}
             />
           </div>
           <Divider className="mt-5 mb-3" />
           <div className="flex flex-col mx-4">
             <Label>Categoría</Label>
-            <RadioGroup>
-              <Radio value="one">
-                <Stars count={1} />
-              </Radio>
-              <Radio value="two">
-                <Stars count={2} />
-              </Radio>
-              <Radio value="three">
-                <Stars count={3} />
-              </Radio>
-              <Radio value="four">
-                <Stars count={4} />
-              </Radio>
-              <Radio value="five">
-                <Stars count={5} />
-              </Radio>
-              <Radio value="none">Sin categoría</Radio>
-            </RadioGroup>
+            <Controller
+              name="category"
+              control={control}
+              render={({ field, fieldState }) => (
+                <RadioGroup
+                  {...field}
+                  isInvalid={Boolean(fieldState.error?.message)}
+                  color={fieldState.error?.message ? "danger" : "default"}
+                  errorMessage={fieldState.error?.message}
+                >
+                  <Radio value="one">
+                    <Stars count={1} />
+                  </Radio>
+                  <Radio value="two">
+                    <Stars count={2} />
+                  </Radio>
+                  <Radio value="three">
+                    <Stars count={3} />
+                  </Radio>
+                  <Radio value="four">
+                    <Stars count={4} />
+                  </Radio>
+                  <Radio value="five">
+                    <Stars count={5} />
+                  </Radio>
+                  <Radio value="none">Sin categoría</Radio>
+                </RadioGroup>
+              )}
+            />
           </div>
-
           <Divider className="mt-5 mb-3" />
           <div className="flex flex-col mx-4">
             <Label>Ciudad</Label>
-            <Input
-              type="text"
-              placeholder="Ejem: Roma"
-              variant="bordered"
-              classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
+            <Controller
+              name="city"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Input
+                  {...field}
+                  variant="bordered"
+                  type="text"
+                  fullWidth={true}
+                  isInvalid={Boolean(fieldState.error?.message)}
+                  color={fieldState.error?.message ? "danger" : "default"}
+                  errorMessage={fieldState.error?.message}
+                  classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
+                  placeholder="Ej: Roma"
+                />
+              )}
             />
           </div>
-
           <Divider className="mt-5 mb-3" />
           <div className="flex flex-col mx-4">
             <Label>País</Label>
-            <Input
-              type="text"
-              placeholder="Ejem: Italia"
-              variant="bordered"
-              classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
+            <Controller
+              name="country"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Input
+                  {...field}
+                  variant="bordered"
+                  type="text"
+                  fullWidth={true}
+                  isInvalid={Boolean(fieldState.error?.message)}
+                  color={fieldState.error?.message ? "danger" : "default"}
+                  errorMessage={fieldState.error?.message}
+                  classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
+                  placeholder="Ej: Italia"
+                />
+              )}
             />
           </div>
           <Divider className="mt-5 mb-3" />
           <div className="flex flex-col mx-4">
             <Label>Descripcion</Label>
-            <Textarea
-              className="max-w-xs"
-              variant="bordered"
-              placeholder="Enter tu descripcion"
-              classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
+            <Controller
+              name="description"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Textarea
+                  {...field}
+                  variant="bordered"
+                  type="text"
+                  fullWidth={true}
+                  isInvalid={Boolean(fieldState.error?.message)}
+                  color={fieldState.error?.message ? "danger" : "default"}
+                  errorMessage={fieldState.error?.message}
+                  className="max-w-xs"
+                  classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
+                  placeholder="Enter tu descripcion"
+                />
+              )}
             />
           </div>
         </>
       )}
-      {variant === "trip" && (
+      {type === "trip" && (
         <>
           <Divider className="mt-5 mb-3" />
           <div className="flex flex-col mx-4">
             <Label>Fecha de la actividad</Label>
-            <DatePicker
-              variant="bordered"
-              className="max-w-[284px]"
-              label=" "
+            <Controller
+              name="startDate"
+              control={control}
+              render={({ field, fieldState }) => (
+                <DatePicker
+                  {...field}
+                  variant="bordered"
+                  label=" "
+                  fullWidth={true}
+                  isInvalid={Boolean(fieldState.error?.message)}
+                  color={fieldState.error?.message ? "danger" : "default"}
+                  errorMessage={fieldState.error?.message}
+                  className="max-w-[284px]"
+                  minValue={today(getLocalTimeZone())}
+                  defaultValue={today(getLocalTimeZone())}
+                />
+              )}
             />
           </div>
           <Divider className="mt-5 mb-3" />
           <div className="flex flex-col mx-4">
             <Label>Nombre de la actividad</Label>
-            <Input
-              type="text"
-              variant="bordered"
-              placeholder="Ejem: Italia"
-              classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
+            <Controller
+              name="name"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Input
+                  {...field}
+                  variant="bordered"
+                  type="text"
+                  fullWidth={true}
+                  isInvalid={Boolean(fieldState.error?.message)}
+                  color={fieldState.error?.message ? "danger" : "default"}
+                  errorMessage={fieldState.error?.message}
+                  classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
+                  placeholder="Ej: Coliseo"
+                />
+              )}
             />
           </div>
           <Divider className="mt-5 mb-3" />
           <div className="flex flex-col mx-4">
             <Label>Url imagen de la actividad</Label>
-            <Input
-              type="url"
-              variant="bordered"
-              placeholder="Ejem: https://www.italia.com/..."
-              classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
+            <Controller
+              name="image_url"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Input
+                  {...field}
+                  variant="bordered"
+                  type="url"
+                  fullWidth={true}
+                  isInvalid={Boolean(fieldState.error?.message)}
+                  color={fieldState.error?.message ? "danger" : "default"}
+                  errorMessage={fieldState.error?.message}
+                  classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
+                  placeholder="Ej: https://www.italia.com/..."
+                />
+              )}
             />
           </div>
           <Divider className="mt-5 mb-3" />
           <div className="flex flex-col mx-4">
             <Label>Duración de la actividad</Label>
-            <DateRangePicker
-              hideTimeZone
-              variant="bordered"
-              label=" "
-              visibleMonths={2}
+            <Controller
+              name="range"
+              control={control}
+              render={({ field, fieldState }) => (
+                <DateRangePicker
+                  {...field}
+                  hideTimeZone
+                  visibleMonths={2}
+                  variant="bordered"
+                  label=" "
+                  fullWidth={true}
+                  isInvalid={Boolean(fieldState.error?.message)}
+                  color={fieldState.error?.message ? "danger" : "default"}
+                  errorMessage={fieldState.error?.message}
+                  className="max-w-[284px]"
+                  minValue={today(getLocalTimeZone())}
+                />
+              )}
             />
           </div>
           <Divider className="mt-5 mb-3" />
           <div className="flex flex-col mx-4">
             <Label>Descripcion</Label>
-            <Textarea
-              className="max-w-xs"
-              variant="bordered"
-              placeholder="Enter tu descripcion"
+            <Controller
+              name="description"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Textarea
+                  {...field}
+                  variant="bordered"
+                  type="text"
+                  fullWidth={true}
+                  isInvalid={Boolean(fieldState.error?.message)}
+                  color={fieldState.error?.message ? "danger" : "default"}
+                  errorMessage={fieldState.error?.message}
+                  className="max-w-xs"
+                  classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
+                  placeholder="Enter tu descripcion"
+                />
+              )}
             />
           </div>
         </>

@@ -71,48 +71,72 @@ export const createItinerary = yup.object().shape({
     .required(LITERALS.REQUEST_LABEL),
 });
 
-export const personalSchema = yup.object().shape({
-  civil: yup
-    .string()
-    .test("notZero", LITERALS.REQUEST_LABEL, (value) => value !== "")
-    .required(LITERALS.REQUEST_LABEL),
-  gender: yup.string().required(LITERALS.REQUEST_LABEL),
-  nationality: yup
-    .string()
-    .test("notZero", LITERALS.REQUEST_LABEL, (value) => value !== "")
-    .required(LITERALS.REQUEST_LABEL),
-  profession: yup
-    .string()
-    .test("notZero", LITERALS.REQUEST_LABEL, (value) => value !== "")
-    .required(LITERALS.REQUEST_LABEL),
-});
-
-export const addressSchema = yup.object().shape({
-  streetType: yup.string().required(LITERALS.REQUEST_LABEL),
-  streetName: yup
-    .string()
-    .min(2, LITERALS.NUMBER_VALUE.replace("[number]", "2"))
-    .max(40, LITERALS.NUMBER_VALUE.replace("[number]", "40"))
-    .matches(REGEX.ALPHABETIC, LITERALS.ERROR_LABEL)
-    .required(LITERALS.REQUEST_LABEL),
-  streetNumber: yup
-    .string()
-    .max(4, "El código introducido tiene que ser de máximo de 4 dígitos.")
-    .required(LITERALS.REQUEST_LABEL)
-    .matches(REGEX.DIRECCTION, LITERALS.ERROR_LABEL),
-  streetFloorAndUnit: yup
-    .string()
-    .max(15, LITERALS.NUMBER_VALUE.replace("[number]", "15")),
-  region: yup.string().required(LITERALS.REQUEST_LABEL),
-  zipCode: yup
-    .string()
-    .min(5, "El código introducido tiene que ser de 5 dígitos.")
-    .max(5, "El código introducido tiene que ser de 5 dígitos.")
-    .required(LITERALS.REQUEST_LABEL)
-    .matches(REGEX.POSTCODE, LITERALS.ERROR_LABEL),
-  city: yup
-    .string()
-    .min(2, LITERALS.NUMBER_VALUE.replace("[number]", "2"))
-    .required(LITERALS.REQUEST_LABEL)
-    .matches(REGEX.ALPHABETIC, LITERALS.ERROR_LABEL),
+export const sectionSchema = yup.object().shape({
+  type: yup.string(),
+  startDate: yup
+    .date()
+    .typeError("La fecha de inicio no es válida")
+    .required("Debe seleccionar una fecha de inicio"),
+  endDate: yup.date().when("type", (type, schema) => {
+    return type[0] === "hotel"
+      ? schema
+          .typeError("La fecha de inicio no es válida")
+          .required("Debe seleccionar una fecha de inicio")
+      : schema.optional();
+  }),
+  numberFlight: yup.string().when("type", (type, schema) => {
+    return type[0] === "flight"
+      ? schema
+          .min(6, LITERALS.NUMBER_VALUE.replace("[number]", "6"))
+          .required(LITERALS.REQUEST_LABEL)
+      : schema.optional();
+  }),
+  name: yup.string().when("type", (type, schema) => {
+    return type[0] === "trip"
+      ? schema
+          .min(3, LITERALS.NUMBER_VALUE.replace("[number]", "3"))
+          .required(LITERALS.REQUEST_LABEL)
+      : schema.optional();
+  }),
+  city: yup.string().when("type", (type, schema) => {
+    return type[0] === "hotel"
+      ? schema
+          .min(3, LITERALS.NUMBER_VALUE.replace("[number]", "3"))
+          .required(LITERALS.REQUEST_LABEL)
+      : schema.optional();
+  }),
+  country: yup.string().when("type", (type, schema) => {
+    return type[0] === "hotel"
+      ? schema
+          .min(3, LITERALS.NUMBER_VALUE.replace("[number]", "3"))
+          .required(LITERALS.REQUEST_LABEL)
+      : schema.optional();
+  }),
+  description: yup.string().when("type", (type, schema) => {
+    return type[0] === "trip"
+      ? schema
+          .min(3, LITERALS.NUMBER_VALUE.replace("[number]", "3"))
+          .max(500, LITERALS.NUMBER_VALUE.replace("[number]", "500"))
+          .required(LITERALS.REQUEST_LABEL)
+          .matches(REGEX.ALPHABETIC, LITERALS.ERROR_LABEL)
+      : schema.optional();
+  }),
+  transferName: yup.string().optional(),
+  image_url: yup.string().when("type", (type, schema) => {
+    return type[0] === "trip"
+      ? schema
+          .min(3, LITERALS.NUMBER_VALUE.replace("[number]", "3"))
+          .required(LITERALS.REQUEST_LABEL)
+      : schema.optional();
+  }),
+  category: yup.string().when("type", (type, schema) => {
+    return type[0] === "hotel"
+      ? schema
+          .oneOf(
+            ["one", "two", "three", "four", "five", "none"],
+            "Invalid gender selected"
+          )
+          .required(LITERALS.REQUEST_LABEL)
+      : schema.optional();
+  }),
 });

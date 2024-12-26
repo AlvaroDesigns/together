@@ -7,17 +7,18 @@ import {
   MapPinIcon,
 } from "@heroicons/react/24/outline";
 
-import { DrawerFrom, RootLayout } from "@/components";
+import { Button, DrawerFrom, RootLayout, SectionForm } from "@/components";
 
 import { ENDPOINT } from "@/constants";
-import { useLoading } from "@/hooks";
+import { sectionSchema } from "@/helpers/schema";
+import { useForm, useLoading } from "@/hooks";
 import Services from "@/services";
 import { useDataStore } from "@/stores";
 import { format } from "@formkit/tempo";
 import {
   Accordion,
   AccordionItem,
-  Button,
+  Button as ButtonUi,
   Card,
   CardBody,
   Divider,
@@ -190,11 +191,60 @@ const DATA = {
 export default function Step2() {
   const { theme } = useTheme();
 
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const { setter, itinerary } = useDataStore((state) => state);
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
   const { isLoading, startLoading, stopLoading } = useLoading();
+
+  const { control, errors, handleSubmit, watch, reset } = useForm({
+    values: undefined,
+    schema: sectionSchema,
+  });
+
+  const TYPE = watch("type");
+
+  const onSubmit = useCallback((value: any) => {
+    console.log(errors);
+    /*  Set Data Store */
+    // setter({ details: value });
+
+    startLoading();
+
+    /* Call API */
+    Services()
+      .post(`${ENDPOINT.DETAILS}/${itinerary?.itemId}}`, {
+        type: value.type,
+        title: " ", // deprecated
+        days: 0,
+        startDate: value.startDate,
+        endDate: value.startDate,
+        departure: "New York", // deprecated
+        destination: "Madrid", // deprecated
+        stars: value.stars,
+        placeUrl: value.placeUrl,
+        numberFlight: value.numberFlight,
+        description: value.description,
+        imageUrl: value.imageUrl,
+        cityName: value.city,
+        region: value.region,
+        country: value.country,
+        name: value.name,
+        collapse: false,
+      })
+      .then((res: AxiosResponse) => {
+        const { data } = res;
+
+        /* Set */
+        console.log(data);
+      })
+      .catch((error) => console.log("Error", error))
+      .finally(() => stopLoading());
+
+    /* Close Drawer*/
+    onClose();
+  }, []);
+
   const options = {
     method: "GET",
     url: `https://booking-com18.p.rapidapi.com/stays/auto-complete?query=${"grupotel+acapulco"}&languageCode=es-es
@@ -544,15 +594,23 @@ export default function Step2() {
             </Card>
           </div>
         ))}
-        <Button
+        <ButtonUi
           radius="full"
           color="primary"
           className="bg-gradient-to-r z-50 text-md from-[#009688] to-[#009688] text-white h-14 min-h-[60px] fixed bottom-5 w-[calc(100%-33px)] hover:border-transparent"
           onPress={onOpen}
         >
           Añadir sección
-        </Button>
-        <DrawerFrom isOpen={isOpen} onOpenChange={onOpenChange} />
+        </ButtonUi>
+        <DrawerFrom
+          isOpen={isOpen}
+          header="Configura tu viaje"
+          onOpenChange={onOpenChange}
+          body={<SectionForm control={control} type={TYPE} reset={reset} />}
+          footer={
+            <Button onPress={handleSubmit(onSubmit)}>Guardar Actividad</Button>
+          }
+        />
       </section>
     </RootLayout>
   );
