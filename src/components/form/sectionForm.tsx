@@ -17,11 +17,11 @@ import { Controller } from "react-hook-form";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const TRIP = [
-  { key: "flight", label: "Vuelo" },
-  { key: "hotel", label: "Hotel" },
-  { key: "transfer", label: "Transfer" },
-  { key: "trip", label: "Actividad" },
-  { key: "rent", label: "Rent a car" },
+  { key: "FLIGHT", label: "Vuelo" },
+  { key: "HOTEL", label: "Hotel" },
+  { key: "TRANSFER", label: "Transfer" },
+  { key: "TRIP", label: "Actividad" },
+  { key: "RENT", label: "Rent a car" },
 ];
 
 export const TRANSFER_DATA = [
@@ -69,6 +69,7 @@ export default function SectionForm({
               label="Tipo"
               placeholder="Selecciona un tipo de viaje"
               variant="bordered"
+              defaultSelectedKeys={["FLIGHT"]}
               isInvalid={Boolean(fieldState.error?.message)}
               color={fieldState.error?.message ? "danger" : "default"}
               errorMessage={fieldState.error?.message}

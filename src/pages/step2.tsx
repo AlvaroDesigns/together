@@ -213,23 +213,22 @@ export default function Step2() {
 
     /* Call API */
     Services()
-      .post(`${ENDPOINT.DETAILS}/${itinerary?.itemId}}`, {
-        type: value.type,
-        title: " ", // deprecated
-        days: 0,
+      .post(`${ENDPOINT.DETAILS}/${itinerary?.itemId}`, {
+        type: value?.type.toUpperCase(),
+        days: 1,
         startDate: value.startDate,
-        endDate: value.startDate,
-        departure: "New York", // deprecated
-        destination: "Madrid", // deprecated
-        stars: value.stars,
-        placeUrl: value.placeUrl,
+        endDate: null,
+        departure: value.departure,
+        destination: value.destination,
+        stars: null,
+        placeUrl: null,
         numberFlight: value.numberFlight,
-        description: value.description,
-        imageUrl: value.imageUrl,
-        cityName: value.city,
-        region: value.region,
-        country: value.country,
-        name: value.name,
+        description: value.numberFlight,
+        imageUrl: null,
+        cityName: null,
+        region: null,
+        country: null,
+        name: null,
         collapse: false,
       })
       .then((res: AxiosResponse) => {
@@ -239,10 +238,14 @@ export default function Step2() {
         console.log(data);
       })
       .catch((error) => console.log("Error", error))
-      .finally(() => stopLoading());
+      .finally(() => {
+        stopLoading();
+        if (!isLoading) {
+          onClose();
+        }
+      });
 
     /* Close Drawer*/
-    onClose();
   }, []);
 
   const options = {

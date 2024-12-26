@@ -6,7 +6,7 @@ import {
 } from "@nextui-org/react";
 
 import { Card } from "@/components";
-import { useDataStore } from "@/stores";
+import { useDataStore, useUserStore } from "@/stores";
 import { useNavigate } from "react-router-dom";
 
 interface ItineraryItem {
@@ -23,6 +23,7 @@ interface CardsProps {
 
 export const Cards: React.FC<CardsProps> = ({ itinerary, loading = true }) => {
   const { setter } = useDataStore((state) => state);
+  const { user } = useUserStore((state) => state);
   const navigate = useNavigate();
 
   const handelCardOnPress = ({
@@ -77,18 +78,17 @@ export const Cards: React.FC<CardsProps> = ({ itinerary, loading = true }) => {
       ));
   }
 
-  if (itinerary === undefined) {
+  if (itinerary.length === 0) {
     return (
       <>
         <NextCard
           isFooterBlurred
           className="w-full h-[200px] col-span-12 sm:col-span-7 relative"
         >
-          <div className="absolute inset-0 z-0 bg-black/50"></div>
-
-          <CardHeader className="absolute z-10 flex-col items-start top-1">
+          <div className="absolute inset-0 z-10 opacity-40 bg-gradient-to-b from-black to-transparent" />
+          <CardHeader className="absolute z-20 flex-col items-start top-1">
             <p className="font-bold uppercase text-tiny text-white/60">
-              Todavia no tienes tu plan de viaje
+              {user?.name}, Todavia no tienes tu plan de viaje
             </p>
             <h4 className="text-xl font-medium text-white/90">
               A que esperas para crearlo
