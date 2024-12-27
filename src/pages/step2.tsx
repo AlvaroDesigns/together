@@ -8,7 +8,7 @@ import {
   SectionForm,
 } from "@/components";
 
-import CardFlight from "@/components/cards/cardflight";
+import CardFlight from "@/components/cards/cardFlight";
 import CardHotel from "@/components/cards/cardHotel";
 import CardSkeleton from "@/components/cards/cardSkeleton";
 import CardTransfer from "@/components/cards/cardTransfer";
