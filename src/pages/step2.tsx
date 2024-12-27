@@ -396,7 +396,7 @@ export default function Step2() {
           <path d="M 0 0 c 0 0 200 50 500 50 s 500 -50 500 -50 v 101 h -1000 v -100 z" />
         </svg>
       </div>
-      <section className="relative flex flex-col mx-4">
+      <section className="relative flex flex-col mx-4 mb-3">
         {isLoading ? (
           <CardSkeleton count={5} />
         ) : (
