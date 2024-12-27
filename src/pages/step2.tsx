@@ -18,6 +18,7 @@ import { sectionSchema } from "@/helpers/schema";
 import { useForm } from "@/hooks";
 import Services from "@/services";
 import { useDataStore } from "@/stores";
+import { VARIANT_TYPE_SECTION } from "@/types";
 import { datesForDay } from "@/utils";
 import { format } from "@formkit/tempo";
 import { Button as ButtonUi, useDisclosure } from "@nextui-org/react";
@@ -199,49 +200,53 @@ export default function Step2() {
   });
 
   const TYPE = watch("type");
-  const onSubmit = useCallback((value: any) => {
-    console.log(errors);
-    /*  Set Data Store */
-    // setter({ details: value });
+  const onSubmit = useCallback(
+    (value: any) => {
+      console.log(errors);
 
-    startLoading();
+      /*  Set Data Store */
+      // setter({ details: value });
 
-    /* Call API */
-    Services()
-      .post(`${ENDPOINT.DETAILS}/${itinerary?.itemId}`, {
-        type: value?.type.toUpperCase(),
-        days: 1,
-        startDate: value.startDate,
-        endDate: null,
-        departure: value.departure,
-        destination: value.destination,
-        stars: null,
-        placeUrl: null,
-        numberFlight: value.numberFlight,
-        description: value.numberFlight,
-        imageUrl: null,
-        cityName: null,
-        region: null,
-        country: null,
-        name: null,
-        collapse: false,
-      })
-      .then((res: AxiosResponse) => {
-        const { data } = res;
+      // startLoading();
 
-        /* Set */
-        console.log(data);
-      })
-      .catch((error) => console.log("Error", error))
-      .finally(() => {
-        stopLoading();
-        if (!isLoading) {
-          onClose();
-        }
-      });
+      /* Call API */
+      Services()
+        .post(`${ENDPOINT.DETAILS}/${itinerary?.itemId}`, {
+          type: TYPE || VARIANT_TYPE_SECTION.FLIGHT,
+          days: 1,
+          startDate: value.startDate,
+          endDate: null,
+          departure: value.departure,
+          destination: value.destination,
+          stars: null,
+          placeUrl: null,
+          numberFlight: value.numberFlight,
+          description: value.description,
+          imageUrl: null,
+          cityName: null,
+          region: null,
+          country: null,
+          name: null,
+          collapse: false,
+        })
+        .then((res: AxiosResponse) => {
+          const { data } = res;
 
-    /* Close Drawer*/
-  }, []);
+          console.log(data);
+          setter({ itinerary: data });
+        })
+        .catch((error) => console.log("Error", error))
+        .finally(() => {
+          // stopLoading();
+          if (!isLoading) {
+            onClose();
+          }
+        });
+
+      /* Close Drawer*/
+    },
+    [TYPE]
+  );
 
   const options = {
     method: "GET",
