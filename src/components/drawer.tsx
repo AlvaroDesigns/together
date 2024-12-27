@@ -117,6 +117,7 @@ export default function DrawerCustom({
                         key="friends"
                         className="flex items-center py-3"
                         showDivider
+                        onPress={ShareButton}
                         startContent={<UserGroupIcon className="m-1 size-6" />}
                         endContent={<ChevronRightIcon className="m-1 size-6" />}
                       >
@@ -190,3 +191,27 @@ export default function DrawerCustom({
     </>
   );
 }
+
+const ShareButton = () => {
+  const shareUrl = "http://together.alvarodesigns.com";
+  const shareText = "¡Mira este enlace interesante!";
+  console.log("ShareButton");
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Compartir URL",
+          text: shareText,
+          url: shareUrl,
+        });
+        console.log("Contenido compartido exitosamente");
+      } catch (error) {
+        console.error("Error al compartir:", error);
+      }
+    } else {
+      alert("La función de compartir no está soportada en este dispositivo.");
+    }
+  };
+
+  return <button onClick={handleShare}>Compartir</button>;
+};
