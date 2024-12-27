@@ -1,34 +1,29 @@
-import { subtitle, title } from "@/components/primitives";
-import { capitalCase, resolverAirFly } from "@/utils";
+import { subtitle } from "@/components/primitives";
+
 import {
-  ArrowDownRightIcon,
-  ArrowUpRightIcon,
-  ClockIcon,
-  MapPinIcon,
-} from "@heroicons/react/24/outline";
+  Button,
+  DrawerFrom,
+  Hero,
+  RootLayout,
+  SectionForm,
+} from "@/components";
 
-import { Button, DrawerFrom, RootLayout, SectionForm } from "@/components";
-
+import CardFlight from "@/components/cards/cardflight";
+import CardHotel from "@/components/cards/cardHotel";
+import CardSkeleton from "@/components/cards/cardSkeleton";
+import CardTransfer from "@/components/cards/cardTransfer";
+import CardTrip from "@/components/cards/cardTrip";
 import { ENDPOINT } from "@/constants";
 import { sectionSchema } from "@/helpers/schema";
-import { useForm, useLoading } from "@/hooks";
+import { useForm } from "@/hooks";
 import Services from "@/services";
 import { useDataStore } from "@/stores";
+import { datesForDay } from "@/utils";
 import { format } from "@formkit/tempo";
-import {
-  Accordion,
-  AccordionItem,
-  Button as ButtonUi,
-  Card,
-  CardBody,
-  Divider,
-  Image,
-  Link,
-  useDisclosure,
-} from "@nextui-org/react";
+import { Button as ButtonUi, useDisclosure } from "@nextui-org/react";
 import { useTheme } from "@nextui-org/use-theme";
 import { AxiosResponse } from "axios";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const DATA = {
@@ -37,12 +32,12 @@ const DATA = {
   image:
     "https://www.destinosbyviajesespacial.com/wp-content/uploads/2024/02/venecia-scaled.jpg",
   days: 5,
-  startDate: "2025/12/02",
-  endDate: "2025/12/07",
+  startDate: "2024/12/04",
+  endDate: "2024/12/11",
   items: [
     {
       type: "flight",
-      startDate: "2025/12/02",
+      startDate: "2024/12/04",
       endDate: null,
       departure: "Palma de Mallorca",
       destination: "Venecia",
@@ -51,7 +46,7 @@ const DATA = {
     },
     {
       type: "transfer",
-      startDate: "2025/12/02",
+      startDate: "2024/12/04",
       endDate: null,
       departure: null,
       destination: null,
@@ -71,8 +66,8 @@ const DATA = {
     },
     {
       type: "hotel",
-      startDate: "2025/12/02",
-      endDate: "2025/12/04",
+      startDate: "2024/12/04",
+      endDate: "2024/12/04",
       departure: null,
       destination: null,
       stars: 4,
@@ -90,7 +85,7 @@ const DATA = {
     },
     {
       type: "trip",
-      startDate: "2025/12/02",
+      startDate: "2024/12/04",
       endDate: null,
       departure: null,
       destination: "Día por venecia",
@@ -105,7 +100,7 @@ const DATA = {
     },
     {
       type: "flight",
-      startDate: "2025/12/04",
+      startDate: "2024/12/04",
       endDate: null,
       departure: "Venecia",
       destination: "Kraków",
@@ -114,7 +109,7 @@ const DATA = {
     },
     {
       type: "transfer",
-      startDate: "2025/12/02",
+      startDate: "2024/12/04",
       endDate: null,
       departure: null,
       destination: null,
@@ -135,8 +130,8 @@ const DATA = {
     },
     {
       type: "hotel",
-      startDate: "2025/12/04",
-      endDate: "2025/12/07",
+      startDate: "2024/12/04",
+      endDate: "2024/12/07",
       departure: null,
       destination: "Royal Apartments",
       stars: null,
@@ -154,7 +149,7 @@ const DATA = {
     },
     {
       type: "trip",
-      startDate: "2025/12/05",
+      startDate: "2024/12/05",
       endDate: null,
       departure: null,
       destination: "Día por venecia",
@@ -169,7 +164,7 @@ const DATA = {
     },
     {
       type: "flight",
-      startDate: "2025/12/07",
+      startDate: "2024/12/07",
       endDate: null,
       departure: "Kraków",
       destination: "Malaga",
@@ -178,7 +173,7 @@ const DATA = {
     },
     {
       type: "flight",
-      startDate: "2025/12/07",
+      startDate: "2024/12/07",
       endDate: null,
       departure: "Malaga",
       destination: "Palma de Mallorca",
@@ -195,7 +190,8 @@ export default function Step2() {
   const { setter, itinerary } = useDataStore((state) => state);
 
   const navigate = useNavigate();
-  const { isLoading, startLoading, stopLoading } = useLoading();
+  // const { isLoading, startLoading, stopLoading } = useLoading();
+  const [isLoading, setIsLoading] = useState(true);
 
   const { control, errors, handleSubmit, watch, reset } = useForm({
     values: undefined,
@@ -203,7 +199,6 @@ export default function Step2() {
   });
 
   const TYPE = watch("type");
-
   const onSubmit = useCallback((value: any) => {
     console.log(errors);
     /*  Set Data Store */
@@ -269,24 +264,28 @@ export default function Step2() {
 
   useEffect(() => {
     /* Start Loading */
-    startLoading();
+    // startLoading();
 
     /* Call API */
-    Services()
-      .get(`${ENDPOINT.DETAILS}/${itinerary?.itemId}`)
-      .then((res: AxiosResponse) => {
-        const { status, data } = res;
+    setTimeout(
+      () =>
+        Services()
+          .get(`${ENDPOINT.DETAILS}/${itinerary?.itemId}`)
+          .then((res: AxiosResponse) => {
+            const { status, data } = res;
 
-        if (status !== 200) {
-          return console.log("Error");
-        }
+            if (status !== 200) {
+              return console.log("Error");
+            }
 
-        /* Set */
-        setter({ itinerary: data });
-        console.log(data);
-      })
-      .catch((error) => console.log("Error", error))
-      .finally(() => stopLoading());
+            /* Set */
+            setter({ itinerary: data });
+            console.log(data);
+          })
+          .catch((error) => console.log("Error", error))
+          .finally(() => setIsLoading(false)),
+      1500
+    );
   }, []);
   /*
   useEffect(() => {
@@ -309,38 +308,72 @@ export default function Step2() {
           />
  */
 
+  const switchCard = (data) => {
+    const {
+      startDate,
+      endDate,
+      name,
+      city,
+      country,
+      departure,
+      image_url,
+      description,
+      numberFlight,
+    } = data;
+
+    const CARDS = {
+      TRIP: (
+        <CardTrip
+          name={name}
+          startDate={startDate}
+          endDate={endDate}
+          image_url={image_url}
+          descriptions={description}
+        />
+      ),
+      TRANSFER: (
+        <CardTransfer
+          name={name}
+          startDate={startDate}
+          endDate={endDate}
+          image_url={image_url}
+          descriptions={description}
+        />
+      ),
+      HOTEL: (
+        <CardHotel
+          startDate={startDate}
+          endDate={endDate}
+          name={name}
+          city={city}
+          country={country}
+          descriptions={description}
+        />
+      ),
+      FLIGHT: (
+        <CardFlight
+          startDate={startDate}
+          departure={departure}
+          destination={description}
+          numberFlight={numberFlight}
+          descriptions={description}
+        />
+      ),
+    };
+
+    return CARDS[data.type.toUpperCase() as keyof object];
+  };
+
   return (
     <RootLayout>
-      <section className="relative overflow-hidden flex flex-col justify-start w-full min-h-[250px] max-h-[250px]">
-        <div className="absolute inset-0 z-20 opacity-50 bg-gradient-to-b from-black to-transparent" />
-        <Card
-          isFooterBlurred
-          radius="none"
-          className="w-full h-[300px] col-span-12 sm:col-span-7"
-        >
-          <CardBody className="absolute z-30 flex flex-col items-center w-full mt-8 top-1">
-            <p className="mt-1 text-white">
-              {itinerary?.startDate &&
-                format(new Date(itinerary.startDate), "DD MMM YYYY")}{" "}
-              {itinerary?.endDate &&
-                `a ${format(new Date(itinerary.endDate), "DD MMM YYYY")}`}
-            </p>
-            <h1 className="font-sans text-4xl font-bold text-white">
-              {itinerary?.title}
-            </h1>
-            <p className="mt-1 text-white">
-              {itinerary?.days} Días · A tu aire flexible
-            </p>
-          </CardBody>
-          <Image
-            removeWrapper
-            radius="none"
-            alt="Relaxing app background"
-            className="z-0 object-cover w-full h-full"
-            src={itinerary?.image}
-          />
-        </Card>
-      </section>
+      <Hero
+        loading={isLoading}
+        startDate={itinerary?.startDate}
+        endDate={itinerary?.endDate}
+        title={itinerary?.title}
+        days={itinerary?.days}
+        image={itinerary?.image}
+      />
       <div
         className="h-2 z-[30] mb-2 flex"
         data-height="250"
@@ -359,248 +392,32 @@ export default function Step2() {
         </svg>
       </div>
       <section className="relative flex flex-col mx-4">
-        {DATA.items.map((item, index) => (
-          <div className="mb-4" key={index}>
-            <p
-              className={`${subtitle({
-                weight: "bold",
-                size: "sm",
-              })} flex items-center py-2`}
-            >
-              DÍA 1
-            </p>
-            <Card>
-              <CardBody>
-                <div className="flex flex-col">
-                  <div>
-                    <div
-                      className={`${subtitle({
-                        size: "sm",
-                      })} flex items-center justify-between mb-3`}
-                    >
-                      {capitalCase(
-                        format(new Date(item.startDate), "ddd, D MMM")
-                      )}
-                      {item.endDate &&
-                        ` to ${capitalCase(
-                          format(new Date(item.endDate), "ddd, D MMM")
-                        )}`}
-                    </div>
-                    <Divider />
-                    <div className="mt-3 mb-1">
-                      {item.type === "flight" && (
-                        <article
-                          className={`${title({
-                            size: "xs",
-                          })} flex flex-col items-start `}
-                        >
-                          <div className="flex flex-row items-center">
-                            <Image
-                              width={45}
-                              height={45}
-                              alt="AIR company"
-                              src={resolverAirFly(
-                                item.numberFlight?.substring(0, 2)
-                              )}
-                            />
-                            <div className="flex flex-col ml-unit-3">
-                              <Link
-                                isBlock
-                                showAnchorIcon
-                                className="p-0"
-                                target="_blank"
-                                href={`https://www.google.com/search?q=${item.numberFlight?.substring(
-                                  0,
-                                  2
-                                )}+flight+${item.numberFlight?.substring(2)}`}
-                                color="foreground"
-                              >
-                                {item.numberFlight}
-                              </Link>
-                              <p>
-                                {item.departure && `${item.departure} to `}
-                                {item.destination}
-                              </p>
-                              <p
-                                className={`${subtitle({
-                                  weight: "light",
-                                  size: "sm",
-                                })} flex`}
-                              >
-                                <div className="flex">
-                                  <span className="flex items-center mr-2">
-                                    <ArrowUpRightIcon className="mr-1 dark:text-gray-600 size-5" />
-                                    PMI 15:20
-                                  </span>
-                                  -
-                                  <span className="flex items-center ml-2">
-                                    <ArrowDownRightIcon className="mr-1 dark:text-gray-600 size-5" />
-                                    TFS 19.20
-                                  </span>
-                                </div>
-                              </p>
-                            </div>
-                          </div>
-                        </article>
-                      )}
-                      {item.type === "hotel" && (
-                        <article
-                          className={`${title({
-                            size: "xs",
-                          })} flex items-start `}
-                        >
-                          <div className="flex items-center mb-1">
-                            <Image
-                              width={100}
-                              height={100}
-                              className="min-w-[100px]"
-                              alt="AIR company"
-                              src={item.image_url || "dummy.jpg"}
-                            />
+        {isLoading ? (
+          <CardSkeleton count={5} />
+        ) : (
+          DATA.items.map((item) => (
+            <div className="mb-4" key={item.name || item.departure}>
+              <p
+                className={`${subtitle({
+                  weight: "bold",
+                  size: "sm",
+                })} flex items-center py-2`}
+              >
+                DÍA{" "}
+                {datesForDay(
+                  format(new Date(itinerary?.startDate), "YYYY/MM/DD"),
+                  format(new Date(item?.startDate), "YYYY/MM/DD")
+                )}
+              </p>
+              {switchCard(item)}
+            </div>
+          ))
+        )}
 
-                            <div className="ml-4">
-                              {item.name}
-                              <p
-                                className={`${subtitle({
-                                  weight: "light",
-                                  size: "sm",
-                                })} flex items-start`}
-                              >
-                                <MapPinIcon className="mt-1 mr-1 dark:text-gray-600 size-5" />
-                                {item.city_name}, {item.region},{" "}
-                                {item.country?.substring(0, 2).toUpperCase()}
-                              </p>
-                              {item.placeUrl && (
-                                <Link
-                                  isBlock
-                                  showAnchorIcon
-                                  className="p-0"
-                                  target="_blank"
-                                  href={`https://www.google.com/maps/search/?api=1&query=${item.name}`}
-                                  color="foreground"
-                                >
-                                  Enlace a Google Maps
-                                </Link>
-                              )}
-                            </div>
-                          </div>
-                        </article>
-                      )}
-                      {item.type === "transfer" && (
-                        <article
-                          className={`${title({
-                            size: "xs",
-                          })} flex items-start `}
-                        >
-                          <div className="flex items-center mb-1">
-                            <Image
-                              width={100}
-                              height={100}
-                              className="min-w-[100px]"
-                              alt="AIR company"
-                              src={item.image_url || "dummy.jpg"}
-                            />
-
-                            <div className="ml-4">
-                              {item.name}
-
-                              {item.placeUrl && (
-                                <Link
-                                  isBlock
-                                  showAnchorIcon
-                                  className="p-0"
-                                  target="_blank"
-                                  href={`https://www.google.com/maps/search/?api=1&query=${item.name}`}
-                                  color="foreground"
-                                >
-                                  Enlace a Google Maps
-                                </Link>
-                              )}
-                            </div>
-                          </div>
-                        </article>
-                      )}
-                      {item.type === "trip" && (
-                        <article
-                          className={`${title({
-                            size: "xs",
-                          })} flex items-start `}
-                        >
-                          <div className="flex items-center mb-1">
-                            <Image
-                              width={100}
-                              height={100}
-                              className="min-w-[100px]"
-                              alt="AIR company"
-                              src={item.image_url || "dummy.jpg"}
-                            />
-
-                            <div className="ml-4">
-                              {item.name}
-                              <p
-                                className={`${subtitle({
-                                  weight: "light",
-                                  size: "sm",
-                                })} flex items-start`}
-                              >
-                                <ClockIcon className="mt-1 mr-1 dark:text-gray-600 size-5" />
-                                Duración 45 minutos - 3 horas
-                                {item.country?.substring(0, 2).toUpperCase()}
-                              </p>
-                              {item.placeUrl && (
-                                <Link
-                                  isBlock
-                                  showAnchorIcon
-                                  className="p-0"
-                                  target="_blank"
-                                  href={`https://www.google.com/maps/search/?api=1&query=${item.name}`}
-                                  color="foreground"
-                                >
-                                  Enlace a Google Maps
-                                </Link>
-                              )}
-                            </div>
-                          </div>
-                        </article>
-                      )}
-                    </div>
-
-                    {item.description && (
-                      <div className="mt-2">
-                        <Divider />
-                        <Accordion
-                          showDivider={false}
-                          isCompact={true}
-                          defaultExpandedKeys={[item?.collapse ? "1" : "null"]}
-                          className="p-0 m-0"
-                        >
-                          <AccordionItem
-                            key="1"
-                            aria-label="Ver más información"
-                            classNames={{
-                              trigger:
-                                "bg-transparent px-0 hover:border-transparent focus:outline-0 focus-visible:outline-0 pb-0",
-                              content: "flex flex-col gap-4 mt-2",
-                            }}
-                            title="Ver más información"
-                          >
-                            {item.description.map((item) => (
-                              <p>{item}</p>
-                            ))}
-                          </AccordionItem>
-                        </Accordion>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </CardBody>
-            </Card>
-          </div>
-        ))}
         <ButtonUi
           radius="full"
           color="primary"
-          className="bg-gradient-to-r z-50 text-md from-[#009688] to-[#009688] text-white h-14 min-h-[60px] fixed bottom-5 w-[calc(100%-33px)] hover:border-transparent"
+          className="bg-gradient-to-r shadow-medium z-50 text-md from-[#009688] to-[#009688] text-white h-14 min-h-[60px] fixed bottom-5 w-[calc(100%-33px)] hover:border-transparent"
           onPress={onOpen}
         >
           Añadir sección

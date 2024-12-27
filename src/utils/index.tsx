@@ -29,6 +29,17 @@ export const betweenDates = (start: string, end: string) => {
   return differenceInDays;
 };
 
+export const datesForDay = (start: string | Date, end: string) => {
+  // Calcular la diferencia en milisegundos
+  const differenceInMs = new Date(end).getTime() - new Date(start).getTime();
+
+  // Convertir a días
+  const differenceInDays =
+    Math.floor(differenceInMs / (1000 * 60 * 60 * 24)) + 1;
+
+  return differenceInDays;
+};
+
 export const capitalCase = (value: string) => {
   if (!value) return value;
 

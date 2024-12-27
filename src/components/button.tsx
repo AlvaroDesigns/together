@@ -17,7 +17,7 @@ export default function Button({
     "border-2 border-[#009688] bg-transparent text-[#009688] w-full h-14 min-h-[60px] mb-2";
 
   const solid =
-    "bg-gradient-to-r text-md from-[#009688] to-[#009688] text-white h-14 w-full min-h-[60px] hover:border-transparent";
+    "bg-gradient-to-r shadow-medium text-md from-[#009688] to-[#009688] text-white h-14 w-full min-h-[60px] hover:border-transparent";
 
   return (
     <NextUIButton

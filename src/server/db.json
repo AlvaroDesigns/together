@@ -1,0 +1,109 @@
+{
+    "login": [
+        {
+            "id": 1,
+            "username": "alvaro@gmail.com",
+            "password": "Alcobendas%12323"
+        },
+        {
+            "id": 2,
+            "username": "user1",
+            "password": "password1"
+        }
+    ],
+    "users": {
+        "id": 1,
+        "name": "Alvaro",
+        "email": "alvaro@gmail.com",
+        "password": "Alcobendas%12323",
+        "createdAt": "2024-11-17T22:41:34.570Z",
+        "updatedAt": "2024-11-17T22:41:34.570Z",
+        "avatar": null,
+        "itinerary": [
+            {
+                "id": 2,
+                "title": "test de mi viaje",
+                "days": 5,
+                "date": "2024-12-23T14:53:40.878Z",
+                "startDate": "2024-06-15T00:00:00.000Z",
+                "endDate": "2024-06-25T00:00:00.000Z",
+                "image": "https://www.destinosbyviajesespacial.com/wp-content/uploads/2024/02/venecia-scaled.jpg",
+                "userId": 1
+            },
+            {
+                "id": 3,
+                "title": "Viaje a Praga",
+                "days": 7,
+                "date": "2024-12-23T15:41:51.216Z",
+                "startDate": "2024-12-03T23:00:00.000Z",
+                "endDate": "2024-12-10T23:00:00.000Z",
+                "image": "https://www.hola.com/horizon/landscape/f08885065d42-praga-ciudad-historica-t.jpg?im=Resize=(1200)",
+                "userId": 1
+            },
+            {
+                "id": 1,
+                "title": "Nuevo destino",
+                "days": 5,
+                "date": "2024-11-17T22:45:44.090Z",
+                "startDate": "2024-06-15T00:00:00.000Z",
+                "endDate": "2024-06-25T00:00:00.000Z",
+                "image": "https://www.destinosbyviajesespacial.com/wp-content/uploads/2024/02/venecia-scaled.jpg",
+                "userId": 1
+            }
+        ]
+    },
+    "itineraty": {
+        "id": 3,
+        "title": "Viaje a Praga",
+        "days": 7,
+        "date": "2024-12-23T15:41:51.216Z",
+        "startDate": "2024-12-03T23:00:00.000Z",
+        "endDate": "2024-12-10T23:00:00.000Z",
+        "image": "https://www.hola.com/horizon/landscape/f08885065d42-praga-ciudad-historica-t.jpg?im=Resize=(1200)",
+        "userId": 1,
+        "items": [
+            {
+                "id": 6,
+                "type": "FLIGHT",
+                "days": 1,
+                "startDate": "2024-06-15T00:00:00.000Z",
+                "endDate": "2024-06-15T00:00:00.000Z",
+                "departure": "New York",
+                "destination": "Madrid",
+                "stars": null,
+                "placeUrl": null,
+                "numberFlight": "IB1234",
+                "description": [],
+                "imageUrl": null,
+                "cityName": null,
+                "region": null,
+                "country": null,
+                "name": null,
+                "collapse": false,
+                "itineraryId": 3
+            },
+            {
+                "id": 9,
+                "type": "FLIGHT",
+                "days": 1,
+                "startDate": "2024-12-26T23:00:00.000Z",
+                "endDate": null,
+                "departure": "Mallorca",
+                "destination": "Baleares",
+                "stars": null,
+                "placeUrl": null,
+                "numberFlight": "FR1234",
+                "description": [
+                    "Flight from New York to Madrid"
+                ],
+                "imageUrl": null,
+                "cityName": null,
+                "region": null,
+                "country": null,
+                "name": null,
+                "collapse": false,
+                "itineraryId": 3
+            }
+        ]
+    }
+}

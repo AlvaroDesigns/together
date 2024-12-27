@@ -12,6 +12,7 @@ import {
 
 import { Label, Stars } from "@/components";
 import { useForm } from "@/hooks";
+import { VARIANT_TYPE_SECTION } from "@/types";
 import { getLocalTimeZone, today } from "@internationalized/date";
 import { Controller } from "react-hook-form";
 
@@ -26,7 +27,8 @@ export const TRIP = [
 
 export const TRANSFER_DATA = [
   { key: "Tren", label: "Tren" },
-  { key: "Bus", label: "Bus" },
+  { key: "Autobus", label: "Autobus" },
+  { key: "Barco", label: "Barco" },
   { key: "Bicileta", label: "Bicicleta" },
   { key: "Patinete", label: "Patinete" },
   { key: "Uber", label: "Uber" },
@@ -40,20 +42,21 @@ export const TRANSFER_DATA = [
 interface SectionFormProps {
   control: ReturnType<typeof useForm>["control"];
   reset: ReturnType<typeof useForm>["reset"];
-  type: "flight" | "hotel" | "transfer" | "trip" | "rent";
+  type: "FLIGHT" | "HOTEL" | "TRANSFER" | "TRIP" | "RENT";
 }
 
 export default function SectionForm({
   control,
   reset,
-  type,
+  type = "FLIGHT",
 }: SectionFormProps) {
   const handleChange = (item: { currentKey: string }) => {
     if (type) {
+      console.log("----------reset------", reset);
       reset({ type: item?.currentKey });
     }
   };
-
+  console.log("------------- Modal", type);
   return (
     <div className="flex flex-col gap-1">
       <div className="flex flex-col mx-4">
@@ -80,7 +83,7 @@ export default function SectionForm({
           )}
         />
       </div>
-      {type === "flight" && (
+      {type === VARIANT_TYPE_SECTION.FLIGHT && (
         <>
           <Divider className="mt-5 mb-3" />
           <div className="flex flex-col mx-4">
@@ -129,7 +132,7 @@ export default function SectionForm({
           </div>
         </>
       )}
-      {type === "transfer" && (
+      {type === VARIANT_TYPE_SECTION.TRANSFER && (
         <>
           <Divider className="mt-5 mb-3" />
           <div className="flex flex-col mx-4">
@@ -205,7 +208,7 @@ export default function SectionForm({
           </div>
         </>
       )}
-      {type === "hotel" && (
+      {type === VARIANT_TYPE_SECTION.HOTEL && (
         <>
           <Divider className="mt-5 mb-3" />
           <div className="flex flex-col mx-4">
@@ -371,7 +374,7 @@ export default function SectionForm({
           </div>
         </>
       )}
-      {type === "trip" && (
+      {type === VARIANT_TYPE_SECTION.TRIP && (
         <>
           <Divider className="mt-5 mb-3" />
           <div className="flex flex-col mx-4">

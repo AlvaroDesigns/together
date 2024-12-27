@@ -1,7 +1,7 @@
 {
   "name": "together",
   "private": true,
-  "version": "0.4.1",
+  "version": "0.5.1",
   "type": "module",
   "homepage": "https://github.com/AlvaroDesigns/together",
   "scripts": {
@@ -25,6 +25,8 @@
     "@prisma/engines": "^5.22.0",
     "axios": "^1.7.7",
     "firebase": "^11.0.1",
+    "json-server": "^0.17.3",
+    "json-server-auth": "^2.1.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.1",

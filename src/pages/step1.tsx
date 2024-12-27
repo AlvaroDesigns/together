@@ -19,7 +19,7 @@ import { useEffect } from "react";
 const DATA = [
   {
     id: 1,
-    title: "Vencia & Cracovia",
+    title: "Venecia & Cracovia",
     image:
       "https://www.destinosbyviajesespacial.com/wp-content/uploads/2024/02/venecia-scaled.jpg",
     days: 5,

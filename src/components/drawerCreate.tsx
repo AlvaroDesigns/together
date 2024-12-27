@@ -1,4 +1,4 @@
-import { Button } from "@/components";
+import { Button, Status } from "@/components";
 import { ENDPOINT } from "@/constants";
 import { createItinerary } from "@/helpers/schema";
 import { useForm, useLoading } from "@/hooks";
@@ -13,7 +13,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { AxiosResponse } from "axios";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { Controller } from "react-hook-form";
 import DrawerFrom from "./drawerFrom";
 
@@ -23,7 +23,7 @@ interface DrawerItFromProps {
 
 export function DrawerItFrom({ control }: DrawerItFromProps) {
   return (
-    <div className="flex flex-col gap-4 mx-4">
+    <div className="flex flex-col gap-4 mx-4 mt-2">
       <Controller
         name="title"
         control={control}
@@ -94,6 +94,7 @@ export function DrawerItFrom({ control }: DrawerItFromProps) {
 export default function DrawerCreate() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const { userId } = useUserStore((state) => state.user);
+  const [isStatus, setStatus] = useState(false);
 
   const { isLoading, startLoading, stopLoading } = useLoading();
   const { control, errors, handleSubmit } = useForm({
@@ -102,6 +103,10 @@ export default function DrawerCreate() {
   });
 
   const onSubmit = useCallback(async (value: any) => {
+    if (isStatus) {
+      onClose();
+    }
+
     const error = Object.entries(errors).length !== 0;
     console.log("error", error, value);
 
@@ -128,8 +133,7 @@ export default function DrawerCreate() {
           return console.log("Error");
         }
 
-        onClose();
-        // navigate(ROUTES.HOME);
+        setStatus(true);
       })
       .catch((error) => console.log("Error", error))
       .finally(() => stopLoading());
@@ -152,11 +156,20 @@ export default function DrawerCreate() {
         size="md"
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        header="Crear Itinerario test"
-        body={<DrawerItFrom control={control} />}
+        header="Crear Itinerario"
+        body={
+          isStatus ? (
+            <Status
+              title={"¡Maravilloso!"}
+              text={" Su itinerario se ha creado correctamente."}
+            />
+          ) : (
+            <DrawerItFrom control={control} />
+          )
+        }
         footer={
           <Button onPress={handleSubmit(onSubmit)} isLoading={isLoading}>
-            Guardar itinerario
+            {isStatus ? "Cerrar" : "Guardar itinerario"}
           </Button>
         }
       />
