@@ -133,7 +133,7 @@ export default function Login() {
                   color={fieldState.error?.message ? "danger" : "default"}
                   errorMessage={fieldState.error?.message}
                   value={field.value}
-                  placeholder="Introducce tu correo electronico"
+                  placeholder="Introduce tu correo electronico"
                 />
               )}
             />

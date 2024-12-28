@@ -2,7 +2,7 @@ import { subtitle } from "@/components/primitives";
 
 import {
   Button,
-  DrawerFrom,
+  DrawerCustom,
   Hero,
   RootLayout,
   SectionForm,
@@ -427,7 +427,7 @@ export default function Step2() {
         >
           Añadir sección
         </ButtonUi>
-        <DrawerFrom
+        <DrawerCustom
           isOpen={isOpen}
           header="Configura tu viaje"
           onOpenChange={onOpenChange}

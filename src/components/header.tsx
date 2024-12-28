@@ -2,7 +2,7 @@ import { useUserStore } from "@/stores";
 import { Image, Navbar, NavbarBrand, NavbarContent } from "@nextui-org/react";
 
 import { useNavigate } from "react-router-dom";
-import DrawerCustom from "./drawer";
+import DrawerNavBar from "./drawerNavBar";
 
 export default function Header() {
   const { user } = useUserStore((state) => state);
@@ -20,7 +20,7 @@ export default function Header() {
         />
       </NavbarBrand>
       <NavbarContent as="div" justify="end" className="w-full">
-        <DrawerCustom
+        <DrawerNavBar
           user={{
             name: user?.name || "Nombre",
             email: user?.email || "Email",

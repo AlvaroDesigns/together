@@ -5,7 +5,8 @@ import Button from "./button";
 import Card from "./card";
 import { Cards } from "./cards";
 import DrawerCreateItinerary from "./drawerCreate";
-import DrawerFrom from "./drawerFrom";
+import { default as DrawerCustom, default as DrawerFrom } from "./drawerCustom";
+
 import Footer from "./footer";
 import SectionForm from "./form/sectionForm";
 import Header from "./header";
@@ -20,6 +21,7 @@ export {
   Card,
   Cards,
   DrawerCreateItinerary,
+  DrawerCustom,
   DrawerFrom,
   Footer,
   Header,

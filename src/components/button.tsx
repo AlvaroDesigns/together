@@ -2,6 +2,7 @@ import { Button as NextUIButton } from "@nextui-org/react";
 
 interface ButtonProps {
   isLoading?: boolean;
+  startContent?: React.ReactNode;
   onPress?: (e: any) => void;
   variant?: "solid" | "bordered" | "light";
   children: React.ReactNode;
@@ -10,6 +11,7 @@ interface ButtonProps {
 export default function Button({
   isLoading,
   onPress,
+  startContent,
   variant = "solid",
   children,
 }: ButtonProps) {
@@ -26,6 +28,7 @@ export default function Button({
       type="submit"
       isLoading={isLoading}
       onPress={onPress}
+      startContent={startContent}
       className={variant === "bordered" ? border : solid}
     >
       {children}

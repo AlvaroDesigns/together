@@ -7,7 +7,7 @@ import {
 } from "@nextui-org/react";
 import React from "react";
 
-interface DrawerFromProps {
+interface DrawerCustomProps {
   backdrop?: "opaque" | "blur" | "transparent";
   placement?: "left" | "right" | "top" | "bottom";
   size?:
@@ -29,7 +29,7 @@ interface DrawerFromProps {
   footer: React.ReactNode;
 }
 
-export default function DrawerFrom({
+export default function DrawerCustom({
   backdrop = "blur",
   placement,
   size = "xs",
@@ -39,7 +39,7 @@ export default function DrawerFrom({
   header,
   body,
   footer,
-}: DrawerFromProps) {
+}: DrawerCustomProps) {
   return (
     <>
       <Drawer
@@ -53,7 +53,7 @@ export default function DrawerFrom({
         <DrawerContent>
           {() => (
             <>
-              <DrawerHeader className="flex flex-col gap-1 mb-2 border-b">
+              <DrawerHeader className="flex flex-col gap-1 mb-2 border-b border-default-200/50">
                 {header}
               </DrawerHeader>
               <DrawerBody className="px-0">{body}</DrawerBody>

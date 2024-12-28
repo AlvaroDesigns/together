@@ -15,7 +15,7 @@ import {
 import { AxiosResponse } from "axios";
 import { useCallback, useState } from "react";
 import { Controller } from "react-hook-form";
-import DrawerFrom from "./drawerFrom";
+import DrawerCustom from "./DrawerCustom";
 
 interface DrawerItFromProps {
   control: ReturnType<typeof useForm>["control"];
@@ -149,7 +149,7 @@ export default function DrawerCreate() {
       >
         Crear mi plan de viaje
       </ButtonUI>
-      <DrawerFrom
+      <DrawerCustom
         backdrop="blur"
         placement="bottom"
         radius="lg"

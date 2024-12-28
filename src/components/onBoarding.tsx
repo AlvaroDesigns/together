@@ -44,7 +44,7 @@ export default function OnBoarding({
             <Image
               alt="onboarding"
               fallbackSrc="https://via.placeholder.com/300x200"
-              className="w-full aspect-square hover:scale-110"
+              className="w-full aspect-square"
               height={400}
               src="../../on_bording.png"
             />

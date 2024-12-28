@@ -5,6 +5,7 @@ import {
   Bars3BottomLeftIcon,
   ChevronRightIcon,
   NewspaperIcon,
+  ShareIcon,
   ShieldCheckIcon,
   UserGroupIcon,
   UserIcon,
@@ -18,17 +19,21 @@ import {
   DrawerContent,
   DrawerFooter,
   DrawerHeader,
+  Image,
   Link,
   Listbox,
   ListboxItem,
   Tooltip,
   useDisclosure,
 } from "@nextui-org/react";
+
+import { Button as ButtonT, DrawerCustom } from "@/components";
 import { PressEvent } from "@react-types/shared";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { version } from "../../package.json";
 
-export default function DrawerCustom({
+export default function DrawerNavBar({
   user,
 }: {
   user: { name: string; email: string; avatar?: string };
@@ -43,6 +48,16 @@ export default function DrawerCustom({
     reset();
 
     navigate("/");
+  };
+
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const handleInviteFriendsClick = () => {
+    setIsDrawerOpen(true);
+  };
+
+  const handleCloseDrawer = () => {
+    setIsDrawerOpen(false);
   };
 
   return (
@@ -117,14 +132,12 @@ export default function DrawerCustom({
                         key="friends"
                         className="flex items-center py-3"
                         showDivider
-                        onPress={ShareButton}
+                        //  onPress={ShareButton}
+                        onPress={handleInviteFriendsClick}
                         startContent={<UserGroupIcon className="m-1 size-6" />}
                         endContent={<ChevronRightIcon className="m-1 size-6" />}
                       >
                         <span className="text-medium">Invitar amigos</span>
-                        <Chip isDisabled color="default" className="ml-2">
-                          Next Feb
-                        </Chip>
                       </ListboxItem>
                       <ListboxItem
                         key="secure"
@@ -188,30 +201,57 @@ export default function DrawerCustom({
           )}
         </DrawerContent>
       </Drawer>
+      <DrawerCustom
+        size="full"
+        header=" Invitar amigos"
+        body={
+          <div className="flex flex-col items-center justify-center">
+            <Image
+              alt="invitar amigos"
+              fallbackSrc="https://via.placeholder.com/300x200"
+              className="w-full aspect-square"
+              height="auto"
+              width="100%"
+              src="../../share.png"
+            />
+
+            <p className="px-6 mt-6">
+              Comparte este enlace con tus amigos y familiares para que puedan
+              disfrutar de la experiencia de viajar juntos.
+            </p>
+          </div>
+        }
+        isOpen={isDrawerOpen}
+        onOpenChange={handleCloseDrawer}
+        footer={
+          <ButtonT
+            startContent={<ShareIcon className="m-1 size-5" />}
+            variant="light"
+            onPress={ShareButton}
+            onPress={ShareButton}
+          >
+            Comparte
+          </ButtonT>
+        }
+      ></DrawerCustom>
     </>
   );
 }
 
-const ShareButton = () => {
+const ShareButton = async () => {
   const shareUrl = "http://together.alvarodesigns.com";
   const shareText = "¡Mira este enlace interesante!";
-  console.log("ShareButton");
-  const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: "Compartir URL",
-          text: shareText,
-          url: shareUrl,
-        });
-        console.log("Contenido compartido exitosamente");
-      } catch (error) {
-        console.error("Error al compartir:", error);
-      }
-    } else {
-      alert("La función de compartir no está soportada en este dispositivo.");
-    }
-  };
 
-  return <button onClick={handleShare}>Compartir</button>;
+  if (navigator.share) {
+    await navigator
+      .share({
+        title: "Compartir URL",
+        text: shareText,
+        url: shareUrl,
+      })
+      .then(() => console.log("¡Enlace compartido! Muchas gracias"))
+      .catch((error) => console.log("Ups, se ha producido un error", error));
+  } else {
+    alert("La función de compartir no está soportada en este dispositivo.");
+  }
 };
