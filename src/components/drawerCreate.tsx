@@ -1,4 +1,4 @@
-import { Button, Status } from "@/components";
+import { Button, DrawerCustom, Status } from "@/components";
 import { ENDPOINT } from "@/constants";
 import { createItinerary } from "@/helpers/schema";
 import { useForm, useLoading } from "@/hooks";
@@ -15,7 +15,6 @@ import {
 import { AxiosResponse } from "axios";
 import { useCallback, useState } from "react";
 import { Controller } from "react-hook-form";
-import DrawerCustom from "./DrawerCustom";
 
 interface DrawerItFromProps {
   control: ReturnType<typeof useForm>["control"];
