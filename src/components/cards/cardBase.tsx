@@ -1,3 +1,5 @@
+import { PencilSquareIcon } from "@heroicons/react/24/outline";
+
 import { subtitle } from "@/components/primitives";
 import { capitalCase } from "@/utils";
 import { format } from "@formkit/tempo";
@@ -9,6 +11,7 @@ import {
   CardFooter,
   CardHeader,
   Divider,
+  Link,
 } from "@nextui-org/react";
 
 export default function CardBase({
@@ -23,12 +26,24 @@ export default function CardBase({
   return (
     <Card isFooterBlurred className="w-full col-span-12 sm:col-span-7">
       <CardHeader className="z-10 flex-col items-start">
-        <div
-          className={`${subtitle({
-            size: "sm",
-          })} flex items-center justify-between mb-3`}
-        >
-          {capitalCase(format(new Date(header), "ddd, D MMM"))}
+        <div className="flex items-center justify-between w-full mb-3">
+          <div
+            className={`${subtitle({
+              size: "sm",
+            })} flex items-center justify-between`}
+          >
+            {capitalCase(format(new Date(header), "ddd, D MMM"))}
+          </div>
+          <Link
+            isExternal
+            showAnchorIcon
+            className="text-default-600 hover:text-default-600"
+            color="foreground"
+            anchorIcon={
+              <PencilSquareIcon className="mt-1 mr-1 dark:text-gray-600 size-5" />
+            }
+            href="https://github.com/nextui-org/nextui"
+          />
         </div>
         <Divider />
       </CardHeader>

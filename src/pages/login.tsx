@@ -1,6 +1,6 @@
 import { Button, Footer } from "@/components";
 import { GoogleLogo } from "@/components/icons";
-import { subtitle, title } from "@/components/primitives";
+import { subtitle } from "@/components/primitives";
 import { AUHT_NAME, ENDPOINT, ROUTES } from "@/constants";
 import { login } from "@/helpers/schema";
 import { useForm, useLoading } from "@/hooks";
@@ -9,7 +9,13 @@ import Services from "@/services";
 import { useUserStore } from "@/stores";
 import { setAuth } from "@/utils";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
-import { Button as ButtonUI, Checkbox, Input, Link } from "@nextui-org/react";
+import {
+  Button as ButtonUI,
+  Checkbox,
+  Image,
+  Input,
+  Link,
+} from "@nextui-org/react";
 import { AxiosResponse } from "axios";
 import { signInWithPopup } from "firebase/auth";
 import { useCallback, useState } from "react";
@@ -112,8 +118,17 @@ export default function Login() {
       </div>
       <div className="flex items-center justify-center px-4 py-10 md:w-1/2">
         <div className="w-full max-w-[400px]">
-          <h1 className={title({ color: "green" })}>Hello Again!</h1>
-          <p className={subtitle({ color: "black" })}>Top destinations</p>
+          <div className="flex justify-center w-full mb-4">
+            <Image
+              removeWrapper
+              alt="together"
+              height={40}
+              className="z-0 object-cover"
+              src="../../logo.png"
+              onClick={() => navigate("/home")}
+            />
+          </div>
+
           <div className="flex items-center my-4 rounded-2xl">
             <Controller
               name="email"
@@ -122,7 +137,7 @@ export default function Login() {
                 <Input
                   {...field}
                   isRequired
-                  radius="full"
+                  variant="bordered"
                   type="email"
                   label="Correo"
                   classNames={{
@@ -146,7 +161,7 @@ export default function Login() {
                 <Input
                   {...field}
                   isRequired
-                  radius="full"
+                  variant="bordered"
                   classNames={{
                     inputWrapper: "!min-h-[60px]",
                   }}
@@ -203,7 +218,6 @@ export default function Login() {
               Registrarme
             </Button>
           </div>
-
           <p className={subtitle()}>OR</p>
           <ButtonUI
             radius="full"

@@ -208,42 +208,49 @@ export default function Step2() {
       // setter({ details: value });
 
       // startLoading();
-
-      /* Call API */
-      Services()
-        .post(`${ENDPOINT.DETAILS}/${itinerary?.itemId}`, {
-          type: TYPE || VARIANT_TYPE_SECTION.FLIGHT,
-          days: 1,
-          startDate: value.startDate,
-          endDate: null,
-          departure: value.departure,
-          destination: value.destination,
-          stars: null,
-          placeUrl: null,
-          numberFlight: value.numberFlight,
-          description: value.description,
-          imageUrl: null,
-          cityName: null,
-          region: null,
-          country: null,
-          name: null,
-          collapse: false,
-        })
+      return Services()
+        .get(`${ENDPOINT.FLIGHTS}?flightNumber=${value?.numberFlight}`)
         .then((res: AxiosResponse) => {
           const { data } = res;
 
-          console.log(data);
-          setter({ itinerary: data });
-        })
-        .catch((error) => console.log("Error", error))
-        .finally(() => {
-          // stopLoading();
-          if (!isLoading) {
-            onClose();
-          }
+          /* Call API */
+          Services()
+            .post(`${ENDPOINT.DETAILS}/${itinerary?.itemId}`, {
+              type: TYPE || VARIANT_TYPE_SECTION.FLIGHT,
+              days: 1,
+              startDate: value.startDate,
+              endDate: null,
+              departure: data.departure.split(",")[0] || value.departure,
+              departureLabel: data.departureLabel,
+              destination: data.arrivadas.split(",")[0] || value.destination,
+              destinationLabel: data.arrivadasLabel,
+              arrivalTime: data.arrivalTime || null,
+              stars: null,
+              placeUrl: null,
+              numberFlight: value.numberFlight,
+              description: value.description,
+              imageUrl: null,
+              cityName: null,
+              region: null,
+              country: null,
+              name: null,
+              collapse: false,
+            })
+            .then((res: AxiosResponse) => {
+              const { data } = res;
+
+              setter({ itinerary: data });
+            })
+            .catch((error) => console.log("Error", error))
+            .finally(() => {
+              // stopLoading();
+              if (!isLoading) {
+                onClose();
+              }
+            });
         });
 
-      /* Close Drawer*/
+      /* Call API */
     },
     [TYPE]
   );
@@ -368,7 +375,12 @@ export default function Step2() {
 
     return CARDS[data.type.toUpperCase() as keyof object];
   };
-
+  console.log(
+    datesForDay(
+      format(new Date(itinerary?.startDate), "YYYY/MM/DD"),
+      DATA.items.map((item) => format(new Date(item.startDate), "YYYY/MM/DD"))
+    )
+  );
   return (
     <RootLayout>
       <Hero
@@ -408,11 +420,7 @@ export default function Step2() {
                   size: "sm",
                 })} flex items-center py-2`}
               >
-                DÍA{" "}
-                {datesForDay(
-                  format(new Date(itinerary?.startDate), "YYYY/MM/DD"),
-                  format(new Date(item?.startDate), "YYYY/MM/DD")
-                )}
+                DÍA{"  XX"}
               </p>
               {switchCard(item)}
             </div>

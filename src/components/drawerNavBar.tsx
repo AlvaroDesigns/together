@@ -228,7 +228,6 @@ export default function DrawerNavBar({
             startContent={<ShareIcon className="m-1 size-5" />}
             variant="light"
             onPress={ShareButton}
-            onPress={ShareButton}
           >
             Comparte
           </ButtonT>
