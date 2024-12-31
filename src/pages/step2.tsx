@@ -15,12 +15,10 @@ import CardTransfer from "@/components/cards/cardTransfer";
 import CardTrip from "@/components/cards/cardTrip";
 import { ENDPOINT } from "@/constants";
 import { sectionSchema } from "@/helpers/schema";
-import { useForm } from "@/hooks";
+import { useForm, useLoading } from "@/hooks";
 import Services from "@/services";
 import { useDataStore } from "@/stores";
 import { VARIANT_TYPE_SECTION } from "@/types";
-import { datesForDay } from "@/utils";
-import { format } from "@formkit/tempo";
 import { Button as ButtonUi, useDisclosure } from "@nextui-org/react";
 import { useTheme } from "@nextui-org/use-theme";
 import { AxiosResponse } from "axios";
@@ -191,8 +189,8 @@ export default function Step2() {
   const { setter, itinerary } = useDataStore((state) => state);
 
   const navigate = useNavigate();
-  // const { isLoading, startLoading, stopLoading } = useLoading();
-  const [isLoading, setIsLoading] = useState(true);
+  const { isLoading, startLoading, stopLoading } = useLoading();
+  const [isLoadingPage, setIsLoadingPage] = useState(true);
 
   const { control, errors, handleSubmit, watch, reset } = useForm({
     values: undefined,
@@ -200,56 +198,62 @@ export default function Step2() {
   });
 
   const TYPE = watch("type");
+
+  const ServiceDetails = async (value, data) => {
+    return await Services()
+      .post(`${ENDPOINT.DETAILS}/${itinerary?.itemId}`, {
+        type: TYPE || VARIANT_TYPE_SECTION.FLIGHT,
+        days: 1,
+        startDate: value.startDate,
+        endDate: value?.startDate,
+        departure: data?.departure?.split(",")[0] || value.departure,
+        departureLabel: data?.departureLabel,
+        destination: data?.arrivadas?.split(",")[0] || value.destination,
+        destinationLabel: data?.arrivadasLabel,
+        arrivalTime: data?.arrivalTime || null,
+        stars: Number(value.category),
+        placeUrl: null,
+        numberFlight: value.numberFlight,
+        description: value?.description?.split("\n"),
+        imageUrl: value?.image_url,
+        cityName: value?.city,
+        region: null,
+        country: value?.country,
+        name: value?.name || value?.transferName,
+        collapse: false,
+      })
+      .then((res: AxiosResponse) => {
+        const { data } = res;
+
+        setter({ itinerary: data });
+      })
+      .catch((error) => console.log("Error", error))
+      .finally(() => {
+        stopLoading();
+        if (!isLoadingPage) {
+          onClose();
+        }
+      });
+  };
+
   const onSubmit = useCallback(
     (value: any) => {
       console.log(errors);
 
-      /*  Set Data Store */
-      // setter({ details: value });
+      startLoading();
 
-      // startLoading();
-      return Services()
-        .get(`${ENDPOINT.FLIGHTS}?flightNumber=${value?.numberFlight}`)
-        .then((res: AxiosResponse) => {
-          const { data } = res;
+      if (TYPE === VARIANT_TYPE_SECTION.FLIGHT) {
+        return Services()
+          .get(`${ENDPOINT.FLIGHTS}?flightNumber=${value?.numberFlight}`)
+          .then((res: AxiosResponse) => {
+            const { data } = res;
 
-          /* Call API */
-          Services()
-            .post(`${ENDPOINT.DETAILS}/${itinerary?.itemId}`, {
-              type: TYPE || VARIANT_TYPE_SECTION.FLIGHT,
-              days: 1,
-              startDate: value.startDate,
-              endDate: null,
-              departure: data.departure.split(",")[0] || value.departure,
-              departureLabel: data.departureLabel,
-              destination: data.arrivadas.split(",")[0] || value.destination,
-              destinationLabel: data.arrivadasLabel,
-              arrivalTime: data.arrivalTime || null,
-              stars: null,
-              placeUrl: null,
-              numberFlight: value.numberFlight,
-              description: value.description,
-              imageUrl: null,
-              cityName: null,
-              region: null,
-              country: null,
-              name: null,
-              collapse: false,
-            })
-            .then((res: AxiosResponse) => {
-              const { data } = res;
+            /* Call API */
+            ServiceDetails(value, data);
+          });
+      }
 
-              setter({ itinerary: data });
-            })
-            .catch((error) => console.log("Error", error))
-            .finally(() => {
-              // stopLoading();
-              if (!isLoading) {
-                onClose();
-              }
-            });
-        });
-
+      return ServiceDetails(value, {});
       /* Call API */
     },
     [TYPE]
@@ -295,7 +299,7 @@ export default function Step2() {
             console.log(data);
           })
           .catch((error) => console.log("Error", error))
-          .finally(() => setIsLoading(false)),
+          .finally(() => setIsLoadingPage(false)),
       1500
     );
   }, []);
@@ -325,21 +329,27 @@ export default function Step2() {
       startDate,
       endDate,
       name,
-      city,
+      cityName,
       country,
       departure,
-      image_url,
+      stars,
+      departureLabel,
+      arrivalTime,
+      imageUrl,
       description,
+      destination,
+      destinationLabel,
       numberFlight,
     } = data;
-
+    console.log(data);
     const CARDS = {
       TRIP: (
         <CardTrip
           name={name}
           startDate={startDate}
           endDate={endDate}
-          image_url={image_url}
+          imageUrl={imageUrl}
+          arrivalTime={arrivalTime}
           descriptions={description}
         />
       ),
@@ -348,17 +358,19 @@ export default function Step2() {
           name={name}
           startDate={startDate}
           endDate={endDate}
-          image_url={image_url}
+          imageUrl={imageUrl}
           descriptions={description}
         />
       ),
       HOTEL: (
         <CardHotel
           startDate={startDate}
+          stars={stars}
           endDate={endDate}
           name={name}
-          city={city}
+          city={cityName}
           country={country}
+          imageUrl={imageUrl}
           descriptions={description}
         />
       ),
@@ -366,7 +378,9 @@ export default function Step2() {
         <CardFlight
           startDate={startDate}
           departure={departure}
-          destination={description}
+          departureLabel={departureLabel}
+          destination={destination}
+          destinationLabel={destinationLabel}
           numberFlight={numberFlight}
           descriptions={description}
         />
@@ -375,16 +389,20 @@ export default function Step2() {
 
     return CARDS[data.type.toUpperCase() as keyof object];
   };
+
+  /*
   console.log(
     datesForDay(
       format(new Date(itinerary?.startDate), "YYYY/MM/DD"),
       DATA.items.map((item) => format(new Date(item.startDate), "YYYY/MM/DD"))
     )
   );
+
+  */
   return (
     <RootLayout>
       <Hero
-        loading={isLoading}
+        loading={isLoadingPage}
         startDate={itinerary?.startDate}
         endDate={itinerary?.endDate}
         title={itinerary?.title}
@@ -392,7 +410,7 @@ export default function Step2() {
         image={itinerary?.image}
       />
       <div
-        className="h-2 z-[30] mb-2 flex"
+        className="z-[30] flex"
         data-height="250"
         data-style="curve"
         data-position="bottom"
@@ -409,22 +427,24 @@ export default function Step2() {
         </svg>
       </div>
       <section className="relative flex flex-col mx-4 mb-3">
-        {isLoading ? (
+        {isLoadingPage ? (
           <CardSkeleton count={5} />
         ) : (
-          DATA.items.map((item) => (
-            <div className="mb-4" key={item.name || item.departure}>
-              <p
-                className={`${subtitle({
-                  weight: "bold",
-                  size: "sm",
-                })} flex items-center py-2`}
-              >
-                DÍA{"  XX"}
-              </p>
-              {switchCard(item)}
-            </div>
-          ))
+          itinerary?.items
+            ?.toSorted((a, b) => a.id - b.id)
+            .map((item) => (
+              <div className="mb-4" key={`${item.id}-${item.type}`}>
+                <p
+                  className={`${subtitle({
+                    weight: "bold",
+                    size: "sm",
+                  })} flex items-center py-2`}
+                >
+                  DÍA{"  XX"}
+                </p>
+                {switchCard(item)}
+              </div>
+            ))
         )}
 
         <ButtonUi
@@ -441,7 +461,9 @@ export default function Step2() {
           onOpenChange={onOpenChange}
           body={<SectionForm control={control} type={TYPE} reset={reset} />}
           footer={
-            <Button onPress={handleSubmit(onSubmit)}>Guardar Actividad</Button>
+            <Button isLoading={isLoading} onPress={handleSubmit(onSubmit)}>
+              Guardar Actividad
+            </Button>
           }
         />
       </section>

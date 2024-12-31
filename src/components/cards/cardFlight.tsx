@@ -1,5 +1,5 @@
 import { subtitle, title } from "@/components/primitives";
-import { resolverAirFly } from "@/utils";
+import { elipsis, resolverAirFly } from "@/utils";
 import {
   ArrowDownRightIcon,
   ArrowUpRightIcon,
@@ -10,13 +10,17 @@ import CardBase from "./cardBase";
 export default function CardFlight({
   startDate = "2025/12/02",
   departure = "Palma de Mallorca",
+  departureLabel = "PMI",
   destination = "Venecia",
+  destinationLabel = "Venecia",
   numberFlight = "FR6582",
   descriptions,
 }: {
   startDate: string | undefined;
   departure: string | undefined;
+  departureLabel?: string | undefined;
   destination: string | undefined;
+  destinationLabel?: string | undefined;
   numberFlight: string | undefined;
   descriptions?: string[] | null;
 }) {
@@ -29,6 +33,7 @@ export default function CardFlight({
             width={45}
             height={45}
             alt="AIR company"
+            className="min-w-11"
             src={resolverAirFly(numberFlight?.substring(0, 2))}
           />
           <div className="flex flex-col ml-3">
@@ -50,8 +55,8 @@ export default function CardFlight({
                 size: "xs",
               })} flex flex-col items-start `}
             >
-              {departure && `${departure} to `}
-              {destination}
+              {departureLabel && `${elipsis(departureLabel, 15)} to `}
+              {elipsis(destinationLabel, 15)}
             </h3>
             <p
               className={`${subtitle({
@@ -62,19 +67,19 @@ export default function CardFlight({
               <div className="flex mt-1">
                 <span className="flex items-center mr-2">
                   <ArrowUpRightIcon className="mr-1 dark:text-gray-600 size-5" />
-                  PMI 15:20
+                  {departure} 15:20
                 </span>
                 -
                 <span className="flex items-center ml-2">
                   <ArrowDownRightIcon className="mr-1 dark:text-gray-600 size-5" />
-                  TFS 19.20
+                  {destination} 19.20
                 </span>
               </div>
             </p>
           </div>
         </>
       }
-      footer={descriptions}
+      footer={descriptions?.length === 0 ? null : descriptions}
     />
   );
 }

@@ -5,14 +5,14 @@ import CardBase from "./cardBase";
 export default function CardTrip({
   startDate = "2025/12/02",
   name = "Gran Canal en góndola con comentarios en directo",
-  image_url,
+  imageUrl,
   placeUrl = "url",
   descriptions,
 }: {
   startDate: string | Date;
   endDate: string | Date;
   name: string | undefined;
-  image_url?: string | undefined;
+  imageUrl?: string | undefined;
   placeUrl?: string | undefined;
   descriptions?: string[] | null;
 }) {
@@ -27,7 +27,7 @@ export default function CardTrip({
               height={100}
               className="min-w-[100px]"
               alt="transfer"
-              src={image_url || "dummy.jpg"}
+              src={imageUrl || "dummy.jpg"}
             />
             <div className="ml-4">
               <h3
@@ -41,7 +41,7 @@ export default function CardTrip({
                 <Link
                   isBlock
                   showAnchorIcon
-                  className="p-0 m-1"
+                  className="p-0 my-1"
                   target="_blank"
                   href={`https://www.google.com/maps/search/?api=1&query=${name}`}
                   color="foreground"

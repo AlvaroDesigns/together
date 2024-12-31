@@ -31,6 +31,8 @@ export const TRANSFER_DATA = [
   { key: "Barco", label: "Barco" },
   { key: "Bicileta", label: "Bicicleta" },
   { key: "Patinete", label: "Patinete" },
+  { key: "Metro", label: "Metro" },
+  { key: "Tranvia", label: "Tranvia" },
   { key: "Uber", label: "Uber" },
   { key: "Cabify", label: "Cabify" },
   { key: "Bold", label: "Bold" },
@@ -175,11 +177,7 @@ export default function SectionForm({
                   color={fieldState.error?.message ? "danger" : "default"}
                   errorMessage={fieldState.error?.message}
                 >
-                  {(animal) => (
-                    <SelectItem onPress={() => setSelected(animal.key)}>
-                      {animal.label}
-                    </SelectItem>
-                  )}
+                  {(transfer) => <SelectItem>{transfer.label}</SelectItem>}
                 </Select>
               )}
             />
@@ -288,19 +286,19 @@ export default function SectionForm({
                   color={fieldState.error?.message ? "danger" : "default"}
                   errorMessage={fieldState.error?.message}
                 >
-                  <Radio value="one">
+                  <Radio value="1">
                     <Stars count={1} />
                   </Radio>
-                  <Radio value="two">
+                  <Radio value="2">
                     <Stars count={2} />
                   </Radio>
-                  <Radio value="three">
+                  <Radio value="3">
                     <Stars count={3} />
                   </Radio>
-                  <Radio value="four">
+                  <Radio value="4">
                     <Stars count={4} />
                   </Radio>
-                  <Radio value="five">
+                  <Radio value="5">
                     <Stars count={5} />
                   </Radio>
                   <Radio value="none">Sin categoría</Radio>
@@ -378,13 +376,15 @@ export default function SectionForm({
         <>
           <Divider className="mt-5 mb-3" />
           <div className="flex flex-col mx-4">
-            <Label>Fecha de la actividad</Label>
+            <Label>Duración de la actividad</Label>
             <Controller
-              name="startDate"
+              name="range"
               control={control}
               render={({ field, fieldState }) => (
-                <DatePicker
+                <DateRangePicker
                   {...field}
+                  hideTimeZone
+                  visibleMonths={2}
                   variant="bordered"
                   label=" "
                   fullWidth={true}
@@ -393,7 +393,6 @@ export default function SectionForm({
                   errorMessage={fieldState.error?.message}
                   className="max-w-[284px]"
                   minValue={today(getLocalTimeZone())}
-                  defaultValue={today(getLocalTimeZone())}
                 />
               )}
             />
@@ -436,29 +435,6 @@ export default function SectionForm({
                   errorMessage={fieldState.error?.message}
                   classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
                   placeholder="Ej: https://www.italia.com/..."
-                />
-              )}
-            />
-          </div>
-          <Divider className="mt-5 mb-3" />
-          <div className="flex flex-col mx-4">
-            <Label>Duración de la actividad</Label>
-            <Controller
-              name="range"
-              control={control}
-              render={({ field, fieldState }) => (
-                <DateRangePicker
-                  {...field}
-                  hideTimeZone
-                  visibleMonths={2}
-                  variant="bordered"
-                  label=" "
-                  fullWidth={true}
-                  isInvalid={Boolean(fieldState.error?.message)}
-                  color={fieldState.error?.message ? "danger" : "default"}
-                  errorMessage={fieldState.error?.message}
-                  className="max-w-[284px]"
-                  minValue={today(getLocalTimeZone())}
                 />
               )}
             />

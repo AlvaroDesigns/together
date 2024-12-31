@@ -4,18 +4,20 @@ import { Image, Link } from "@nextui-org/react";
 import CardBase from "./cardBase";
 
 export default function CardTrip({
-  startDate = "2025/12/02",
-  name = "Gran Canal en góndola con comentarios en directo",
-  image_url,
-  placeUrl = "url",
+  startDate,
+  name,
+  imageUrl,
+  placeUrl,
   descriptions,
+  arrivalTime,
 }: {
   startDate: string | Date;
   endDate: string | Date;
   name: string | undefined;
-  image_url?: string | undefined;
+  imageUrl?: string | undefined;
   placeUrl?: string | undefined;
   descriptions?: string[] | null;
+  arrivalTime?: string | Date;
 }) {
   return (
     <CardBase
@@ -27,8 +29,8 @@ export default function CardTrip({
               width={100}
               height={100}
               className="min-w-[100px]"
-              alt="AIR company"
-              src={image_url || "/dummy.jpg"}
+              alt="Trip"
+              src={imageUrl || "/dummy.jpg"}
             />
             <div className="ml-4">
               <h3
@@ -45,7 +47,7 @@ export default function CardTrip({
                 })} flex items-start`}
               >
                 <ClockIcon className="mt-1 mr-1 dark:text-gray-600 size-5" />
-                Duración 45 minutos - 3 horas
+                Duración {arrivalTime?.toString()}
               </p>
               {placeUrl && (
                 <Link

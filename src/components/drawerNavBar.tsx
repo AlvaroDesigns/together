@@ -118,6 +118,7 @@ export default function DrawerNavBar({
                     >
                       <ListboxItem
                         key="account"
+                        textValue="account"
                         className="flex items-center pb-3 "
                         showDivider
                         startContent={<UserIcon className="m-1 size-6" />}
@@ -129,6 +130,7 @@ export default function DrawerNavBar({
                         </Chip>
                       </ListboxItem>
                       <ListboxItem
+                        textValue="friends"
                         key="friends"
                         className="flex items-center py-3"
                         showDivider
@@ -140,6 +142,7 @@ export default function DrawerNavBar({
                         <span className="text-medium">Invitar amigos</span>
                       </ListboxItem>
                       <ListboxItem
+                        textValue="secure"
                         key="secure"
                         className="flex items-center py-3"
                         showDivider
@@ -155,6 +158,7 @@ export default function DrawerNavBar({
                       </ListboxItem>
                       <ListboxItem
                         key="news"
+                        textValue="news"
                         className="flex items-center py-3"
                         showDivider
                         startContent={<NewspaperIcon className="m-1 size-6" />}
@@ -166,6 +170,7 @@ export default function DrawerNavBar({
                         </Chip>
                       </ListboxItem>
                       <ListboxItem
+                        textValue="delete"
                         key="delete"
                         className="flex items-center pt-3 text-danger"
                         color="danger"

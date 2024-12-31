@@ -19,6 +19,10 @@ export const sendEventError = () => {
   window.location.assign("/");
 };
 
+export const elipsis = (texto: string, maxLength: number) => {
+  return texto.length > maxLength ? texto.slice(0, maxLength) + "..." : texto;
+};
+
 export const betweenDates = (start: string, end: string) => {
   // Calcular la diferencia en milisegundos
   const differenceInMs = new Date(end).getTime() - new Date(start).getTime();

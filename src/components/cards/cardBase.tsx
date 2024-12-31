@@ -51,7 +51,7 @@ export default function CardBase({
         {body}
       </CardBody>
       {footer && (
-        <CardFooter className="pt-0 ">
+        <CardFooter className="pt-0 text-left">
           <div className="w-full ">
             <Divider />
             <Accordion
