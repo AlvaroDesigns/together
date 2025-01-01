@@ -1,6 +1,5 @@
 import {
   DatePicker,
-  DateRangePicker,
   Divider,
   Input,
   Radio,
@@ -22,23 +21,22 @@ export const TRIP = [
   { key: "HOTEL", label: "Hotel" },
   { key: "TRANSFER", label: "Transfer" },
   { key: "TRIP", label: "Actividad" },
-  { key: "RENT", label: "Rent a car" },
 ];
 
 export const TRANSFER_DATA = [
-  { key: "Tren", label: "Tren" },
-  { key: "Autobus", label: "Autobus" },
-  { key: "Barco", label: "Barco" },
-  { key: "Bicileta", label: "Bicicleta" },
-  { key: "Patinete", label: "Patinete" },
-  { key: "Metro", label: "Metro" },
-  { key: "Tranvia", label: "Tranvia" },
-  { key: "Uber", label: "Uber" },
-  { key: "Cabify", label: "Cabify" },
-  { key: "Bold", label: "Bold" },
-  { key: "Grab", label: "Grab" },
-  { key: "Taxi", label: "Taxi" },
-  { key: "Otros", label: "Otros" },
+  { key: "tren", label: "Tren" },
+  { key: "autobus", label: "Autobus" },
+  { key: "barco", label: "Barco" },
+  { key: "bicileta", label: "Bicicleta" },
+  { key: "patinete", label: "Patinete" },
+  { key: "metro", label: "Metro" },
+  { key: "tranvia", label: "Tranvia" },
+  { key: "uber", label: "Uber" },
+  { key: "cabify", label: "Cabify" },
+  { key: "bold", label: "Bold" },
+  { key: "grab", label: "Grab" },
+  { key: "taxi", label: "Taxi" },
+  { key: "otros", label: "Otros" },
 ];
 
 interface SectionFormProps {
@@ -145,16 +143,18 @@ export default function SectionForm({
               render={({ field, fieldState }) => (
                 <DatePicker
                   {...field}
+                  hideTimeZone
+                  // defaultValue={now(getLocalTimeZone())}
+                  defaultValue={today(getLocalTimeZone())}
                   variant="bordered"
                   label=" "
-                  className="max-w-[284px]"
-                  classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
                   fullWidth={true}
+                  classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
                   isInvalid={Boolean(fieldState.error?.message)}
                   color={fieldState.error?.message ? "danger" : "default"}
                   errorMessage={fieldState.error?.message}
+                  className="max-w-[284px]"
                   minValue={today(getLocalTimeZone())}
-                  defaultValue={today(getLocalTimeZone())}
                 />
               )}
             />
@@ -199,7 +199,7 @@ export default function SectionForm({
                   errorMessage={fieldState.error?.message}
                   className="max-w-xs"
                   classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
-                  placeholder="Enter tu descripcion"
+                  placeholder="Introduce tu descripcion"
                 />
               )}
             />
@@ -365,7 +365,7 @@ export default function SectionForm({
                   errorMessage={fieldState.error?.message}
                   className="max-w-xs"
                   classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
-                  placeholder="Enter tu descripcion"
+                  placeholder="Introduce tu descripcion"
                 />
               )}
             />
@@ -381,10 +381,11 @@ export default function SectionForm({
               name="range"
               control={control}
               render={({ field, fieldState }) => (
-                <DateRangePicker
+                <DatePicker
                   {...field}
                   hideTimeZone
-                  visibleMonths={2}
+                  // defaultValue={now(getLocalTimeZone())}
+                  defaultValue={today(getLocalTimeZone())}
                   variant="bordered"
                   label=" "
                   fullWidth={true}
@@ -456,7 +457,7 @@ export default function SectionForm({
                   errorMessage={fieldState.error?.message}
                   className="max-w-xs"
                   classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
-                  placeholder="Enter tu descripcion"
+                  placeholder="Introduce tu descripcion"
                 />
               )}
             />

@@ -25,7 +25,6 @@ export default function CardHotel({
   stars?: number | undefined;
   descriptions?: string[] | null;
 }) {
-  console.log("image_url", imageUrl);
   return (
     <CardBase
       header={startDate}
@@ -37,7 +36,8 @@ export default function CardHotel({
               height={100}
               className="min-w-[100px]"
               alt="AIR company"
-              src={imageUrl || "/dummy.jpg"}
+              fallbackSrc="dummy.jpg"
+              src={imageUrl}
             />
             <div className="ml-4">
               <h3

@@ -52,28 +52,25 @@ export const Cards: React.FC<CardsProps> = ({ itinerary, loading = true }) => {
       .fill(0)
       .map((_, index) => (
         <div
-          className="w-[200px] min-w-[200px] space-y-5 relative"
+          className="p-3 mb-5 dark:bg-content1 border min-h-56 rounded-xl w-[200px] min-w-[200px] "
           key={`skeleton-${index}`}
         >
-          <NextCard
-            className="w-[200px] min-w-[200px] space-y-5 p-4 relative bg-neutral-500"
-            radius="lg"
-          >
+          <div className="flex flex-col justify-center min-h-10">
             <Skeleton className="rounded-lg" isLoaded={false}>
-              <div className="h-24 rounded-lg bg-default-300" />
+              <div className="rounded-lg h-28 bg-default-300" />
             </Skeleton>
-            <div className="space-y-3">
-              <Skeleton className="w-3/5 rounded-lg">
-                <div className="w-3/5 h-3 rounded-lg bg-default-200" />
-              </Skeleton>
-              <Skeleton className="w-4/5 rounded-lg">
-                <div className="w-4/5 h-3 rounded-lg bg-default-200" />
-              </Skeleton>
-              <Skeleton className="w-2/5 rounded-lg">
-                <div className="w-2/5 h-3 rounded-lg bg-default-300" />
-              </Skeleton>
-            </div>
-          </NextCard>
+          </div>
+          <div className="my-3 space-y-3">
+            <Skeleton className="w-3/5 rounded-lg">
+              <div className="w-3/5 h-3 rounded-lg bg-default-200" />
+            </Skeleton>
+            <Skeleton className="w-4/5 rounded-lg">
+              <div className="w-4/5 h-3 rounded-lg bg-default-200" />
+            </Skeleton>
+            <Skeleton className="w-2/5 rounded-lg">
+              <div className="w-2/5 h-3 rounded-lg bg-default-300" />
+            </Skeleton>
+          </div>
         </div>
       ));
   }

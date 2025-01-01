@@ -30,7 +30,8 @@ export default function CardTrip({
               height={100}
               className="min-w-[100px]"
               alt="Trip"
-              src={imageUrl || "/dummy.jpg"}
+              fallbackSrc="dummy.jpg"
+              src={imageUrl}
             />
             <div className="ml-4">
               <h3
@@ -40,15 +41,17 @@ export default function CardTrip({
               >
                 {name}
               </h3>
-              <p
-                className={`${subtitle({
-                  weight: "light",
-                  size: "sm",
-                })} flex items-start`}
-              >
-                <ClockIcon className="mt-1 mr-1 dark:text-gray-600 size-5" />
-                Duración {arrivalTime?.toString()}
-              </p>
+              {arrivalTime && (
+                <p
+                  className={`${subtitle({
+                    weight: "light",
+                    size: "sm",
+                  })} flex items-start`}
+                >
+                  <ClockIcon className="mt-1 mr-1 dark:text-gray-600 size-5" />
+                  Duración {arrivalTime?.toString()}
+                </p>
+              )}
               {placeUrl && (
                 <Link
                   isBlock

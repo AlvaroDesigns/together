@@ -25,7 +25,7 @@ export default function Login() {
   const onSubmit = useCallback(
     async (value: unknown) => {
       const error = Object.entries(errors).length !== 0;
-      console.log(value, error);
+
       /* Exit */
       if (error) return;
 
@@ -51,7 +51,7 @@ export default function Login() {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      console.log("User Info:", user);
+
       if (result.user.email) {
         setter({
           user: {

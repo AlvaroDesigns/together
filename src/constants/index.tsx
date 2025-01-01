@@ -40,7 +40,7 @@ export const HUBSPOT_THANKS: string =
 /* URLS */
 export const BASE_ROUTE: string = "/seguro-orfandad";
 export const ROUTES: Record<string, string> = {
-  HOME: "home",
+  HOME: "/home",
   REGISTER: "registrame",
   ITINERARY: "crear-itinerario",
 };

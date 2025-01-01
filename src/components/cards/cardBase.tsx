@@ -16,10 +16,12 @@ import {
 
 export default function CardBase({
   header = new Date(),
+  hideEdit = true,
   body,
   footer = null,
 }: {
   header: string | Date;
+  hideEdit?: boolean;
   body: React.ReactNode;
   footer?: string[] | null;
 }) {
@@ -34,16 +36,17 @@ export default function CardBase({
           >
             {capitalCase(format(new Date(header), "ddd, D MMM"))}
           </div>
-          <Link
-            isExternal
-            showAnchorIcon
-            className="text-default-600 hover:text-default-600"
-            color="foreground"
-            anchorIcon={
-              <PencilSquareIcon className="mt-1 mr-1 dark:text-gray-600 size-5" />
-            }
-            href="https://github.com/nextui-org/nextui"
-          />
+          {!hideEdit && (
+            <Link
+              isExternal
+              showAnchorIcon
+              className="text-default-600 hover:text-default-600"
+              color="foreground"
+              anchorIcon={
+                <PencilSquareIcon className="mt-1 mr-1 dark:text-gray-400 size-5" />
+              }
+            />
+          )}
         </div>
         <Divider />
       </CardHeader>

@@ -160,7 +160,7 @@ export default function DrawerCreate() {
           isStatus ? (
             <Status
               title={"¡Maravilloso!"}
-              text={" Su itinerario se ha creado correctamente."}
+              text={"Su itinerario se ha creado correctamente."}
             />
           ) : (
             <DrawerItFrom control={control} />

@@ -1,5 +1,3 @@
-import { subtitle } from "@/components/primitives";
-
 import {
   Button,
   DrawerCustom,
@@ -10,177 +8,23 @@ import {
 
 import CardFlight from "@/components/cards/cardFlight";
 import CardHotel from "@/components/cards/cardHotel";
+import CardOut from "@/components/cards/cardOut";
 import CardSkeleton from "@/components/cards/cardSkeleton";
 import CardTransfer from "@/components/cards/cardTransfer";
 import CardTrip from "@/components/cards/cardTrip";
+import { subtitle } from "@/components/primitives";
 import { ENDPOINT } from "@/constants";
 import { sectionSchema } from "@/helpers/schema";
 import { useForm, useLoading } from "@/hooks";
 import Services from "@/services";
 import { useDataStore } from "@/stores";
 import { VARIANT_TYPE_SECTION } from "@/types";
+import { formatDayForDays } from "@/utils";
 import { Button as ButtonUi, useDisclosure } from "@nextui-org/react";
 import { useTheme } from "@nextui-org/use-theme";
 import { AxiosResponse } from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-const DATA = {
-  id: 1,
-  title: "Venecia & Cracovia",
-  image:
-    "https://www.destinosbyviajesespacial.com/wp-content/uploads/2024/02/venecia-scaled.jpg",
-  days: 5,
-  startDate: "2024/12/04",
-  endDate: "2024/12/11",
-  items: [
-    {
-      type: "flight",
-      startDate: "2024/12/04",
-      endDate: null,
-      departure: "Palma de Mallorca",
-      destination: "Venecia",
-      numberFlight: "FR6582",
-      description: null,
-    },
-    {
-      type: "transfer",
-      startDate: "2024/12/04",
-      endDate: null,
-      departure: null,
-      destination: null,
-      stars: 4,
-      placeUrl: null,
-      numberFlight: null,
-      description: [
-        "Llegada al aeropuerto de Treviso, para ir al centro coger el bus línea 351 de ATVO que te deja en la Piazzale Roma (a media hora del hotel andando). Una vez en la Piazzale Roma hay que coger el Vaporetto hasta las cercanías del hotel. Por las calles de Venecia no circulan los coches.",
-        "El transporte público es fluvial.",
-      ],
-      image_url: "/transfers.jpg",
-      city_name: "Venecia",
-      region: "Véneto",
-      country: "Italia",
-      name: "Transfer Aeropuerto de Treviso",
-      collapse: true,
-    },
-    {
-      type: "hotel",
-      startDate: "2024/12/04",
-      endDate: "2024/12/04",
-      departure: null,
-      destination: null,
-      stars: 4,
-      placeUrl: "https://maps.app.goo.gl/fWerGuUjndoxBjpP8",
-      numberFlight: null,
-      description: [
-        "Este hotel esta en el centro y el hora de check-in es a las 12:00h",
-      ],
-      image_url:
-        "https://cf.bstatic.com/xdata/images/hotel/150x150/463289409.jpg?k=1c54f091ee919a389424171fd85b4d71c4ad8c54a4a13f88928b824e4b581fb1&o=",
-      city_name: "Venecia",
-      region: "Véneto",
-      country: "Italia",
-      name: "Hotel Apostoli Garden",
-    },
-    {
-      type: "trip",
-      startDate: "2024/12/04",
-      endDate: null,
-      departure: null,
-      destination: "Día por venecia",
-      name: "Gran Canal en góndola con comentarios en directo",
-      stars: null,
-      placeUrl: "https://maps.app.goo.gl/fWerGuUjndoxBjpP8",
-      numberFlight: null,
-      description: [
-        "Deslízate por los canales de Venecia en un paseo en góndola con un guía en directo. Escucha historias y secretos de los fascinantes palacios de los alrededores de la mano de tu guía.",
-        "Cancela con hasta 24 horas de antelación y recibe un reembolso completo",
-      ],
-    },
-    {
-      type: "flight",
-      startDate: "2024/12/04",
-      endDate: null,
-      departure: "Venecia",
-      destination: "Kraków",
-      numberFlight: "FR2028",
-      description: null,
-    },
-    {
-      type: "transfer",
-      startDate: "2024/12/04",
-      endDate: null,
-      departure: null,
-      destination: null,
-      stars: 4,
-      placeUrl: null,
-      numberFlight: null,
-      description: [
-        "Para llegar del aeropuerto al centro coger un bus: La línea 208 tiene un frecuencia de salida de una hora y te deja en la Estación Central de trenes de Cracovia (Kraków Glówny)",
-        "O coger tren que tarda 18 minutos y sale por unos 9 PLN (unos dos euros) o 16 PLN, si compras ida y vuelta.",
-        "Este tren que sale cada 30 minutos del aeropuerto y opera de las 04h a las 23h, te dejará en la estación Kraków Glówny, situada cerca de la Barbacana.",
-      ],
-      image_url: "/transfers.jpg",
-      city_name: "Venecia",
-      region: "Véneto",
-      country: "Italia",
-      name: "Transfer Aeropuerto de Cracovia",
-      collapse: true,
-    },
-    {
-      type: "hotel",
-      startDate: "2024/12/04",
-      endDate: "2024/12/07",
-      departure: null,
-      destination: "Royal Apartments",
-      stars: null,
-      placeUrl: "https://maps.app.goo.gl/fWerGuUjndoxBjpP8",
-      numberFlight: null,
-      description: [
-        "Este hotel esta en el centro y el hora de check-in es a las 12:00h",
-      ],
-      image_url:
-        "https://cf.bstatic.com/xdata/images/hotel/150x150/357739635.jpg?k=f52fc47c7dbc4aa00754caea5f2187b5036fb8884d8ac3233e08bf3d53cbbcd8&o=",
-      city_name: "Cracovia",
-      region: "Pequeña Polonia",
-      country: "Polonia",
-      name: "ROYAL Apartments",
-    },
-    {
-      type: "trip",
-      startDate: "2024/12/05",
-      endDate: null,
-      departure: null,
-      destination: "Día por venecia",
-      name: "Auschwitz-Birkenau Tour guiado y transporte",
-      stars: null,
-      placeUrl: "https://maps.app.goo.gl/fWerGuUjndoxBjpP8",
-      numberFlight: null,
-      description: [
-        "Visita los campos de concentración de Auschwitz-Birkenau con un educador profesional que te contará su historia. Pasa 3,5 horas aprendiendo sobre los millones de víctimas del Holocausto.",
-        "Cancela con hasta 24 horas de antelación y recibe un reembolso completo",
-      ],
-    },
-    {
-      type: "flight",
-      startDate: "2024/12/07",
-      endDate: null,
-      departure: "Kraków",
-      destination: "Malaga",
-      numberFlight: "W62073",
-      description: null,
-    },
-    {
-      type: "flight",
-      startDate: "2024/12/07",
-      endDate: null,
-      departure: "Malaga",
-      destination: "Palma de Mallorca",
-      numberFlight: "FR2028",
-      description: null,
-    },
-  ],
-};
 
 export default function Step2() {
   const { theme } = useTheme();
@@ -191,6 +35,25 @@ export default function Step2() {
   const navigate = useNavigate();
   const { isLoading, startLoading, stopLoading } = useLoading();
   const [isLoadingPage, setIsLoadingPage] = useState(true);
+  const [data, setData] = useState<
+    | {
+        id: number;
+        title: string | undefined;
+        days: number;
+        date: string | undefined;
+        startDate: string | undefined;
+        endDate: string | undefined;
+        image: string | undefined;
+        userId: number;
+        items?: {
+          id: number;
+          type: string;
+          startDate: string;
+          [key: string]: any;
+        }[];
+      }
+    | []
+  >([]);
 
   const { control, errors, handleSubmit, watch, reset } = useForm({
     values: undefined,
@@ -201,7 +64,7 @@ export default function Step2() {
 
   const ServiceDetails = async (value, data) => {
     return await Services()
-      .post(`${ENDPOINT.DETAILS}/${itinerary?.itemId}`, {
+      .post(`${ENDPOINT.DETAILS}/${data?.itemId}`, {
         type: TYPE || VARIANT_TYPE_SECTION.FLIGHT,
         days: 1,
         startDate: value.startDate,
@@ -283,25 +146,16 @@ export default function Step2() {
     // startLoading();
 
     /* Call API */
-    setTimeout(
-      () =>
-        Services()
-          .get(`${ENDPOINT.DETAILS}/${itinerary?.itemId}`)
-          .then((res: AxiosResponse) => {
-            const { status, data } = res;
+    Services()
+      .get(`${ENDPOINT.DETAILS}/${itinerary?.itemId}`)
+      .then((res: AxiosResponse) => {
+        const { data } = res;
 
-            if (status !== 200) {
-              return console.log("Error");
-            }
-
-            /* Set */
-            setter({ itinerary: data });
-            console.log(data);
-          })
-          .catch((error) => console.log("Error", error))
-          .finally(() => setIsLoadingPage(false)),
-      1500
-    );
+        /* Set */
+        setter({ itinerary: data });
+        setData(data);
+      })
+      .finally(() => setTimeout(() => setIsLoadingPage(false), 500));
   }, []);
   /*
   useEffect(() => {
@@ -341,7 +195,7 @@ export default function Step2() {
       destinationLabel,
       numberFlight,
     } = data;
-    console.log(data);
+
     const CARDS = {
       TRIP: (
         <CardTrip
@@ -356,9 +210,9 @@ export default function Step2() {
       TRANSFER: (
         <CardTransfer
           name={name}
+          arrivalTime={arrivalTime}
           startDate={startDate}
           endDate={endDate}
-          imageUrl={imageUrl}
           descriptions={description}
         />
       ),
@@ -389,25 +243,16 @@ export default function Step2() {
 
     return CARDS[data.type.toUpperCase() as keyof object];
   };
-
-  /*
-  console.log(
-    datesForDay(
-      format(new Date(itinerary?.startDate), "YYYY/MM/DD"),
-      DATA.items.map((item) => format(new Date(item.startDate), "YYYY/MM/DD"))
-    )
-  );
-
-  */
+  console.log(data);
   return (
     <RootLayout>
       <Hero
-        loading={isLoadingPage}
-        startDate={itinerary?.startDate}
-        endDate={itinerary?.endDate}
-        title={itinerary?.title}
-        days={itinerary?.days}
-        image={itinerary?.image}
+        loading={Boolean(!data?.items)}
+        startDate={data?.startDate}
+        endDate={data?.endDate}
+        title={data?.title}
+        days={data?.days}
+        image={data?.image}
       />
       <div
         className="z-[30] flex"
@@ -427,26 +272,33 @@ export default function Step2() {
         </svg>
       </div>
       <section className="relative flex flex-col mx-4 mb-3">
-        {isLoadingPage ? (
+        {Array.isArray(data) && data.length === 0 ? (
           <CardSkeleton count={5} />
+        ) : !Array.isArray(data) && Array.isArray(data?.items) ? (
+          data?.items?.length > 0 ? (
+            data?.items
+              ?.toSorted((a, b) => a.id - b.id)
+              .map((item) => (
+                <div className="mb-4" key={`${item.id}-${item.type}`}>
+                  <p
+                    className={`${subtitle({
+                      weight: "bold",
+                      size: "sm",
+                    })} flex items-center py-2`}
+                  >
+                    DÍA {formatDayForDays(data?.startDate, item.startDate)}
+                  </p>
+                  {switchCard(item)}
+                </div>
+              ))
+          ) : (
+            <div className="my-8">
+              <CardOut />
+            </div>
+          )
         ) : (
-          itinerary?.items
-            ?.toSorted((a, b) => a.id - b.id)
-            .map((item) => (
-              <div className="mb-4" key={`${item.id}-${item.type}`}>
-                <p
-                  className={`${subtitle({
-                    weight: "bold",
-                    size: "sm",
-                  })} flex items-center py-2`}
-                >
-                  DÍA{"  XX"}
-                </p>
-                {switchCard(item)}
-              </div>
-            ))
+          <CardSkeleton count={5} />
         )}
-
         <ButtonUi
           radius="full"
           color="primary"

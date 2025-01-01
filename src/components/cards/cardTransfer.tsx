@@ -1,18 +1,19 @@
-import { title } from "@/components/primitives";
+import { subtitle, title } from "@/components/primitives";
+import { ClockIcon } from "@heroicons/react/24/outline";
 import { Image, Link } from "@nextui-org/react";
 import CardBase from "./cardBase";
 
-export default function CardTrip({
+export default function CardTransfer({
   startDate = "2025/12/02",
-  name = "Gran Canal en góndola con comentarios en directo",
-  imageUrl,
+  arrivalTime,
+  name,
   placeUrl = "url",
   descriptions,
 }: {
   startDate: string | Date;
+  arrivalTime: string | Date;
   endDate: string | Date;
   name: string | undefined;
-  imageUrl?: string | undefined;
   placeUrl?: string | undefined;
   descriptions?: string[] | null;
 }) {
@@ -25,9 +26,10 @@ export default function CardTrip({
             <Image
               width={100}
               height={100}
-              className="min-w-[100px]"
+              className="min-w-[100px] object-cover"
               alt="transfer"
-              src={imageUrl || "dummy.jpg"}
+              fallbackSrc="dummy.jpg"
+              src={`/${name?.toLocaleLowerCase()}.jpg`}
             />
             <div className="ml-4">
               <h3
@@ -35,8 +37,19 @@ export default function CardTrip({
                   size: "xs",
                 })} flex flex-col items-start`}
               >
-                {name}
+                Translado en {name}
               </h3>
+              {arrivalTime && (
+                <p
+                  className={`${subtitle({
+                    weight: "light",
+                    size: "sm",
+                  })} flex items-start`}
+                >
+                  <ClockIcon className="mt-1 mr-1 dark:text-gray-600 size-5" />
+                  Duración {arrivalTime?.toString()}
+                </p>
+              )}
               {placeUrl && (
                 <Link
                   isBlock

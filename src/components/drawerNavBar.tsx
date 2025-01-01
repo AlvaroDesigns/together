@@ -24,11 +24,9 @@ import {
   Listbox,
   ListboxItem,
   Tooltip,
-  useDisclosure,
 } from "@nextui-org/react";
 
 import { Button as ButtonT, DrawerCustom } from "@/components";
-import { PressEvent } from "@react-types/shared";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { version } from "../../package.json";
@@ -38,7 +36,8 @@ export default function DrawerNavBar({
 }: {
   user: { name: string; email: string; avatar?: string };
 }) {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [onClose, setOnClose] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const { reset } = useDataStore((state) => state);
 
@@ -50,7 +49,13 @@ export default function DrawerNavBar({
     navigate("/");
   };
 
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const handleOnDraweOpen = () => {
+    setOnClose(true);
+  };
+
+  const handleOnDraweClose = () => {
+    setOnClose(false);
+  };
 
   const handleInviteFriendsClick = () => {
     setIsDrawerOpen(true);
@@ -66,7 +71,7 @@ export default function DrawerNavBar({
         className="min-w-0 p-0 text-default-700"
         endContent={<Bars3BottomLeftIcon className="m-1 size-6" />}
         variant="light"
-        onPress={onOpen}
+        onPress={handleOnDraweOpen}
       />
       <Drawer
         hideCloseButton
@@ -76,11 +81,10 @@ export default function DrawerNavBar({
         classNames={{
           base: "data-[placement=right]:sm:m-2 data-[placement=left]:sm:m- 2",
         }}
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
+        isOpen={onClose}
       >
         <DrawerContent>
-          {(onClose: ((e: PressEvent) => void) | undefined) => (
+          {() => (
             <>
               <DrawerHeader className="absolute inset-x-0 top-0 z-50 flex flex-row items-center justify-between gap-2 px-2 py-2 border-b border-default-200/50 bg-content1/50 backdrop-saturate-150 backdrop-blur-lg min-h-16">
                 <Tooltip content="Close">
@@ -89,7 +93,7 @@ export default function DrawerNavBar({
                     className="text-default-400"
                     size="sm"
                     variant="light"
-                    onPress={onClose}
+                    onPress={handleOnDraweClose}
                   >
                     <ArrowLeftIcon className="m-1 size-6" />
                   </Button>
@@ -103,11 +107,11 @@ export default function DrawerNavBar({
                     name={user.name.charAt(0)}
                     src={user.avatar}
                   />
-                  <div className="flex flex-col items-center mt-4 default whitespace-nowrap">
+                  <div className="flex flex-col items-center mt-4 dark:text-gray-300 default whitespace-nowrap">
                     <span className="text-xl font-semibold">
                       ¡Hola, {user.name}!
                     </span>
-                    <span className="text-base">{user.email}</span>
+                    <span className="text-base ">{user.email}</span>
                   </div>
                 </div>
                 <div className="flex flex-col gap-2 py-4">
@@ -134,7 +138,6 @@ export default function DrawerNavBar({
                         key="friends"
                         className="flex items-center py-3"
                         showDivider
-                        //  onPress={ShareButton}
                         onPress={handleInviteFriendsClick}
                         startContent={<UserGroupIcon className="m-1 size-6" />}
                         endContent={<ChevronRightIcon className="m-1 size-6" />}
@@ -237,7 +240,7 @@ export default function DrawerNavBar({
             Comparte
           </ButtonT>
         }
-      ></DrawerCustom>
+      />
     </>
   );
 }

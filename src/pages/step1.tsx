@@ -61,17 +61,12 @@ export default function Step1() {
     Services()
       .get(`${ENDPOINT.USER}/${user.email}`)
       .then((res: AxiosResponse) => {
-        const { status, data } = res;
-
-        if (status !== 200) {
-          return console.log("Error");
-        }
+        const { data } = res;
 
         /* Set */
         setUser({ user: { ...user, name: data?.name, userId: data?.id } });
         setter({ home: { itinerary: data.itinerary } });
       })
-      .catch((error) => console.log("Error", error))
       .finally(() => stopLoading());
   }, []);
 
@@ -98,7 +93,12 @@ export default function Step1() {
           </div>
           <div className="flex flex-row gap-4 mt-4 overflow-x-auto">
             <Cards
-              itinerary={home.itinerary?.toReversed()}
+              itinerary={home.itinerary
+                ?.map((item, index) => ({
+                  ...item,
+                  id: item.id ?? index,
+                }))
+                .toReversed()}
               loading={isLoading}
             />
           </div>

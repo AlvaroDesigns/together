@@ -57,8 +57,9 @@ export default function Hero({
           removeWrapper
           isLoading={loading}
           radius="none"
-          alt="Relaxing app background"
+          alt={title}
           className="z-0 object-cover w-full h-full"
+          fallbackSrc="dummy.jpg"
           src={image}
         />
       </Card>

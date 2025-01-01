@@ -1,4 +1,5 @@
 interface HomeItineraryTypes {
+  id: number;
   title: string | undefined;
   days: number;
   date: string | undefined;

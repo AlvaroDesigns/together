@@ -5,7 +5,7 @@ export default function CardSkeleton({ count = 1 }: { count: number }) {
     .fill(0)
     .map((__, index) => (
       <div
-        className="p-3 mb-5 dark:bg-content1 shadow-medium min-h-40 rounded-xl"
+        className="p-3 my-7 dark:bg-content1 shadow-medium min-h-40 rounded-xl"
         key={`skeleton-${index}`}
       >
         <div className="flex flex-col justify-center min-h-10">

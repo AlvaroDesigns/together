@@ -34,6 +34,7 @@ export default function CardFlight({
             height={45}
             alt="AIR company"
             className="min-w-11"
+            fallbackSrc="dummy.jpg"
             src={resolverAirFly(numberFlight?.substring(0, 2))}
           />
           <div className="flex flex-col ml-3">

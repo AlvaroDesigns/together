@@ -1,4 +1,5 @@
 import { AUHT_NAME } from "@/constants";
+import { format } from "@formkit/tempo";
 
 // Carga y muestra mensajes almacenados en localStorage
 export const getAuth = (name: string) => {
@@ -21,6 +22,17 @@ export const sendEventError = () => {
 
 export const elipsis = (texto: string, maxLength: number) => {
   return texto.length > maxLength ? texto.slice(0, maxLength) + "..." : texto;
+};
+
+export const formatDayForDays = (startDate: Date | undefined, day: Date) => {
+  if (startDate === null || startDate === undefined || day === null) {
+    return "No disponible";
+  }
+
+  return datesForDay(
+    format(new Date(startDate), "YYYY/MM/DD"),
+    format(new Date(day), "YYYY/MM/DD")
+  );
 };
 
 export const betweenDates = (start: string, end: string) => {

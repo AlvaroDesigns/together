@@ -57,10 +57,7 @@ export default function Login() {
           password: value.password,
         })
         .then((res: AxiosResponse) => {
-          const { status, data } = res;
-          if (status !== 201) {
-            return console.log("Error");
-          }
+          const { data } = res;
 
           /* Set */
           setter({
@@ -75,7 +72,6 @@ export default function Login() {
           setAuth(AUHT_NAME, data.access_token);
           navigate(ROUTES.HOME);
         })
-        .catch((error) => console.log("Error", error))
         .finally(() => stopLoading());
     },
     [errors, setter]
@@ -85,7 +81,7 @@ export default function Login() {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      console.log("User Info:", user);
+
       if (result.user.email) {
         setter({
           user: {
