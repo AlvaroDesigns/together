@@ -1,13 +1,13 @@
 export interface UserTypes {
-  name: string | undefined;
+  name: string | null;
   email: string | undefined;
-  avatar: string | undefined;
-  userId: string | undefined;
+  avatar?: string | null;
+  userId?: string | undefined;
   remember: boolean;
 }
 
 export interface UserState {
   user: UserTypes;
-  setter: (data: unknown) => void;
+  setter: (data: Partial<UserState>) => void;
   reset(): void;
 }

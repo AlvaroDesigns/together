@@ -80,7 +80,6 @@ export default function Login() {
   const signInGoogle = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
-      const user = result.user;
 
       if (result.user.email) {
         setter({
@@ -99,20 +98,8 @@ export default function Login() {
   };
 
   return (
-    <div className="h-screen text-foreground bg-background md:flex">
-      <div className="relative items-center justify-around hidden w-1/2 overflow-hidden md:flex ">
-        <div>
-          <h1 className="font-sans text-4xl font-bold text-white">GoFinance</h1>
-          <p className="mt-1 text-white">
-            The most popular peer to peer lending at SEA
-          </p>
-        </div>
-        <div className="absolute border-4 border-t-8 rounded-full -bottom-32 -left-40 w-80 h-80 border-opacity-30"></div>
-        <div className="absolute border-4 border-t-8 rounded-full -bottom-40 -left-20 w-80 h-80 border-opacity-30"></div>
-        <div className="absolute border-4 border-t-8 rounded-full -top-40 -right-0 w-80 h-80 border-opacity-30"></div>
-        <div className="absolute border-4 border-t-8 rounded-full -top-20 -right-20 w-80 h-80 border-opacity-30"></div>
-      </div>
-      <div className="flex items-center justify-center px-4 py-10 md:w-1/2">
+    <div className="flex flex-col h-screen text-foreground bg-background">
+      <div className="flex items-center justify-center w-full px-4 py-10">
         <div className="w-full max-w-[400px]">
           <div className="flex justify-center w-full mb-4">
             <Image
@@ -124,7 +111,6 @@ export default function Login() {
               onClick={() => navigate("/home")}
             />
           </div>
-
           <div className="flex items-center my-4 rounded-2xl">
             <Controller
               name="email"

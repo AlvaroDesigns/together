@@ -8,25 +8,28 @@ import { Image, Link } from "@nextui-org/react";
 import CardBase from "./cardBase";
 
 export default function CardFlight({
-  startDate = "2025/12/02",
-  departure = "Palma de Mallorca",
-  departureLabel = "PMI",
-  destination = "Venecia",
-  destinationLabel = "Venecia",
-  numberFlight = "FR6582",
+  startDate,
+  departure,
+  departureLabel,
+  destination,
+  destinationLabel,
+  numberFlight,
   descriptions,
+  onPressEdit,
 }: {
-  startDate: string | undefined;
+  startDate: string | Date;
   departure: string | undefined;
   departureLabel?: string | undefined;
   destination: string | undefined;
   destinationLabel?: string | undefined;
   numberFlight: string | undefined;
   descriptions?: string[] | null;
+  onPressEdit: () => void;
 }) {
   return (
     <CardBase
       header={startDate}
+      onPressEdit={onPressEdit}
       body={
         <>
           <Image
@@ -56,27 +59,27 @@ export default function CardFlight({
                 size: "xs",
               })} flex flex-col items-start `}
             >
-              {departureLabel && `${elipsis(departureLabel, 15)} to `}
-              {elipsis(destinationLabel, 15)}
+              {departureLabel && `${elipsis(departureLabel || "", 15)} to `}
+              {elipsis(destinationLabel || "", 15)}
             </h3>
-            <p
+            <div
               className={`${subtitle({
                 weight: "light",
                 size: "sm",
               })} flex`}
             >
               <div className="flex mt-1">
-                <span className="flex items-center mr-2">
+                <p className="flex items-center mr-2">
                   <ArrowUpRightIcon className="mr-1 dark:text-gray-600 size-5" />
                   {departure} 15:20
-                </span>
+                </p>
                 -
-                <span className="flex items-center ml-2">
+                <p className="flex items-center ml-2">
                   <ArrowDownRightIcon className="mr-1 dark:text-gray-600 size-5" />
                   {destination} 19.20
-                </span>
+                </p>
               </div>
-            </p>
+            </div>
           </div>
         </>
       }

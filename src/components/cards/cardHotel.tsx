@@ -6,14 +6,15 @@ import { Stars } from "../atomos/stars";
 import CardBase from "./cardBase";
 
 export default function CardHotel({
-  startDate = "2025/12/02",
-  name = "Hotel Apostoli Garden",
+  startDate,
+  name,
   imageUrl,
   city,
   country,
   placeUrl = "url",
   stars,
   descriptions,
+  onPressEdit,
 }: {
   startDate: string | Date;
   endDate: string | Date;
@@ -24,9 +25,11 @@ export default function CardHotel({
   placeUrl?: string | undefined;
   stars?: number | undefined;
   descriptions?: string[] | null;
+  onPressEdit: () => void;
 }) {
   return (
     <CardBase
+      onPressEdit={onPressEdit}
       header={startDate}
       body={
         <>

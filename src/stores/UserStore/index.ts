@@ -4,9 +4,9 @@ import { immer } from "zustand/middleware/immer";
 import { UserState, UserTypes } from "./index.types";
 
 const userData: UserTypes = {
-  name: undefined,
+  name: null,
   email: undefined,
-  avatar: undefined,
+  avatar: null,
   userId: undefined,
   remember: false,
 };
@@ -16,7 +16,7 @@ export const useUserStore = create<UserState>()(
     devtools(
       immer((set) => ({
         user: userData,
-        setter: (value: any) =>
+        setter: (value: Partial<UserState>) =>
           set(
             (state) => ({
               ...state,

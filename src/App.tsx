@@ -1,6 +1,7 @@
 import { RouterProvider } from "react-router-dom";
 
 import { useTheme } from "@nextui-org/use-theme";
+import { I18nProvider } from "@react-aria/i18n";
 import "./App.css";
 import { router } from "./routes";
 
@@ -9,7 +10,9 @@ function App() {
 
   return (
     <main className={`${theme} text-foreground bg-background`}>
-      <RouterProvider router={router} />
+      <I18nProvider locale="es-ES">
+        <RouterProvider router={router} />
+      </I18nProvider>
     </main>
   );
 }

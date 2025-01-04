@@ -16,7 +16,8 @@ import {
 
 export default function CardBase({
   header = new Date(),
-  hideEdit = true,
+  onPressEdit,
+  hideEdit = false,
   body,
   footer = null,
 }: {
@@ -24,24 +25,32 @@ export default function CardBase({
   hideEdit?: boolean;
   body: React.ReactNode;
   footer?: string[] | null;
+  onPressEdit?: () => void;
 }) {
+  const key = `card-base-${crypto.randomUUID()}`;
+
   return (
-    <Card isFooterBlurred className="w-full col-span-12 sm:col-span-7">
+    <Card
+      isFooterBlurred
+      className="w-full col-span-12 sm:col-span-7"
+      key={key}
+    >
       <CardHeader className="z-10 flex-col items-start">
         <div className="flex items-center justify-between w-full mb-3">
-          <div
+          <span
             className={`${subtitle({
               size: "sm",
             })} flex items-center justify-between`}
           >
             {capitalCase(format(new Date(header), "ddd, D MMM"))}
-          </div>
+          </span>
           {!hideEdit && (
             <Link
               isExternal
               showAnchorIcon
               className="text-default-600 hover:text-default-600"
               color="foreground"
+              onPress={onPressEdit}
               anchorIcon={
                 <PencilSquareIcon className="mt-1 mr-1 dark:text-gray-400 size-5" />
               }
@@ -57,21 +66,16 @@ export default function CardBase({
         <CardFooter className="pt-0 text-left">
           <div className="w-full ">
             <Divider />
-            <Accordion
-              showDivider={false}
-              isCompact={true}
-              defaultExpandedKeys={["null"]}
-              className="p-0 m-0"
-            >
+            <Accordion showDivider={false} isCompact={true} className="p-0 m-0">
               <AccordionItem
-                key="1"
+                key={key}
                 aria-label="Ver más información"
+                title="Ver más información"
                 classNames={{
                   trigger:
                     "bg-transparent px-0 hover:border-transparent focus:outline-0 focus-visible:outline-0 pb-0",
                   content: "flex flex-col gap-4 mt-2",
                 }}
-                title="Ver más información"
               >
                 {footer.map((item) => (
                   <p>{item}</p>

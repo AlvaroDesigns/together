@@ -1,17 +1,18 @@
 import {
   Button,
+  CardFlight,
+  CardHotel,
+  CardOut,
+  CardSkeleton,
+  CardTransfer,
+  CardTrip,
+  CardWeather,
   DrawerCustom,
   Hero,
   RootLayout,
   SectionForm,
 } from "@/components";
 
-import CardFlight from "@/components/cards/cardFlight";
-import CardHotel from "@/components/cards/cardHotel";
-import CardOut from "@/components/cards/cardOut";
-import CardSkeleton from "@/components/cards/cardSkeleton";
-import CardTransfer from "@/components/cards/cardTransfer";
-import CardTrip from "@/components/cards/cardTrip";
 import { subtitle } from "@/components/primitives";
 import { ENDPOINT } from "@/constants";
 import { sectionSchema } from "@/helpers/schema";
@@ -24,21 +25,19 @@ import { Button as ButtonUi, useDisclosure } from "@nextui-org/react";
 import { useTheme } from "@nextui-org/use-theme";
 import { AxiosResponse } from "axios";
 import { useCallback, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 export default function Step2() {
   const { theme } = useTheme();
 
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-  const { setter, itinerary } = useDataStore((state) => state);
+  const { setter, itinerary, edit } = useDataStore((state) => state);
 
-  const navigate = useNavigate();
   const { isLoading, startLoading, stopLoading } = useLoading();
   const [isLoadingPage, setIsLoadingPage] = useState(true);
   const [data, setData] = useState<
     | {
         id: number;
-        title: string | undefined;
+        title?: string | undefined;
         days: number;
         date: string | undefined;
         startDate: string | undefined;
@@ -49,14 +48,15 @@ export default function Step2() {
           id: number;
           type: string;
           startDate: string;
-          [key: string]: any;
+          [key: string]: unknown;
         }[];
       }
     | []
+    | unknown
   >([]);
 
   const { control, errors, handleSubmit, watch, reset } = useForm({
-    values: undefined,
+    values: edit,
     schema: sectionSchema,
   });
 
@@ -99,6 +99,23 @@ export default function Step2() {
       });
   };
 
+  const onEdit = useCallback(
+    (id: number) => {
+      console.log(data, itinerary);
+
+      if (Array.isArray(data) && data.length === 0) {
+        return console.log("No data");
+      }
+
+      const product = data?.items.find(
+        (item: { id: number }) => item.id === id
+      );
+      setter({ edit: product });
+      onOpen();
+    },
+    [data]
+  );
+
   const onSubmit = useCallback(
     (value: any) => {
       console.log(errors);
@@ -122,29 +139,7 @@ export default function Step2() {
     [TYPE]
   );
 
-  const options = {
-    method: "GET",
-    url: `https://booking-com18.p.rapidapi.com/stays/auto-complete?query=${"grupotel+acapulco"}&languageCode=es-es
-`,
-    headers: {
-      "x-rapidapi-key": "daa198d7efmsh649b50a2f52dc4ap18b7b4jsn74c93c732312",
-      "x-rapidapi-host": "booking-com18.p.rapidapi.com",
-    },
-  };
-
-  /*
-      return await Services()
-      .get(url, body)
-      .then((res: AxiosResponse) => {
-        const { status } = res;
-      })
-      .catch((error) => console.error(error));
-  */
-
   useEffect(() => {
-    /* Start Loading */
-    // startLoading();
-
     /* Call API */
     Services()
       .get(`${ENDPOINT.DETAILS}/${itinerary?.itemId}`)
@@ -167,19 +162,10 @@ export default function Step2() {
     }
   }, []);
 */
-  const handelGoBack = useCallback(() => {
-    navigate(-1);
-  }, []);
-  /**
- * 
- *           <ArrowLeftIcon
-            className="m-1 text-white size-8"
-            onClick={handelGoBack}
-          />
- */
 
   const switchCard = (data) => {
     const {
+      id,
       startDate,
       endDate,
       name,
@@ -199,25 +185,30 @@ export default function Step2() {
     const CARDS = {
       TRIP: (
         <CardTrip
+          key={`trip-${id}`}
           name={name}
           startDate={startDate}
           endDate={endDate}
           imageUrl={imageUrl}
           arrivalTime={arrivalTime}
           descriptions={description}
+          onPressEdit={() => onEdit(id)}
         />
       ),
       TRANSFER: (
         <CardTransfer
+          key={`transfer-${id}`}
           name={name}
           arrivalTime={arrivalTime}
           startDate={startDate}
           endDate={endDate}
           descriptions={description}
+          onPressEdit={() => onEdit(id)}
         />
       ),
       HOTEL: (
         <CardHotel
+          key={`hotel-${id}`}
           startDate={startDate}
           stars={stars}
           endDate={endDate}
@@ -226,10 +217,12 @@ export default function Step2() {
           country={country}
           imageUrl={imageUrl}
           descriptions={description}
+          onPressEdit={() => onEdit(id)}
         />
       ),
       FLIGHT: (
         <CardFlight
+          key={`flight-${id}`}
           startDate={startDate}
           departure={departure}
           departureLabel={departureLabel}
@@ -237,22 +230,23 @@ export default function Step2() {
           destinationLabel={destinationLabel}
           numberFlight={numberFlight}
           descriptions={description}
+          onPressEdit={() => onEdit(id)}
         />
       ),
     };
 
     return CARDS[data.type.toUpperCase() as keyof object];
   };
-  console.log(data);
+
   return (
     <RootLayout>
       <Hero
         loading={Boolean(!data?.items)}
-        startDate={data?.startDate}
-        endDate={data?.endDate}
-        title={data?.title}
-        days={data?.days}
-        image={data?.image}
+        startDate={itinerary?.startDate}
+        endDate={itinerary?.endDate}
+        title={itinerary?.title}
+        days={itinerary?.days}
+        image={itinerary?.image}
       />
       <div
         className="z-[30] flex"
@@ -271,6 +265,9 @@ export default function Step2() {
           <path d="M 0 0 c 0 0 200 50 500 50 s 500 -50 500 -50 v 101 h -1000 v -100 z" />
         </svg>
       </div>
+      <section className="relative flex flex-col mx-4 mt-5 mb-3">
+        <CardWeather />
+      </section>
       <section className="relative flex flex-col mx-4 mb-3">
         {Array.isArray(data) && data.length === 0 ? (
           <CardSkeleton count={5} />
@@ -278,7 +275,7 @@ export default function Step2() {
           data?.items?.length > 0 ? (
             data?.items
               ?.toSorted((a, b) => a.id - b.id)
-              .map((item) => (
+              .map((item: { id: string; type: string; startDate: Date }) => (
                 <div className="mb-4" key={`${item.id}-${item.type}`}>
                   <p
                     className={`${subtitle({
@@ -286,7 +283,7 @@ export default function Step2() {
                       size: "sm",
                     })} flex items-center py-2`}
                   >
-                    DÍA {formatDayForDays(data?.startDate, item.startDate)}
+                    DÍA {formatDayForDays(itinerary?.startDate, item.startDate)}
                   </p>
                   {switchCard(item)}
                 </div>

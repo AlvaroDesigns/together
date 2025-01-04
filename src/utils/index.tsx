@@ -21,7 +21,27 @@ export const sendEventError = () => {
 };
 
 export const elipsis = (texto: string, maxLength: number) => {
+  if (texto === null || texto === undefined) {
+    return texto;
+  }
+
   return texto.length > maxLength ? texto.slice(0, maxLength) + "..." : texto;
+};
+
+export const convertToISO = (dateObj: {
+  year: number;
+  month: number;
+  day: number;
+  hour: number;
+  minute: number;
+  second: number;
+  millisecond: number;
+}) => {
+  const { year, month, day, hour, minute, second, millisecond } = dateObj;
+  const date = new Date(
+    Date.UTC(year, month - 1, day, hour, minute, second, millisecond)
+  );
+  return date.toISOString();
 };
 
 export const formatDayForDays = (startDate: Date | undefined, day: Date) => {

@@ -61,6 +61,7 @@ export function DrawerItFrom({ control }: DrawerItFromProps) {
             color={fieldState.error?.message ? "danger" : "default"}
             errorMessage={fieldState.error?.message}
             minValue={today(getLocalTimeZone())}
+            maxValue={today(getLocalTimeZone()).add({ days: 365 })}
           />
         )}
       />
@@ -82,7 +83,7 @@ export function DrawerItFrom({ control }: DrawerItFromProps) {
             isInvalid={Boolean(fieldState.error?.message)}
             color={fieldState.error?.message ? "danger" : "default"}
             errorMessage={fieldState.error?.message}
-            value={field.value}
+            value={field.value as string}
           />
         )}
       />
@@ -97,7 +98,7 @@ export default function DrawerCreate() {
 
   const { isLoading, startLoading, stopLoading } = useLoading();
   const { control, errors, handleSubmit } = useForm({
-    values: "",
+    values: undefined,
     schema: createItinerary,
   });
 

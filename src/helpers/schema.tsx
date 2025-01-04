@@ -1,5 +1,6 @@
 import { REGEX } from "@/constants";
 import { LITERALS } from "@/literals/common";
+import { VARIANT_TYPE_SECTION } from "@/types";
 import * as yup from "yup";
 
 export const register = yup.object().shape({
@@ -77,43 +78,44 @@ export const sectionSchema = yup.object().shape({
     .date()
     .typeError("La fecha de inicio no es válida")
     .required("Debe seleccionar una fecha de inicio"),
-  endDate: yup.date().when("type", (type, schema) => {
-    return type[0] === "hotel"
-      ? schema
-          .typeError("La fecha de inicio no es válida")
-          .required("Debe seleccionar una fecha de inicio")
-      : schema.optional();
-  }),
+  endDate: yup
+    .date()
+    .required("Debe seleccionar una fecha de inicio")
+    .when("type", (type, schema) => {
+      return type[0] === VARIANT_TYPE_SECTION.HOTEL
+        ? schema.typeError("La fecha de inicio no es válida")
+        : schema.optional();
+    }),
   numberFlight: yup.string().when("type", (type, schema) => {
-    return type[0] === "flight"
+    return type[0] === VARIANT_TYPE_SECTION.FLIGHT
       ? schema
           .min(6, LITERALS.NUMBER_VALUE.replace("[number]", "6"))
           .required(LITERALS.REQUEST_LABEL)
       : schema.optional();
   }),
   name: yup.string().when("type", (type, schema) => {
-    return type[0] === "trip"
+    return type[0] === VARIANT_TYPE_SECTION.TRIP
       ? schema
           .min(3, LITERALS.NUMBER_VALUE.replace("[number]", "3"))
           .required(LITERALS.REQUEST_LABEL)
       : schema.optional();
   }),
   city: yup.string().when("type", (type, schema) => {
-    return type[0] === "hotel"
+    return type[0] === VARIANT_TYPE_SECTION.HOTEL
       ? schema
           .min(3, LITERALS.NUMBER_VALUE.replace("[number]", "3"))
           .required(LITERALS.REQUEST_LABEL)
       : schema.optional();
   }),
   country: yup.string().when("type", (type, schema) => {
-    return type[0] === "hotel"
+    return type[0] === VARIANT_TYPE_SECTION.HOTEL
       ? schema
           .min(3, LITERALS.NUMBER_VALUE.replace("[number]", "3"))
           .required(LITERALS.REQUEST_LABEL)
       : schema.optional();
   }),
   description: yup.string().when("type", (type, schema) => {
-    return type[0] === "trip"
+    return type[0] === VARIANT_TYPE_SECTION.TRIP
       ? schema
           .min(3, LITERALS.NUMBER_VALUE.replace("[number]", "3"))
           .max(500, LITERALS.NUMBER_VALUE.replace("[number]", "500"))
@@ -123,20 +125,18 @@ export const sectionSchema = yup.object().shape({
   }),
   transferName: yup.string().optional(),
   image_url: yup.string().when("type", (type, schema) => {
-    return type[0] === "trip"
+    return type[0] === VARIANT_TYPE_SECTION.TRIP
       ? schema
           .min(3, LITERALS.NUMBER_VALUE.replace("[number]", "3"))
           .required(LITERALS.REQUEST_LABEL)
       : schema.optional();
   }),
   category: yup.string().when("type", (type, schema) => {
-    return type[0] === "hotel"
+    return type[0] === VARIANT_TYPE_SECTION.HOTEL
       ? schema
-          .oneOf(
-            ["one", "two", "three", "four", "five", "none"],
-            "Invalid gender selected"
-          )
+          .oneOf(["1", "2", "3", "4", "5", "none"], "Invalid gender selected")
           .required(LITERALS.REQUEST_LABEL)
       : schema.optional();
   }),
+  test: yup.string().optional(),
 });

@@ -3,10 +3,18 @@ import { Stars } from "./atomos/stars";
 import { Status } from "./atomos/status";
 import Button from "./button";
 import Card from "./card";
-import { Cards } from "./cards";
+import {
+  CardFlight,
+  CardHotel,
+  CardOut,
+  CardSkeleton,
+  CardTransfer,
+  CardTrip,
+  CardWeather,
+} from "./cards";
+import { Cards } from "./cardsProduct";
 import DrawerCreateItinerary from "./drawerCreate";
 import { default as DrawerCustom, default as DrawerFrom } from "./drawerCustom";
-
 import Footer from "./footer";
 import SectionForm from "./form/sectionForm";
 import Header from "./header";
@@ -19,7 +27,14 @@ import OnBoarding from "./onBoarding";
 export {
   Button,
   Card,
+  CardFlight,
+  CardHotel,
+  CardOut,
   Cards,
+  CardSkeleton,
+  CardTransfer,
+  CardTrip,
+  CardWeather,
   DrawerCreateItinerary,
   DrawerCustom,
   DrawerFrom,

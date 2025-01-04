@@ -9,7 +9,7 @@ export default function Header() {
   const navigate = useNavigate();
 
   return (
-    <Navbar className="dark:border-slate-200 border-b-1 order-b">
+    <Navbar className="dark:border-slate-200 border-b-1 dark:border-default-200/50 order-b">
       <NavbarBrand className="justify-start">
         <Image
           removeWrapper

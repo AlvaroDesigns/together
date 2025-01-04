@@ -4,11 +4,12 @@ import { Image, Link } from "@nextui-org/react";
 import CardBase from "./cardBase";
 
 export default function CardTransfer({
-  startDate = "2025/12/02",
+  startDate,
   arrivalTime,
   name,
   placeUrl = "url",
   descriptions,
+  onPressEdit,
 }: {
   startDate: string | Date;
   arrivalTime: string | Date;
@@ -16,9 +17,11 @@ export default function CardTransfer({
   name: string | undefined;
   placeUrl?: string | undefined;
   descriptions?: string[] | null;
+  onPressEdit: () => void;
 }) {
   return (
     <CardBase
+      onPressEdit={onPressEdit}
       header={startDate}
       body={
         <>

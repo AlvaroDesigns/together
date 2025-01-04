@@ -10,34 +10,17 @@ import {
 } from "@nextui-org/react";
 
 import { Label, Stars } from "@/components";
+import { TRANSFER_DATA, TRIP } from "@/data";
 import { useForm } from "@/hooks";
 import { VARIANT_TYPE_SECTION } from "@/types";
-import { getLocalTimeZone, today } from "@internationalized/date";
+import { convertToISO } from "@/utils";
+import {
+  getLocalTimeZone,
+  now,
+  parseAbsoluteToLocal,
+  today,
+} from "@internationalized/date";
 import { Controller } from "react-hook-form";
-
-// eslint-disable-next-line react-refresh/only-export-components
-export const TRIP = [
-  { key: "FLIGHT", label: "Vuelo" },
-  { key: "HOTEL", label: "Hotel" },
-  { key: "TRANSFER", label: "Transfer" },
-  { key: "TRIP", label: "Actividad" },
-];
-
-export const TRANSFER_DATA = [
-  { key: "tren", label: "Tren" },
-  { key: "autobus", label: "Autobus" },
-  { key: "barco", label: "Barco" },
-  { key: "bicileta", label: "Bicicleta" },
-  { key: "patinete", label: "Patinete" },
-  { key: "metro", label: "Metro" },
-  { key: "tranvia", label: "Tranvia" },
-  { key: "uber", label: "Uber" },
-  { key: "cabify", label: "Cabify" },
-  { key: "bold", label: "Bold" },
-  { key: "grab", label: "Grab" },
-  { key: "taxi", label: "Taxi" },
-  { key: "otros", label: "Otros" },
-];
 
 interface SectionFormProps {
   control: ReturnType<typeof useForm>["control"];
@@ -56,7 +39,7 @@ export default function SectionForm({
       reset({ type: item?.currentKey });
     }
   };
-  console.log("------------- Modal", type);
+
   return (
     <div className="flex flex-col gap-1">
       <div className="flex flex-col mx-4">
@@ -78,7 +61,7 @@ export default function SectionForm({
               errorMessage={fieldState.error?.message}
               onSelectionChange={handleChange}
             >
-              {(animal) => <SelectItem>{animal.label}</SelectItem>}
+              {(op) => <SelectItem>{op.label}</SelectItem>}
             </Select>
           )}
         />
@@ -96,14 +79,21 @@ export default function SectionForm({
                   {...field}
                   variant="bordered"
                   label=" "
-                  className="max-w-[284px]"
-                  classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
                   fullWidth={true}
+                  granularity="day"
                   isInvalid={Boolean(fieldState.error?.message)}
                   color={fieldState.error?.message ? "danger" : "default"}
                   errorMessage={fieldState.error?.message}
+                  className="max-w-[284px]"
+                  value={
+                    field.value
+                      ? parseAbsoluteToLocal(field.value)
+                      : now(getLocalTimeZone())
+                  }
                   minValue={today(getLocalTimeZone())}
-                  defaultValue={today(getLocalTimeZone())}
+                  maxValue={today(getLocalTimeZone()).add({ days: 365 })}
+                  defaultValue={now(getLocalTimeZone())}
+                  onChange={(e) => field.onChange(convertToISO(e))}
                 />
               )}
             />
@@ -143,18 +133,22 @@ export default function SectionForm({
               render={({ field, fieldState }) => (
                 <DatePicker
                   {...field}
-                  hideTimeZone
-                  // defaultValue={now(getLocalTimeZone())}
-                  defaultValue={today(getLocalTimeZone())}
                   variant="bordered"
                   label=" "
                   fullWidth={true}
-                  classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
                   isInvalid={Boolean(fieldState.error?.message)}
                   color={fieldState.error?.message ? "danger" : "default"}
                   errorMessage={fieldState.error?.message}
                   className="max-w-[284px]"
+                  value={
+                    field.value
+                      ? parseAbsoluteToLocal(field.value)
+                      : now(getLocalTimeZone())
+                  }
                   minValue={today(getLocalTimeZone())}
+                  maxValue={today(getLocalTimeZone()).add({ days: 365 })}
+                  defaultValue={now(getLocalTimeZone())}
+                  onChange={(e) => field.onChange(convertToISO(e))}
                 />
               )}
             />
@@ -224,8 +218,15 @@ export default function SectionForm({
                   color={fieldState.error?.message ? "danger" : "default"}
                   errorMessage={fieldState.error?.message}
                   className="max-w-[284px]"
+                  value={
+                    field.value
+                      ? parseAbsoluteToLocal(field.value)
+                      : now(getLocalTimeZone())
+                  }
                   minValue={today(getLocalTimeZone())}
-                  defaultValue={today(getLocalTimeZone())}
+                  maxValue={today(getLocalTimeZone()).add({ days: 365 })}
+                  defaultValue={now(getLocalTimeZone())}
+                  onChange={(e) => field.onChange(convertToISO(e))}
                 />
               )}
             />
@@ -242,12 +243,20 @@ export default function SectionForm({
                   variant="bordered"
                   label=" "
                   fullWidth={true}
+                  granularity="day"
                   isInvalid={Boolean(fieldState.error?.message)}
                   color={fieldState.error?.message ? "danger" : "default"}
                   errorMessage={fieldState.error?.message}
                   className="max-w-[284px]"
+                  value={
+                    field.value
+                      ? parseAbsoluteToLocal(field.value)
+                      : now(getLocalTimeZone())
+                  }
                   minValue={today(getLocalTimeZone())}
-                  defaultValue={today(getLocalTimeZone())}
+                  maxValue={today(getLocalTimeZone()).add({ days: 365 })}
+                  defaultValue={now(getLocalTimeZone())}
+                  onChange={(e) => field.onChange(convertToISO(e))}
                 />
               )}
             />
@@ -384,16 +393,17 @@ export default function SectionForm({
                 <DatePicker
                   {...field}
                   hideTimeZone
-                  // defaultValue={now(getLocalTimeZone())}
-                  defaultValue={today(getLocalTimeZone())}
                   variant="bordered"
                   label=" "
                   fullWidth={true}
+                  hourCycle={24}
                   isInvalid={Boolean(fieldState.error?.message)}
                   color={fieldState.error?.message ? "danger" : "default"}
                   errorMessage={fieldState.error?.message}
                   className="max-w-[284px]"
+                  onChange={(e) => handleChangeIso(e, field)}
                   minValue={today(getLocalTimeZone())}
+                  defaultValue={now(getLocalTimeZone())}
                 />
               )}
             />

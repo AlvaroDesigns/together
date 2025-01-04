@@ -10,6 +10,7 @@ export default function CardTrip({
   placeUrl,
   descriptions,
   arrivalTime,
+  onPressEdit,
 }: {
   startDate: string | Date;
   endDate: string | Date;
@@ -18,9 +19,11 @@ export default function CardTrip({
   placeUrl?: string | undefined;
   descriptions?: string[] | null;
   arrivalTime?: string | Date;
+  onPressEdit: () => void;
 }) {
   return (
     <CardBase
+      onPressEdit={onPressEdit}
       header={startDate}
       body={
         <>

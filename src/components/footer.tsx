@@ -8,7 +8,7 @@ export default function Footer() {
   const { theme } = useTheme();
 
   return (
-    <footer className="flex flex-col items-start w-full gap-2 px-4 pt-5 pb-4 border-t justify-left">
+    <footer className="flex flex-col items-start w-full gap-2 px-4 pt-5 pb-4 border-t dark:border-default-200/50 justify-left">
       <Label>Legal</Label>
       {siteConfig.footerItems.map((item) => (
         <Link
