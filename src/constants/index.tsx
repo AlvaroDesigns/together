@@ -25,7 +25,7 @@ export const REGEX: Record<string, RegExp> = {
   NUMBER: /^([0-9]+)$/,
   POSTCODE:
     /^(01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52)\d{3}$/,
-  ALPHABETIC: /^([a-zA-ZÀ-ú -]+)$/,
+  ALPHABETIC: /^([a-zA-ZÀ-ú -,._]+)$/,
   PHONE: /^(6\d|7[0-5])\d{7}$/,
   EMAIL: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
   PASSWORD: /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[#?!@$%^&*-]).{8,}$/,
@@ -50,7 +50,9 @@ export const ENDPOINT: Record<string, string> = {
   USER: "v1/user",
   ITINERARY: "v1/itinerary",
   DETAILS: "v1/itinerary/details",
-  FLIGHTS: "flights",
+  FLIGHTS: "v1/operative/fight",
+  DIRECTIONS: "v1/operative/directions",
+  OPERATIVE: "v1/operative/weather",
 };
 
 /* GTM */

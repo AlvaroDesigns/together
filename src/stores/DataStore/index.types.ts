@@ -13,17 +13,27 @@ export interface HomeTypes {
   items: HomeItineraryTypes[] | [] | null;
 }
 
+export interface WeatherType {
+  humidity: null;
+  temperatureMax: null;
+  temperatureMin: null;
+}
+
 export interface ItineraryTypes {
-  title: string | undefined;
-  days: number;
   date: string | undefined;
-  startDate: string | undefined;
+  days: number;
   endDate: string | undefined;
+  id: number | undefined;
   image: string | undefined;
-  itemId: number | undefined | null;
+  items: HomeItineraryTypes[] | [] | null;
+  startDate: string | undefined;
+  title: string | undefined;
+  weather: WeatherType | null;
+  load: boolean;
 }
 export interface DetailsTypes {
   type: string | undefined;
+  userId: number | undefined;
   days: number;
   startDate: string | null;
   endDate: string | null;
@@ -50,4 +60,5 @@ export interface DataState {
   details: DetailsTypes | undefined;
   setter: (value: Partial<DataState>) => void;
   reset(): void;
+  resetItinerary(value: Partial<DataState>): void;
 }

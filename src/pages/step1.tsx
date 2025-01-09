@@ -11,7 +11,6 @@ import { ENDPOINT, ON_BOARDNG } from "@/constants";
 import Services from "@/services";
 import { useDataStore, useUserStore } from "@/stores";
 import { getAuth } from "@/utils";
-import { Link } from "@nextui-org/react";
 import { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 
@@ -66,7 +65,7 @@ export default function Step1() {
     Services()
       .get(`${ENDPOINT.USER}/${user.email}`)
       .then((res: AxiosResponse) => {
-        const { data } = res;
+        const { data } = res || {};
 
         /* Set */
         setUser({
@@ -77,7 +76,7 @@ export default function Step1() {
             avatar: data?.avatar,
           },
         });
-        setter({ home: { items: data.itinerary } });
+        setter({ home: { items: data?.itinerary } });
       })
       .finally(() => setTimeout(() => setIsLoading(false), 1000));
   }, []);
@@ -92,16 +91,6 @@ export default function Step1() {
         <div className="mt-6">
           <div className="flex flex-row whitespace-nowrap">
             <p className={subtitle()}>Ultimos destinos</p>
-            {(items?.length ?? 0) > 0 && (
-              <Link
-                size="sm"
-                underline="always"
-                className="mr-2 text-gray-600"
-                href="#"
-              >
-                View All
-              </Link>
-            )}
           </div>
           <div className="flex flex-row gap-4 mt-4 overflow-x-auto">
             <Cards
@@ -118,14 +107,6 @@ export default function Step1() {
         <div className="mt-6">
           <div className="flex flex-row whitespace-nowrap">
             <p className={subtitle()}>Top destinations</p>
-            <Link
-              size="sm"
-              underline="always"
-              className="mr-2 text-gray-600"
-              href="#"
-            >
-              View All
-            </Link>
           </div>
           <div className="flex flex-row gap-4 mt-4 overflow-x-auto">
             <Cards itinerary={DATA} loading={isLoading} />

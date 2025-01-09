@@ -15,6 +15,7 @@ export default function CardHotel({
   stars,
   descriptions,
   onPressEdit,
+  onPressDelete,
 }: {
   startDate: string | Date;
   endDate: string | Date;
@@ -26,10 +27,12 @@ export default function CardHotel({
   stars?: number | undefined;
   descriptions?: string[] | null;
   onPressEdit: () => void;
+  onPressDelete: () => void;
 }) {
   return (
     <CardBase
       onPressEdit={onPressEdit}
+      onPressDelete={onPressDelete}
       header={startDate}
       body={
         <>

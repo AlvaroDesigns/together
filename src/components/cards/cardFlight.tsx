@@ -15,7 +15,9 @@ export default function CardFlight({
   destinationLabel,
   numberFlight,
   descriptions,
+  arrivalTime,
   onPressEdit,
+  onPressDelete,
 }: {
   startDate: string | Date;
   departure: string | undefined;
@@ -24,12 +26,17 @@ export default function CardFlight({
   destinationLabel?: string | undefined;
   numberFlight: string | undefined;
   descriptions?: string[] | null;
+  arrivalTime: string | undefined;
   onPressEdit: () => void;
+  onPressDelete: () => void;
 }) {
+  const time = arrivalTime?.split("-");
+
   return (
     <CardBase
       header={startDate}
       onPressEdit={onPressEdit}
+      onPressDelete={onPressDelete}
       body={
         <>
           <Image
@@ -56,11 +63,11 @@ export default function CardFlight({
             </Link>
             <h3
               className={`${title({
-                size: "xs",
+                size: "xxs",
               })} flex flex-col items-start `}
             >
-              {departureLabel && `${elipsis(departureLabel || "", 15)} to `}
-              {elipsis(destinationLabel || "", 15)}
+              {departureLabel && `${elipsis(departureLabel || "", 19)} a `}
+              {elipsis(destinationLabel || "", 19)}
             </h3>
             <div
               className={`${subtitle({
@@ -71,12 +78,12 @@ export default function CardFlight({
               <div className="flex mt-1">
                 <p className="flex items-center mr-2">
                   <ArrowUpRightIcon className="mr-1 dark:text-gray-600 size-5" />
-                  {departure} 15:20
+                  {departure} {time?.[0]}
                 </p>
-                -
+
                 <p className="flex items-center ml-2">
                   <ArrowDownRightIcon className="mr-1 dark:text-gray-600 size-5" />
-                  {destination} 19.20
+                  {destination} {time?.[1]}
                 </p>
               </div>
             </div>

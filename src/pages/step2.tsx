@@ -19,151 +19,58 @@ import { sectionSchema } from "@/helpers/schema";
 import { useForm, useLoading } from "@/hooks";
 import Services from "@/services";
 import { useDataStore } from "@/stores";
+import { DetailsTypes, ItineraryTypes } from "@/stores/DataStore/index.types";
 import { VARIANT_TYPE_SECTION } from "@/types";
-import { formatDayForDays } from "@/utils";
+import { formatDay, formatDayForDays } from "@/utils";
 import { Button as ButtonUi, useDisclosure } from "@nextui-org/react";
 import { useTheme } from "@nextui-org/use-theme";
-import { AxiosResponse } from "axios";
-import { useCallback, useEffect, useState } from "react";
+import axios, { AxiosResponse } from "axios";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useFieldArray } from "react-hook-form";
 
-export default function Step2() {
-  const { theme } = useTheme();
+interface RepeatingTypes {
+  control: ReturnType<typeof useForm>["control"];
+  watch: ReturnType<typeof useForm>["watch"];
+  onOpen: () => void;
+}
 
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-  const { setter, itinerary, edit } = useDataStore((state) => state);
+const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
+  const { setter, itinerary } = useDataStore((state) => state);
+  const items = useDataStore((state) => state.itinerary?.items);
 
-  const { isLoading, startLoading, stopLoading } = useLoading();
-  const [isLoadingPage, setIsLoadingPage] = useState(true);
-  const [data, setData] = useState<
-    | {
-        id: number;
-        title?: string | undefined;
-        days: number;
-        date: string | undefined;
-        startDate: string | undefined;
-        endDate: string | undefined;
-        image: string | undefined;
-        userId: number;
-        items?: {
-          id: number;
-          type: string;
-          startDate: string;
-          [key: string]: unknown;
-        }[];
-      }
-    | []
-    | unknown
-  >([]);
+  const { fields, remove, append } = useFieldArray({ control, name: "items" });
 
-  const { control, errors, handleSubmit, watch, reset } = useForm({
-    values: edit,
-    schema: sectionSchema,
-  });
+  if (fields.length === 0 && items && items?.length > 0) {
+    items?.forEach((item) => append(item));
+  }
 
-  const TYPE = watch("type");
-
-  const ServiceDetails = async (value, data) => {
-    return await Services()
-      .post(`${ENDPOINT.DETAILS}/${data?.itemId}`, {
-        type: TYPE || VARIANT_TYPE_SECTION.FLIGHT,
-        days: 1,
-        startDate: value.startDate,
-        endDate: value?.startDate,
-        departure: data?.departure?.split(",")[0] || value.departure,
-        departureLabel: data?.departureLabel,
-        destination: data?.arrivadas?.split(",")[0] || value.destination,
-        destinationLabel: data?.arrivadasLabel,
-        arrivalTime: data?.arrivalTime || null,
-        stars: Number(value.category),
-        placeUrl: null,
-        numberFlight: value.numberFlight,
-        description: value?.description?.split("\n"),
-        imageUrl: value?.image_url,
-        cityName: value?.city,
-        region: null,
-        country: value?.country,
-        name: value?.name || value?.transferName,
-        collapse: false,
-      })
-      .then((res: AxiosResponse) => {
-        const { data } = res;
-
-        setter({ itinerary: data });
-      })
-      .catch((error) => console.log("Error", error))
-      .finally(() => {
-        stopLoading();
-        if (!isLoadingPage) {
-          onClose();
-        }
-      });
-  };
+  const watchFieldArray: DetailsTypes[] = watch("items");
+  const controlledFields: DetailsTypes[] = useMemo(
+    () =>
+      fields?.map((field, index) => {
+        return {
+          ...field,
+          ...(watchFieldArray[index] as DetailsTypes),
+        };
+      }),
+    [fields, watchFieldArray]
+  );
 
   const onEdit = useCallback(
     (id: number) => {
-      console.log(data, itinerary);
-
-      if (Array.isArray(data) && data.length === 0) {
+      if (Array.isArray(items) && items.length === 0) {
         return console.log("No data");
       }
 
-      const product = data?.items.find(
-        (item: { id: number }) => item.id === id
-      );
+      const product = items.find((item: { id: number }) => item.id === id);
+
       setter({ edit: product });
       onOpen();
     },
-    [data]
+    [items]
   );
 
-  const onSubmit = useCallback(
-    (value: any) => {
-      console.log(errors);
-
-      startLoading();
-
-      if (TYPE === VARIANT_TYPE_SECTION.FLIGHT) {
-        return Services()
-          .get(`${ENDPOINT.FLIGHTS}?flightNumber=${value?.numberFlight}`)
-          .then((res: AxiosResponse) => {
-            const { data } = res;
-
-            /* Call API */
-            ServiceDetails(value, data);
-          });
-      }
-
-      return ServiceDetails(value, {});
-      /* Call API */
-    },
-    [TYPE]
-  );
-
-  useEffect(() => {
-    /* Call API */
-    Services()
-      .get(`${ENDPOINT.DETAILS}/${itinerary?.itemId}`)
-      .then((res: AxiosResponse) => {
-        const { data } = res;
-
-        /* Set */
-        setter({ itinerary: data });
-        setData(data);
-      })
-      .finally(() => setTimeout(() => setIsLoadingPage(false), 500));
-  }, []);
-  /*
-  useEffect(() => {
-    try {
-      // const response = axios.request(options);
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
-*/
-
-  const switchCard = (data) => {
+  const switchCard = (data: any, index: number | number[] | undefined) => {
     const {
       id,
       startDate,
@@ -193,6 +100,7 @@ export default function Step2() {
           arrivalTime={arrivalTime}
           descriptions={description}
           onPressEdit={() => onEdit(id)}
+          onPressDelete={() => remove(index)}
         />
       ),
       TRANSFER: (
@@ -204,6 +112,7 @@ export default function Step2() {
           endDate={endDate}
           descriptions={description}
           onPressEdit={() => onEdit(id)}
+          onPressDelete={() => remove(index)}
         />
       ),
       HOTEL: (
@@ -218,6 +127,7 @@ export default function Step2() {
           imageUrl={imageUrl}
           descriptions={description}
           onPressEdit={() => onEdit(id)}
+          onPressDelete={() => remove(index)}
         />
       ),
       FLIGHT: (
@@ -230,7 +140,9 @@ export default function Step2() {
           destinationLabel={destinationLabel}
           numberFlight={numberFlight}
           descriptions={description}
+          arrivalTime={arrivalTime}
           onPressEdit={() => onEdit(id)}
+          onPressDelete={() => remove(index)}
         />
       ),
     };
@@ -239,9 +151,147 @@ export default function Step2() {
   };
 
   return (
+    <>
+      {controlledFields
+        ?.toSorted(
+          (a, b) =>
+            new Date(a.startDate ?? 0).getTime() -
+            new Date(b.startDate ?? 0).getTime()
+        )
+        .map((item, index: number) => (
+          <div className="mb-4" key={`${item.id}-${item.type}`}>
+            <p
+              className={`${subtitle({
+                weight: "bold",
+                size: "sm",
+              })} flex items-center py-2`}
+            >
+              DÍA {formatDayForDays(itinerary?.startDate, item.startDate)}
+            </p>
+            {switchCard(item, index)}
+          </div>
+        ))}
+    </>
+  );
+};
+
+export default function Step2() {
+  const { theme } = useTheme();
+
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const { setter, itinerary, edit } = useDataStore((state) => state);
+  const items = useDataStore((state) => state.itinerary?.items);
+
+  const { isLoading, startLoading, stopLoading } = useLoading();
+  const [isLoadingPage, setIsLoadingPage] = useState(true);
+  const [data, setData] = useState<ItineraryTypes | null>(null);
+
+  const { control, watch } = useForm({
+    values: { items },
+    schema: sectionSchema,
+  });
+
+  const {
+    control: controlForm,
+    reset: resetForm,
+    watch: watchForm,
+    handleSubmit,
+  } = useForm({
+    values: edit,
+    schema: sectionSchema,
+  });
+
+  const TYPE = watchForm("type");
+  const ServiceDetails = async (value: any, data: any | object) => {
+    return await Services()
+      .post(`${ENDPOINT.DETAILS}/${itinerary?.id}`, {
+        type: TYPE || VARIANT_TYPE_SECTION.FLIGHT,
+        days: 1,
+        startDate: value.startDate,
+        endDate: data.endDate || value?.endDate,
+        departure: data?.depart?.iata || value.departure,
+        departureLabel: data?.depart?.cityName,
+        destination: data?.arrive?.iata || value.destination,
+        destinationLabel: data?.arrive?.cityName,
+        arrivalTime:
+          data?.depart?.time && data?.arrive?.time
+            ? `${data?.depart?.time}-${data?.arrive?.time}`
+            : null,
+        stars: Number(value.category),
+        placeUrl: null,
+        numberFlight: value?.numberFlight,
+        description: value?.description?.split("\n"),
+        imageUrl: value?.image_url,
+        cityName: value?.city,
+        region: null,
+        country: value?.country,
+        name: value?.name || value?.transferName,
+        collapse: false,
+      })
+      .then((res: AxiosResponse) => {
+        const { data } = res;
+      })
+      .catch((error) => console.log("Error", error))
+      .finally(() => {
+        stopLoading();
+        if (!isLoadingPage) {
+          onClose();
+        }
+      });
+  };
+
+  const onSubmit = useCallback(
+    async (value: any) => {
+      startLoading();
+
+      if (TYPE === VARIANT_TYPE_SECTION.FLIGHT) {
+        const date = formatDay(value.startDate);
+
+        const res = await Services().get(
+          `${ENDPOINT.FLIGHTS}?flightNumber=${value?.numberFlight}&date=${date}`
+        );
+        const dt = res?.data || {};
+        /* Call API */
+        return ServiceDetails(value, { items, ...dt });
+      }
+
+      /* Call API */
+      return ServiceDetails(value, items);
+    },
+    [TYPE]
+  );
+
+  useEffect(() => {
+    axios
+      .all([
+        Services().get(
+          `${ENDPOINT.OPERATIVE}?query=${itinerary?.title}`,
+          "weather"
+        ),
+        Services().get(`${ENDPOINT.DETAILS}/${itinerary?.id}`, "details"),
+      ])
+      .then(
+        axios.spread((weatherData, details) => {
+          const { data: weatherDataInfo } = weatherData || {};
+          const { data } = details || {};
+
+          const weather = {
+            ...weatherDataInfo?.intervals[0].values,
+          };
+
+          /* Set */
+          setter({ itinerary: { ...data, weather } });
+          setData({ ...data, weather });
+        })
+      )
+      .finally(() => setTimeout(() => setIsLoadingPage(false), 1000));
+  }, []);
+
+  const item = JSON.stringify(data?.items);
+  return (
     <RootLayout>
       <Hero
-        loading={Boolean(!data?.items)}
+        loading={!items}
         startDate={itinerary?.startDate}
         endDate={itinerary?.endDate}
         title={itinerary?.title}
@@ -265,29 +315,19 @@ export default function Step2() {
           <path d="M 0 0 c 0 0 200 50 500 50 s 500 -50 500 -50 v 101 h -1000 v -100 z" />
         </svg>
       </div>
-      <section className="relative flex flex-col mx-4 mt-5 mb-3">
-        <CardWeather />
-      </section>
+      {data?.weather && data?.weather?.temperatureMax && (
+        <section className="relative flex flex-col mx-4 mt-5 mb-3">
+          <CardWeather
+            humidity={data?.weather?.humidityAvg}
+            max={data?.weather?.temperatureMax}
+            min={data?.weather?.temperatureMin}
+          />
+        </section>
+      )}
       <section className="relative flex flex-col mx-4 mb-3">
-        {Array.isArray(data) && data.length === 0 ? (
-          <CardSkeleton count={5} />
-        ) : !Array.isArray(data) && Array.isArray(data?.items) ? (
+        {!isLoadingPage && data?.items ? (
           data?.items?.length > 0 ? (
-            data?.items
-              ?.toSorted((a, b) => a.id - b.id)
-              .map((item: { id: string; type: string; startDate: Date }) => (
-                <div className="mb-4" key={`${item.id}-${item.type}`}>
-                  <p
-                    className={`${subtitle({
-                      weight: "bold",
-                      size: "sm",
-                    })} flex items-center py-2`}
-                  >
-                    DÍA {formatDayForDays(itinerary?.startDate, item.startDate)}
-                  </p>
-                  {switchCard(item)}
-                </div>
-              ))
+            <Repeating control={control} watch={watch} onOpen={onOpen} />
           ) : (
             <div className="my-8">
               <CardOut />
@@ -308,7 +348,9 @@ export default function Step2() {
           isOpen={isOpen}
           header="Configura tu viaje"
           onOpenChange={onOpenChange}
-          body={<SectionForm control={control} type={TYPE} reset={reset} />}
+          body={
+            <SectionForm type={TYPE} control={controlForm} reset={resetForm} />
+          }
           footer={
             <Button isLoading={isLoading} onPress={handleSubmit(onSubmit)}>
               Guardar Actividad

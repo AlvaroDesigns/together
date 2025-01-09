@@ -5,43 +5,98 @@ import { useForm, useLoading } from "@/hooks";
 import Services from "@/services";
 import { useUserStore } from "@/stores";
 import { betweenDates } from "@/utils";
+import { addHour } from "@formkit/tempo";
 import { getLocalTimeZone, today } from "@internationalized/date";
+
 import {
+  Autocomplete,
+  AutocompleteItem,
   Button as ButtonUI,
   DateRangePicker,
   Input,
   useDisclosure,
 } from "@nextui-org/react";
+import { useAsyncList } from "@react-stately/data";
 import { AxiosResponse } from "axios";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
+import { useDebounce } from "use-debounce";
 
 interface DrawerItFromProps {
   control: ReturnType<typeof useForm>["control"];
 }
 
 export function DrawerItFrom({ control }: DrawerItFromProps) {
+  const [inputValue, setInputValue] = useState(""); // Valor actual del input
+  const [debouncedValue] = useDebounce(inputValue, 300);
+
+  const list = useAsyncList({
+    async load() {
+      if (!inputValue) return { items: [] }; // No cargar si no hay texto
+
+      const resp = await Services().get(
+        `${ENDPOINT.DIRECTIONS}?query=${inputValue}`
+      );
+      console.log("resp", list);
+
+      return {
+        items: resp.data.data,
+      };
+    },
+  });
+
+  useEffect(() => {
+    list.setFilterText(debouncedValue);
+  }, [debouncedValue]);
+
   return (
     <div className="flex flex-col gap-4 mx-4 mt-2">
       <Controller
         name="title"
         control={control}
         render={({ field, fieldState }) => (
-          <Input
+          <Autocomplete
             {...field}
             isRequired
-            radius="full"
-            type="text"
-            label="Nombre del itinerario"
+            inputValue={inputValue as string}
+            isLoading={list.isLoading}
+            items={(list?.items as []) || []}
             fullWidth={true}
-            placeholder="Introduce tu titulo del itinerario"
-            classNames={{
-              inputWrapper: "!min-h-[60px] h-10",
+            label="¿A dónde vas?"
+            placeholder="Ej, Madrid, Paris, Japon"
+            variant="bordered"
+            listboxProps={{
+              emptyContent: "El campo está vacío",
             }}
             isInvalid={Boolean(fieldState.error?.message)}
             color={fieldState.error?.message ? "danger" : "default"}
             errorMessage={fieldState.error?.message}
-          />
+            onInputChange={(value) => {
+              setInputValue(value);
+              field.onChange(value);
+            }}
+          >
+            {(item: {
+              key: string;
+              name: string;
+              stateName?: string;
+              countryName: string;
+            }) => (
+              <AutocompleteItem
+                key={item?.key}
+                textValue={`${item?.key}-${item?.countryName}`}
+                className="capitalize"
+              >
+                <div>
+                  <p className="text-sm">{item?.name}</p>
+                  <p className="text-xs text-gray-500">
+                    {item?.stateName && `${item?.stateName} - `}
+                    {item?.countryName}
+                  </p>
+                </div>
+              </AutocompleteItem>
+            )}
+          </Autocomplete>
         )}
       />
       <Controller
@@ -51,17 +106,19 @@ export function DrawerItFrom({ control }: DrawerItFromProps) {
           <DateRangePicker
             {...field}
             isRequired
-            radius="full"
+            variant="bordered"
             label="Fecha del viaje"
-            classNames={{
-              inputWrapper: "!min-h-[60px]",
-            }}
             visibleMonths={2}
             isInvalid={Boolean(fieldState.error?.message)}
             color={fieldState.error?.message ? "danger" : "default"}
             errorMessage={fieldState.error?.message}
             minValue={today(getLocalTimeZone())}
             maxValue={today(getLocalTimeZone()).add({ days: 365 })}
+            classNames={
+              {
+                // calendarContent: "w-[500px]",
+              }
+            }
           />
         )}
       />
@@ -72,14 +129,11 @@ export function DrawerItFrom({ control }: DrawerItFromProps) {
           <Input
             {...field}
             isRequired
-            radius="full"
             type="url"
+            variant="bordered"
             label="Url de la imagen"
             fullWidth={true}
             placeholder="Introduce tu imagen"
-            classNames={{
-              inputWrapper: "!min-h-[60px] h-10",
-            }}
             isInvalid={Boolean(fieldState.error?.message)}
             color={fieldState.error?.message ? "danger" : "default"}
             errorMessage={fieldState.error?.message}
@@ -104,11 +158,10 @@ export default function DrawerCreate() {
 
   const onSubmit = useCallback(async (value: any) => {
     if (isStatus) {
-      onClose();
+      return onClose();
     }
 
     const error = Object.entries(errors).length !== 0;
-    console.log("error", error, value);
 
     /* Exit */
     if (error) return;
@@ -121,8 +174,8 @@ export default function DrawerCreate() {
       .post(`${ENDPOINT.ITINERARY}/${userId}`, {
         title: value.title,
         days: betweenDates(value.dates.start, value.dates.end),
-        startDate: value.dates.start,
-        endDate: value.dates.end,
+        startDate: addHour(value?.dates?.start, 1),
+        endDate: addHour(value?.dates?.end, 1),
         image: value.image,
         date: new Date(),
       })

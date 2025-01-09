@@ -1,5 +1,4 @@
 import {
-  DatePicker,
   Divider,
   Input,
   Radio,
@@ -9,17 +8,11 @@ import {
   Textarea,
 } from "@nextui-org/react";
 
-import { Label, Stars } from "@/components";
+import { Calendar, Label, Stars } from "@/components";
 import { TRANSFER_DATA, TRIP } from "@/data";
 import { useForm } from "@/hooks";
+import { useDataStore } from "@/stores";
 import { VARIANT_TYPE_SECTION } from "@/types";
-import { convertToISO } from "@/utils";
-import {
-  getLocalTimeZone,
-  now,
-  parseAbsoluteToLocal,
-  today,
-} from "@internationalized/date";
 import { Controller } from "react-hook-form";
 
 interface SectionFormProps {
@@ -33,6 +26,8 @@ export default function SectionForm({
   reset,
   type = "FLIGHT",
 }: SectionFormProps) {
+  const { itinerary } = useDataStore((state) => state);
+
   const handleChange = (item: { currentKey: string }) => {
     if (type) {
       console.log("----------reset------", reset);
@@ -55,13 +50,13 @@ export default function SectionForm({
               label="Tipo"
               placeholder="Selecciona un tipo de viaje"
               variant="bordered"
-              defaultSelectedKeys={["FLIGHT"]}
+              defaultSelectedKeys={[VARIANT_TYPE_SECTION.FLIGHT]}
               isInvalid={Boolean(fieldState.error?.message)}
               color={fieldState.error?.message ? "danger" : "default"}
               errorMessage={fieldState.error?.message}
               onSelectionChange={handleChange}
             >
-              {(op) => <SelectItem>{op.label}</SelectItem>}
+              {(op) => <SelectItem key={op.key}>{op.label}</SelectItem>}
             </Select>
           )}
         />
@@ -71,31 +66,10 @@ export default function SectionForm({
           <Divider className="mt-5 mb-3" />
           <div className="flex flex-col mx-4">
             <Label>Fecha de salida</Label>
-            <Controller
+            <Calendar
               name="startDate"
               control={control}
-              render={({ field, fieldState }) => (
-                <DatePicker
-                  {...field}
-                  variant="bordered"
-                  label=" "
-                  fullWidth={true}
-                  granularity="day"
-                  isInvalid={Boolean(fieldState.error?.message)}
-                  color={fieldState.error?.message ? "danger" : "default"}
-                  errorMessage={fieldState.error?.message}
-                  className="max-w-[284px]"
-                  value={
-                    field.value
-                      ? parseAbsoluteToLocal(field.value)
-                      : now(getLocalTimeZone())
-                  }
-                  minValue={today(getLocalTimeZone())}
-                  maxValue={today(getLocalTimeZone()).add({ days: 365 })}
-                  defaultValue={now(getLocalTimeZone())}
-                  onChange={(e) => field.onChange(convertToISO(e))}
-                />
-              )}
+              startDate={itinerary?.startDate}
             />
           </div>
           <Divider className="mt-5 mb-3" />
@@ -127,30 +101,10 @@ export default function SectionForm({
           <Divider className="mt-5 mb-3" />
           <div className="flex flex-col mx-4">
             <Label>Fecha del servicio</Label>
-            <Controller
+            <Calendar
               name="startDate"
               control={control}
-              render={({ field, fieldState }) => (
-                <DatePicker
-                  {...field}
-                  variant="bordered"
-                  label=" "
-                  fullWidth={true}
-                  isInvalid={Boolean(fieldState.error?.message)}
-                  color={fieldState.error?.message ? "danger" : "default"}
-                  errorMessage={fieldState.error?.message}
-                  className="max-w-[284px]"
-                  value={
-                    field.value
-                      ? parseAbsoluteToLocal(field.value)
-                      : now(getLocalTimeZone())
-                  }
-                  minValue={today(getLocalTimeZone())}
-                  maxValue={today(getLocalTimeZone()).add({ days: 365 })}
-                  defaultValue={now(getLocalTimeZone())}
-                  onChange={(e) => field.onChange(convertToISO(e))}
-                />
-              )}
+              startDate={itinerary?.startDate}
             />
           </div>
           <Divider className="mt-5 mb-3" />
@@ -178,7 +132,7 @@ export default function SectionForm({
           </div>
           <Divider className="mt-5 mb-3" />
           <div className="flex flex-col mx-4">
-            <Label>Descripcion</Label>
+            <Label>Descripción</Label>
             <Controller
               name="description"
               control={control}
@@ -205,60 +159,19 @@ export default function SectionForm({
           <Divider className="mt-5 mb-3" />
           <div className="flex flex-col mx-4">
             <Label>Fecha de entrada</Label>
-            <Controller
+            <Calendar
               name="startDate"
               control={control}
-              render={({ field, fieldState }) => (
-                <DatePicker
-                  {...field}
-                  variant="bordered"
-                  label=" "
-                  fullWidth={true}
-                  isInvalid={Boolean(fieldState.error?.message)}
-                  color={fieldState.error?.message ? "danger" : "default"}
-                  errorMessage={fieldState.error?.message}
-                  className="max-w-[284px]"
-                  value={
-                    field.value
-                      ? parseAbsoluteToLocal(field.value)
-                      : now(getLocalTimeZone())
-                  }
-                  minValue={today(getLocalTimeZone())}
-                  maxValue={today(getLocalTimeZone()).add({ days: 365 })}
-                  defaultValue={now(getLocalTimeZone())}
-                  onChange={(e) => field.onChange(convertToISO(e))}
-                />
-              )}
+              startDate={itinerary?.startDate}
             />
           </div>
           <Divider className="mt-5 mb-3" />
           <div className="flex flex-col mx-4">
             <Label>Fecha de salida</Label>
-            <Controller
+            <Calendar
               name="endDate"
               control={control}
-              render={({ field, fieldState }) => (
-                <DatePicker
-                  {...field}
-                  variant="bordered"
-                  label=" "
-                  fullWidth={true}
-                  granularity="day"
-                  isInvalid={Boolean(fieldState.error?.message)}
-                  color={fieldState.error?.message ? "danger" : "default"}
-                  errorMessage={fieldState.error?.message}
-                  className="max-w-[284px]"
-                  value={
-                    field.value
-                      ? parseAbsoluteToLocal(field.value)
-                      : now(getLocalTimeZone())
-                  }
-                  minValue={today(getLocalTimeZone())}
-                  maxValue={today(getLocalTimeZone()).add({ days: 365 })}
-                  defaultValue={now(getLocalTimeZone())}
-                  onChange={(e) => field.onChange(convertToISO(e))}
-                />
-              )}
+              startDate={itinerary?.startDate}
             />
           </div>
           <Divider className="mt-5 mb-3" />
@@ -386,26 +299,10 @@ export default function SectionForm({
           <Divider className="mt-5 mb-3" />
           <div className="flex flex-col mx-4">
             <Label>Duración de la actividad</Label>
-            <Controller
-              name="range"
+            <Calendar
+              name="startDate"
               control={control}
-              render={({ field, fieldState }) => (
-                <DatePicker
-                  {...field}
-                  hideTimeZone
-                  variant="bordered"
-                  label=" "
-                  fullWidth={true}
-                  hourCycle={24}
-                  isInvalid={Boolean(fieldState.error?.message)}
-                  color={fieldState.error?.message ? "danger" : "default"}
-                  errorMessage={fieldState.error?.message}
-                  className="max-w-[284px]"
-                  onChange={(e) => handleChangeIso(e, field)}
-                  minValue={today(getLocalTimeZone())}
-                  defaultValue={now(getLocalTimeZone())}
-                />
-              )}
+              startDate={itinerary?.startDate}
             />
           </div>
           <Divider className="mt-5 mb-3" />

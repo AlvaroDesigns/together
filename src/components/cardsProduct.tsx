@@ -22,7 +22,7 @@ interface CardsProps {
 }
 
 export const Cards: React.FC<CardsProps> = ({ itinerary, loading = true }) => {
-  const { setter } = useDataStore((state) => state);
+  const { resetItinerary } = useDataStore((state) => state);
   const { user } = useUserStore((state) => state);
   const navigate = useNavigate();
 
@@ -35,13 +35,14 @@ export const Cards: React.FC<CardsProps> = ({ itinerary, loading = true }) => {
     title: string;
     days: number;
   }) => {
+    /* Format */
     const formatUrl = title
       .toLowerCase()
       .replace(/ & /g, "_")
       .replace(/ /g, "_");
 
-    /* Set */
-    setter({ itinerary: { itemId: id } });
+    /* Reset and clean  */
+    resetItinerary({ itinerary: { title, id, load: true } });
 
     /* Navigate */
     navigate(`/${formatUrl}_${days}_dias`);
@@ -52,7 +53,7 @@ export const Cards: React.FC<CardsProps> = ({ itinerary, loading = true }) => {
       .fill(0)
       .map((_, index) => (
         <div
-          className="p-3 mb-5 bg-conten1 border dark:border-gray-700 min-h-56 rounded-xl w-[200px] min-w-[200px] "
+          className="p-3 mb-5 bg-conten1 border dark:border-gray-700 min-h-56 rounded-xl w-[200px] min-w-[200px]"
           key={`skeleton-${index}`}
         >
           <div className="flex flex-col justify-center min-h-10">

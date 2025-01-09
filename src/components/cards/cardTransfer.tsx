@@ -10,6 +10,7 @@ export default function CardTransfer({
   placeUrl = "url",
   descriptions,
   onPressEdit,
+  onPressDelete,
 }: {
   startDate: string | Date;
   arrivalTime: string | Date;
@@ -18,10 +19,12 @@ export default function CardTransfer({
   placeUrl?: string | undefined;
   descriptions?: string[] | null;
   onPressEdit: () => void;
+  onPressDelete: () => void;
 }) {
   return (
     <CardBase
       onPressEdit={onPressEdit}
+      onPressDelete={onPressDelete}
       header={startDate}
       body={
         <>

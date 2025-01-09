@@ -41,27 +41,29 @@ export const login = yup.object().shape({
 });
 
 export const createItinerary = yup.object().shape({
-  title: yup
-    .string()
-    .min(3, LITERALS.NUMBER_VALUE.replace("[number]", "3"))
-    .required(LITERALS.REQUEST_LABEL)
-    .matches(REGEX.ALPHABETIC, LITERALS.ERROR_LABEL),
+  title: yup.string().required(LITERALS.REQUEST_LABEL),
   dates: yup
     .object({
       start: yup
-        .date()
-        .typeError("La fecha de inicio no es válida")
+        .string()
+        .matches(
+          /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/,
+          "La fecha de inicio no es válida"
+        )
         .required("Debe seleccionar una fecha de inicio"),
       end: yup
-        .date()
-        .typeError("La fecha de fin no es válida")
+        .string()
+        .matches(
+          /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/,
+          "La fecha de fin no es válida"
+        )
         .required("Debe seleccionar una fecha de fin")
         .test(
           "is-after-start",
           "La fecha de fin debe ser posterior o igual a la fecha de inicio",
           function (end) {
             const { start } = this.parent; // Accede al valor de `start` dentro del mismo objeto
-            return !start || !end || end >= start;
+            return !start || !end || new Date(end) >= new Date(start);
           }
         ),
     })
@@ -120,17 +122,10 @@ export const sectionSchema = yup.object().shape({
           .min(3, LITERALS.NUMBER_VALUE.replace("[number]", "3"))
           .max(500, LITERALS.NUMBER_VALUE.replace("[number]", "500"))
           .required(LITERALS.REQUEST_LABEL)
-          .matches(REGEX.ALPHABETIC, LITERALS.ERROR_LABEL)
       : schema.optional();
   }),
   transferName: yup.string().optional(),
-  image_url: yup.string().when("type", (type, schema) => {
-    return type[0] === VARIANT_TYPE_SECTION.TRIP
-      ? schema
-          .min(3, LITERALS.NUMBER_VALUE.replace("[number]", "3"))
-          .required(LITERALS.REQUEST_LABEL)
-      : schema.optional();
-  }),
+  image_url: yup.string().optional(),
   category: yup.string().when("type", (type, schema) => {
     return type[0] === VARIANT_TYPE_SECTION.HOTEL
       ? schema
@@ -138,5 +133,4 @@ export const sectionSchema = yup.object().shape({
           .required(LITERALS.REQUEST_LABEL)
       : schema.optional();
   }),
-  test: yup.string().optional(),
 });

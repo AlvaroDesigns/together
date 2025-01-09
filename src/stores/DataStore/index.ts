@@ -12,14 +12,23 @@ const homeData: HomeTypes = {
   items: null,
 };
 
+const weatherData = {
+  humidity: null,
+  temperatureMax: null,
+  temperatureMin: null,
+};
+
 const itineraryData: ItineraryTypes = {
-  title: "",
-  days: 0,
   date: "",
-  startDate: "",
+  days: 0,
   endDate: "",
+  id: undefined,
   image: "",
-  itemId: undefined,
+  items: null,
+  startDate: "",
+  title: "",
+  weather: weatherData,
+  load: true,
 };
 
 const detailsData: DetailsTypes = {
@@ -41,6 +50,7 @@ const detailsData: DetailsTypes = {
   country: undefined,
   name: undefined,
   collapse: true,
+  userId: undefined,
 };
 
 export const useDataStore = create<DataState>()(
@@ -62,9 +72,17 @@ export const useDataStore = create<DataState>()(
               details: { ...state.details, ...value.details },
             }),
             false,
-            `Set User Data Itinerary`
+            `Set Itinerary`
           ),
         reset: () => set({ home: homeData, itinerary: itineraryData }),
+        resetItinerary: (value: Partial<DataState>) =>
+          set(
+            () => ({
+              itinerary: { ...itineraryData, ...value.itinerary },
+            }),
+            false,
+            `Reset Itinerary`
+          ),
       }))
     ),
     { name: "together-data", storage: createJSONStorage(() => sessionStorage) }

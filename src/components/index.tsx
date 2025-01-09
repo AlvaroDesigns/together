@@ -2,6 +2,7 @@ import { Label } from "./atomos/label";
 import { Stars } from "./atomos/stars";
 import { Status } from "./atomos/status";
 import Button from "./button";
+import Calendar from "./calendar";
 import Card from "./card";
 import {
   CardFlight,
@@ -26,6 +27,7 @@ import OnBoarding from "./onBoarding";
 
 export {
   Button,
+  Calendar,
   Card,
   CardFlight,
   CardHotel,

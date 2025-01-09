@@ -9,7 +9,8 @@ export type VariantTypeSection =
   | "HOTEL"
   | "TRANSFER"
   | "TRIP"
-  | "RENT";
+  | "RENT"
+  | "OTHER";
 
 export const VARIANT_TYPE_SECTION = {
   FLIGHT: "FLIGHT",
@@ -17,4 +18,5 @@ export const VARIANT_TYPE_SECTION = {
   TRANSFER: "TRANSFER",
   TRIP: "TRIP",
   RENT: "RENT",
+  OTHER: "OTHER",
 };

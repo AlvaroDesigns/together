@@ -20,6 +20,7 @@ import {
   DrawerFooter,
   DrawerHeader,
   Image,
+  Input,
   Link,
   Listbox,
   ListboxItem,
@@ -27,6 +28,7 @@ import {
 } from "@nextui-org/react";
 
 import { Button as ButtonT, DrawerCustom } from "@/components";
+import { LITERALS } from "@/literals/common";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { version } from "../../package.json";
@@ -38,6 +40,7 @@ export default function DrawerNavBar({
 }) {
   const [onClose, setOnClose] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [name, setName] = useState<string | null>(null);
 
   const { reset } = useDataStore((state) => state);
 
@@ -57,11 +60,13 @@ export default function DrawerNavBar({
     setOnClose(false);
   };
 
-  const handleInviteFriendsClick = () => {
+  const handleInviteFriendsClick = (key: string) => {
+    setName(key?.toUpperCase());
     setIsDrawerOpen(true);
   };
 
   const handleCloseDrawer = () => {
+    setName(null);
     setIsDrawerOpen(false);
   };
 
@@ -125,20 +130,18 @@ export default function DrawerNavBar({
                         textValue="account"
                         className="flex items-center pb-3 "
                         showDivider
+                        onPress={() => handleInviteFriendsClick("account")}
                         startContent={<UserIcon className="m-1 size-6" />}
                         endContent={<ChevronRightIcon className="m-1 size-6" />}
                       >
                         <span className="my-5 text-medium">Mi cuenta</span>
-                        <Chip isDisabled color="default" className="ml-2">
-                          Next Feb
-                        </Chip>
                       </ListboxItem>
                       <ListboxItem
                         textValue="friends"
                         key="friends"
                         className="flex items-center py-3"
                         showDivider
-                        onPress={handleInviteFriendsClick}
+                        onPress={() => handleInviteFriendsClick("friends")}
                         startContent={<UserGroupIcon className="m-1 size-6" />}
                         endContent={<ChevronRightIcon className="m-1 size-6" />}
                       >
@@ -149,15 +152,13 @@ export default function DrawerNavBar({
                         key="secure"
                         className="flex items-center py-3"
                         showDivider
+                        onPress={() => handleInviteFriendsClick("secure")}
                         startContent={
                           <ShieldCheckIcon className="m-1 size-6" />
                         }
                         endContent={<ChevronRightIcon className="m-1 size-6" />}
                       >
                         <span className="text-medium">Seguridad</span>
-                        <Chip isDisabled color="default" className="ml-2">
-                          Next Feb
-                        </Chip>
                       </ListboxItem>
                       <ListboxItem
                         key="news"
@@ -211,22 +212,78 @@ export default function DrawerNavBar({
       </Drawer>
       <DrawerCustom
         size="full"
-        header=" Invitar amigos"
+        header={LITERALS[name as keyof object]}
         body={
           <div className="flex flex-col items-center justify-center">
-            <Image
-              alt="invitar amigos"
-              fallbackSrc="https://via.placeholder.com/300x200"
-              className="w-full aspect-square"
-              height="auto"
-              width="100%"
-              src="../../share.png"
-            />
-
-            <p className="px-6 mt-6">
-              Comparte este enlace con tus amigos y familiares para que puedan
-              disfrutar de la experiencia de viajar juntos.
-            </p>
+            {name === "FRIENDS" && (
+              <>
+                <Image
+                  alt="invitar amigos"
+                  fallbackSrc="https://via.placeholder.com/300x200"
+                  className="w-full aspect-square"
+                  height="auto"
+                  width="100%"
+                  src="../../share.png"
+                />
+                <p className="px-6 mt-6">
+                  Comparte este enlace con tus amigos y familiares para que
+                  puedan disfrutar de la experiencia de viajar juntos.
+                </p>
+              </>
+            )}
+            {name === "ACCOUNT" && (
+              <div className="flex flex-col items-center justify-center w-full gap-4 px-4 py-2">
+                <Input
+                  fullWidth={true}
+                  variant="bordered"
+                  placeholder="Ej. Pedro"
+                  value={user.name}
+                  label="Nombre"
+                  type="email"
+                />
+                <Input
+                  fullWidth={true}
+                  variant="bordered"
+                  placeholder="junior@nextui.org"
+                  value={user.email}
+                  label="Email"
+                  type="email"
+                />
+                <Link
+                  isExternal
+                  className="text-default-600 hover:text-default-600"
+                  color="foreground"
+                  href="https://github.com/nextui-org/nextui"
+                >
+                  Eliminar mi cuenta
+                </Link>
+              </div>
+            )}
+            {name === "SECURE" && (
+              <div className="flex flex-col items-center justify-center w-full gap-4 px-4 py-2">
+                <Input
+                  fullWidth={true}
+                  variant="bordered"
+                  placeholder="Ej. Pedro"
+                  label="Contraseña actual"
+                  type="password"
+                />
+                <Input
+                  fullWidth={true}
+                  variant="bordered"
+                  placeholder="junior@nextui.org"
+                  label="Nueva contraseña"
+                  type="password"
+                />
+                <Input
+                  fullWidth={true}
+                  variant="bordered"
+                  placeholder="junior@nextui.org"
+                  label="Repetir nueva contraseña"
+                  type="password"
+                />
+              </div>
+            )}
           </div>
         }
         isOpen={isDrawerOpen}

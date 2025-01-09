@@ -1,5 +1,5 @@
 import { AUHT_NAME } from "@/constants";
-import { format } from "@formkit/tempo";
+import { addHour, format, parse } from "@formkit/tempo";
 
 // Carga y muestra mensajes almacenados en localStorage
 export const getAuth = (name: string) => {
@@ -37,11 +37,34 @@ export const convertToISO = (dateObj: {
   second: number;
   millisecond: number;
 }) => {
-  const { year, month, day, hour, minute, second, millisecond } = dateObj;
+  const {
+    year,
+    month,
+    day,
+    hour = 0,
+    minute = 0,
+    second = 0,
+    millisecond = 0,
+  } = dateObj;
   const date = new Date(
     Date.UTC(year, month - 1, day, hour, minute, second, millisecond)
   );
   return date.toISOString();
+};
+
+export const parseIsoString = (isoString: string) => {
+  // Paso 1: Parsear la fecha
+  const date = parse(isoString, "iso");
+
+  // Paso 2: Incrementar 1 hora
+  const newDate = addHour(date, 1);
+
+  // Paso 3: Convertir la nueva fecha al formato ISO
+  return newDate.toISOString();
+};
+
+export const formatDay = (day: Date) => {
+  return format(new Date(day), "YYYY/MM/DD");
 };
 
 export const formatDayForDays = (startDate: Date | undefined, day: Date) => {

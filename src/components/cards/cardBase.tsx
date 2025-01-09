@@ -1,4 +1,4 @@
-import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 import { subtitle } from "@/components/primitives";
 import { capitalCase } from "@/utils";
@@ -17,6 +17,7 @@ import {
 export default function CardBase({
   header = new Date(),
   onPressEdit,
+  onPressDelete,
   hideEdit = false,
   body,
   footer = null,
@@ -26,6 +27,7 @@ export default function CardBase({
   body: React.ReactNode;
   footer?: string[] | null;
   onPressEdit?: () => void;
+  onPressDelete?: () => void;
 }) {
   const key = `card-base-${crypto.randomUUID()}`;
 
@@ -53,6 +55,18 @@ export default function CardBase({
               onPress={onPressEdit}
               anchorIcon={
                 <PencilSquareIcon className="mt-1 mr-1 dark:text-gray-400 size-5" />
+              }
+            />
+          )}
+          {onPressDelete && (
+            <Link
+              isExternal
+              showAnchorIcon
+              className="text-default-600 hover:text-default-600"
+              color="foreground"
+              onPress={onPressDelete}
+              anchorIcon={
+                <TrashIcon className="mt-1 ml-2 mr-1 dark:text-gray-400 size-5" />
               }
             />
           )}
