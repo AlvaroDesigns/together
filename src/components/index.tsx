@@ -22,6 +22,7 @@ import Header from "./header";
 import Hero from "./hero";
 import RootLayout from "./layout";
 
+import Password from "./atomos/password";
 import ModalItinerary from "./modalItinerary";
 import OnBoarding from "./onBoarding";
 
@@ -46,6 +47,7 @@ export {
   Label,
   ModalItinerary,
   OnBoarding,
+  Password,
   RootLayout,
   SectionForm,
   Stars,

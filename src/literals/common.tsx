@@ -43,7 +43,14 @@ const LITERALS = {
   ACCOUNT: "Mi cuenta",
   FRIENDS: "Invita a tus amigos",
   SECURE: "Seguridad",
-  NEWS: "Noticias",
+  FAQS: "Faqs",
 };
 
-export { LITERALS };
+const SUBMIT = {
+  ACCOUNT: "Guardar cambios",
+  FRIENDS: "Invita a tus amigos",
+  SECURE: "Guardar cambios",
+  FAQS: "Guardar cambios",
+};
+
+export { LITERALS, SUBMIT };

@@ -44,7 +44,7 @@ export default function CardWeather({
             <path
               d="M12 18C11.4747 18 10.9546 17.8965 10.4693 17.6955C9.98396 17.4945 9.54301 17.1999 9.17157 16.8284C8.80014 16.457 8.5055 16.016 8.30448 15.5307C8.10346 15.0454 8 14.5253 8 14"
               stroke="#009688"
-              stroke-linecap="round"
+              strokeLinecap="round"
             />
           </svg>
           {Math.round(humidity)}%

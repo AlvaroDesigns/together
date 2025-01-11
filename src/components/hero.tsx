@@ -24,7 +24,7 @@ export default function Hero({
         isFooterBlurred
         className="w-full h-[300px] col-span-12 sm:col-span-7"
       >
-        <CardBody className="absolute z-30 flex flex-col items-center w-full mt-9 top-1">
+        <CardBody className="absolute z-30 flex flex-col items-center w-full text-center mt-9 top-1">
           {loading ? (
             <>
               <Skeleton className="w-2/5 mt-2 rounded-lg">

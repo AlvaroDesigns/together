@@ -62,12 +62,12 @@ const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
         return console.log("No data");
       }
 
-      const product = items.find((item: { id: number }) => item.id === id);
+      const product = items?.find((item: { id: number }) => item.id === id);
 
       setter({ edit: product });
-      onOpen();
+      setTimeout(() => onOpen(), 100);
     },
-    [items]
+    [items, onOpen, setter]
   );
 
   const switchCard = (data: any, index: number | number[] | undefined) => {
@@ -287,7 +287,6 @@ export default function Step2() {
       .finally(() => setTimeout(() => setIsLoadingPage(false), 1000));
   }, []);
 
-  const item = JSON.stringify(data?.items);
   return (
     <RootLayout>
       <Hero

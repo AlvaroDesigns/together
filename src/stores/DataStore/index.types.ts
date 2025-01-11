@@ -31,12 +31,14 @@ export interface ItineraryTypes {
   weather: WeatherType | null;
   load: boolean;
 }
+
 export interface DetailsTypes {
+  id?: string | number;
   type: string | undefined;
   userId: number | undefined;
   days: number;
-  startDate: string | null;
-  endDate: string | null;
+  startDate: string | Date | null;
+  endDate: string | Date | null;
   departure: string | undefined;
   departureLabel: string | undefined;
   destination: string | undefined;
@@ -56,7 +58,7 @@ export interface DetailsTypes {
 export interface DataState {
   home: HomeTypes;
   itinerary: ItineraryTypes | undefined;
-  edit: DetailsTypes | undefined;
+  edit?: Partial<DetailsTypes> | undefined;
   details: DetailsTypes | undefined;
   setter: (value: Partial<DataState>) => void;
   reset(): void;

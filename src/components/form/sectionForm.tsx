@@ -26,7 +26,7 @@ export default function SectionForm({
   reset,
   type = "FLIGHT",
 }: SectionFormProps) {
-  const { itinerary } = useDataStore((state) => state);
+  const { itinerary, edit } = useDataStore((state) => state);
 
   const handleChange = (item: { currentKey: string }) => {
     if (type) {
@@ -42,23 +42,26 @@ export default function SectionForm({
         <Controller
           name="type"
           control={control}
-          render={({ field, fieldState }) => (
-            <Select
-              {...field}
-              className="max-w-xs"
-              items={TRIP}
-              label="Tipo"
-              placeholder="Selecciona un tipo de viaje"
-              variant="bordered"
-              defaultSelectedKeys={[VARIANT_TYPE_SECTION.FLIGHT]}
-              isInvalid={Boolean(fieldState.error?.message)}
-              color={fieldState.error?.message ? "danger" : "default"}
-              errorMessage={fieldState.error?.message}
-              onSelectionChange={handleChange}
-            >
-              {(op) => <SelectItem key={op.key}>{op.label}</SelectItem>}
-            </Select>
-          )}
+          render={({ field, fieldState }) => {
+            console.log("field", field.value, edit?.type);
+            return (
+              <Select
+                {...field}
+                className="max-w-xs"
+                items={TRIP}
+                label="Tipo"
+                placeholder="Selecciona un tipo de viaje"
+                variant="bordered"
+                defaultSelectedKeys={[field.value || edit?.type]}
+                isInvalid={Boolean(fieldState.error?.message)}
+                color={fieldState.error?.message ? "danger" : "default"}
+                errorMessage={fieldState.error?.message}
+                onSelectionChange={handleChange}
+              >
+                {(op) => <SelectItem key={op.key}>{op.label}</SelectItem>}
+              </Select>
+            );
+          }}
         />
       </div>
       {type === VARIANT_TYPE_SECTION.FLIGHT && (
@@ -119,6 +122,7 @@ export default function SectionForm({
                   className="max-w-xs"
                   items={TRANSFER_DATA}
                   label="Tipo"
+                  selectedKeys={[field.value || edit?.name]}
                   placeholder="Selecciona un transporte"
                   variant="bordered"
                   isInvalid={Boolean(fieldState.error?.message)}

@@ -20,3 +20,5 @@ export const VARIANT_TYPE_SECTION = {
   RENT: "RENT",
   OTHER: "OTHER",
 };
+
+export type VariantTypeSectionIcon = "ACCOUNT" | "FRIENDS" | "SECURE" | "FAQS";

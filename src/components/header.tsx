@@ -24,7 +24,7 @@ export default function Header() {
           user={{
             name: user?.name || "Nombre",
             email: user?.email || "Email",
-            avatar: user?.avatar,
+            avatar: user?.avatar ?? undefined,
           }}
         />
       </NavbarContent>

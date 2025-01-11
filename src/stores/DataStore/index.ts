@@ -74,7 +74,13 @@ export const useDataStore = create<DataState>()(
             false,
             `Set Itinerary`
           ),
-        reset: () => set({ home: homeData, itinerary: itineraryData }),
+        reset: () =>
+          set({
+            home: homeData,
+            itinerary: itineraryData,
+            edit: detailsData,
+            details: detailsData,
+          }),
         resetItinerary: (value: Partial<DataState>) =>
           set(
             () => ({

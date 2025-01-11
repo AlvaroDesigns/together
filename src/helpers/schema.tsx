@@ -44,19 +44,9 @@ export const createItinerary = yup.object().shape({
   title: yup.string().required(LITERALS.REQUEST_LABEL),
   dates: yup
     .object({
-      start: yup
-        .string()
-        .matches(
-          /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/,
-          "La fecha de inicio no es válida"
-        )
-        .required("Debe seleccionar una fecha de inicio"),
+      start: yup.date().required("Debe seleccionar una fecha de inicio"),
       end: yup
-        .string()
-        .matches(
-          /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/,
-          "La fecha de fin no es válida"
-        )
+        .date()
         .required("Debe seleccionar una fecha de fin")
         .test(
           "is-after-start",
@@ -116,14 +106,17 @@ export const sectionSchema = yup.object().shape({
           .required(LITERALS.REQUEST_LABEL)
       : schema.optional();
   }),
-  description: yup.string().when("type", (type, schema) => {
-    return type[0] === VARIANT_TYPE_SECTION.TRIP
-      ? schema
-          .min(3, LITERALS.NUMBER_VALUE.replace("[number]", "3"))
-          .max(500, LITERALS.NUMBER_VALUE.replace("[number]", "500"))
-          .required(LITERALS.REQUEST_LABEL)
-      : schema.optional();
-  }),
+  description: yup
+    .string()
+    .defined()
+    .when("type", (type, schema) => {
+      return type[0] === VARIANT_TYPE_SECTION.TRIP
+        ? schema
+            .min(3, LITERALS.NUMBER_VALUE.replace("[number]", "3"))
+            .max(500, LITERALS.NUMBER_VALUE.replace("[number]", "500"))
+            .required(LITERALS.REQUEST_LABEL)
+        : schema.optional();
+    }),
   transferName: yup.string().optional(),
   image_url: yup.string().optional(),
   category: yup.string().when("type", (type, schema) => {

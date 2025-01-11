@@ -5,15 +5,15 @@ import {
   Bars3BottomLeftIcon,
   ChevronRightIcon,
   NewspaperIcon,
-  ShareIcon,
   ShieldCheckIcon,
   UserGroupIcon,
   UserIcon,
 } from "@heroicons/react/24/outline";
 import {
+  Accordion,
+  AccordionItem,
   Avatar,
   Button,
-  Chip,
   Drawer,
   DrawerBody,
   DrawerContent,
@@ -27,8 +27,8 @@ import {
   Tooltip,
 } from "@nextui-org/react";
 
-import { Button as ButtonT, DrawerCustom } from "@/components";
-import { LITERALS } from "@/literals/common";
+import { Button as ButtonT, DrawerCustom, Password } from "@/components";
+import { LITERALS, SUBMIT } from "@/literals/common";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { version } from "../../package.json";
@@ -43,6 +43,8 @@ export default function DrawerNavBar({
   const [name, setName] = useState<string | null>(null);
 
   const { reset } = useDataStore((state) => state);
+  const defaultContent =
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
 
   const navigate = useNavigate();
   const handelLogOut = () => {
@@ -161,17 +163,15 @@ export default function DrawerNavBar({
                         <span className="text-medium">Seguridad</span>
                       </ListboxItem>
                       <ListboxItem
-                        key="news"
-                        textValue="news"
+                        key="faqs"
+                        textValue="faqs"
                         className="flex items-center py-3"
                         showDivider
+                        onPress={() => handleInviteFriendsClick("faqs")}
                         startContent={<NewspaperIcon className="m-1 size-6" />}
                         endContent={<ChevronRightIcon className="m-1 size-6" />}
                       >
-                        <span className="text-medium">Noticias</span>
-                        <Chip isDisabled color="default" className="ml-2">
-                          Next Feb
-                        </Chip>
+                        <span className="text-medium">Faqs</span>
                       </ListboxItem>
                       <ListboxItem
                         textValue="delete"
@@ -244,10 +244,19 @@ export default function DrawerNavBar({
                 <Input
                   fullWidth={true}
                   variant="bordered"
-                  placeholder="junior@nextui.org"
+                  placeholder="Ej. david@toogeder.com"
                   value={user.email}
                   label="Email"
                   type="email"
+                />
+                <Input
+                  fullWidth={true}
+                  variant="bordered"
+                  placeholder="666 666 666"
+                  value={user.email}
+                  label="Telefono"
+                  startContent="+34"
+                  type="number"
                 />
                 <Link
                   isExternal
@@ -261,41 +270,46 @@ export default function DrawerNavBar({
             )}
             {name === "SECURE" && (
               <div className="flex flex-col items-center justify-center w-full gap-4 px-4 py-2">
-                <Input
-                  fullWidth={true}
-                  variant="bordered"
-                  placeholder="Ej. Pedro"
-                  label="Contraseña actual"
-                  type="password"
-                />
-                <Input
-                  fullWidth={true}
-                  variant="bordered"
-                  placeholder="junior@nextui.org"
-                  label="Nueva contraseña"
-                  type="password"
-                />
-                <Input
-                  fullWidth={true}
-                  variant="bordered"
-                  placeholder="junior@nextui.org"
-                  label="Repetir nueva contraseña"
-                  type="password"
-                />
+                <Password placeholder="" label="Contraseña actual" />
+                <Password placeholder="" label="Nueva contraseña" />
+                <Password placeholder="" label="Repetir nueva contraseña" />
               </div>
+            )}
+            {name === "FAQS" && (
+              <Accordion selectionMode="multiple">
+                <AccordionItem
+                  key="1"
+                  aria-label="Accordion 1"
+                  title="Quienes somos"
+                >
+                  {defaultContent}
+                </AccordionItem>
+                <AccordionItem
+                  key="2"
+                  aria-label="Accordion 2"
+                  title="Como funciona"
+                >
+                  {defaultContent}
+                </AccordionItem>
+                <AccordionItem
+                  key="3"
+                  aria-label="Accordion 3"
+                  title="Dudas frecuentes"
+                >
+                  {defaultContent}
+                </AccordionItem>
+              </Accordion>
             )}
           </div>
         }
         isOpen={isDrawerOpen}
         onOpenChange={handleCloseDrawer}
         footer={
-          <ButtonT
-            startContent={<ShareIcon className="m-1 size-5" />}
-            variant="light"
-            onPress={ShareButton}
-          >
-            Comparte
-          </ButtonT>
+          name !== "FAQS" && (
+            <ButtonT variant="light" onPress={ShareButton}>
+              {SUBMIT[name as keyof object]}
+            </ButtonT>
+          )
         }
       />
     </>

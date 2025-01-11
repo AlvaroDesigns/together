@@ -108,17 +108,30 @@ export function DrawerItFrom({ control }: DrawerItFromProps) {
             isRequired
             variant="bordered"
             label="Fecha del viaje"
-            visibleMonths={2}
+            // visibleMonths={2}
             isInvalid={Boolean(fieldState.error?.message)}
             color={fieldState.error?.message ? "danger" : "default"}
             errorMessage={fieldState.error?.message}
             minValue={today(getLocalTimeZone())}
             maxValue={today(getLocalTimeZone()).add({ days: 365 })}
-            classNames={
-              {
-                // calendarContent: "w-[500px]",
-              }
-            }
+            classNames={{
+              // calendarContent: "w-[500px]",
+              // selectorButton: "bg-[#009688] text-white",
+              calendar:
+                "w-full bg-white shadow-lg border border-default-200/60",
+              calendarContent: "w-[300px] bg-red-500/10",
+              popoverContent: "w-full bg-red-500/10",
+              separator: "w-6 h-6 text-center text-default-500",
+              input:
+                "w-full border-none outline-none focus:border-none focus:ring-0",
+            }}
+            calendarProps={{
+              classNames: {
+                grid: "grid-cols-7",
+                gridHeader: "text-sm ",
+                cell: "text-sm  text-white",
+              },
+            }}
           />
         )}
       />
@@ -155,42 +168,45 @@ export default function DrawerCreate() {
     values: undefined,
     schema: createItinerary,
   });
+  console.log("errors", errors);
+  const onSubmit = useCallback(
+    async (value: any) => {
+      if (isStatus) {
+        return onClose();
+      }
 
-  const onSubmit = useCallback(async (value: any) => {
-    if (isStatus) {
-      return onClose();
-    }
+      const error = Object.entries(errors).length !== 0;
 
-    const error = Object.entries(errors).length !== 0;
+      /* Exit */
+      if (error) return;
 
-    /* Exit */
-    if (error) return;
+      /* Start Loading */
+      startLoading();
 
-    /* Start Loading */
-    startLoading();
+      /* Call API */
+      Services()
+        .post(`${ENDPOINT.ITINERARY}/${userId}`, {
+          title: value.title,
+          days: betweenDates(value.dates.start, value.dates.end),
+          startDate: addHour(value?.dates?.start, 1),
+          endDate: addHour(value?.dates?.end, 1),
+          image: value.image,
+          date: new Date(),
+        })
+        .then((res: AxiosResponse) => {
+          const { status } = res;
+          if (status !== 201) {
+            stopLoading();
+            return console.log("Error");
+          }
 
-    /* Call API */
-    Services()
-      .post(`${ENDPOINT.ITINERARY}/${userId}`, {
-        title: value.title,
-        days: betweenDates(value.dates.start, value.dates.end),
-        startDate: addHour(value?.dates?.start, 1),
-        endDate: addHour(value?.dates?.end, 1),
-        image: value.image,
-        date: new Date(),
-      })
-      .then((res: AxiosResponse) => {
-        const { status } = res;
-        if (status !== 201) {
-          stopLoading();
-          return console.log("Error");
-        }
-
-        setStatus(true);
-      })
-      .catch((error) => console.log("Error", error))
-      .finally(() => stopLoading());
-  }, []);
+          setStatus(true);
+        })
+        .catch((error) => console.log("Error", error))
+        .finally(() => stopLoading());
+    },
+    [isStatus]
+  );
 
   return (
     <>
