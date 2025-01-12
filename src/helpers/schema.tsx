@@ -28,15 +28,10 @@ export const register = yup.object().shape({
 });
 
 export const login = yup.object().shape({
-  email: yup
-    .string()
-    .email(LITERALS.ERROR_LABEL)
-    .required(LITERALS.REQUEST_LABEL)
-    .matches(REGEX.EMAIL, LITERALS.ERROR_LABEL),
-  password: yup
-    .string()
-    .required(LITERALS.REQUEST_LABEL)
-    .matches(REGEX.PASSWORD, LITERALS.ERROR_LABEL),
+  email: yup.string().optional(),
+
+  password: yup.string().optional(),
+
   remember: yup.boolean().optional(),
 });
 
@@ -81,7 +76,7 @@ export const sectionSchema = yup.object().shape({
   numberFlight: yup.string().when("type", (type, schema) => {
     return type[0] === VARIANT_TYPE_SECTION.FLIGHT
       ? schema
-          .min(6, LITERALS.NUMBER_VALUE.replace("[number]", "6"))
+          .min(5, LITERALS.NUMBER_VALUE.replace("[number]", "5"))
           .required(LITERALS.REQUEST_LABEL)
       : schema.optional();
   }),

@@ -1,11 +1,13 @@
+import { Button, Footer, Password } from "@/components";
 import { GoogleLogo } from "@/components/icons";
-import { subtitle, title } from "@/components/primitives";
+import { subtitle } from "@/components/primitives";
 import { ROUTES } from "@/constants";
 import { login } from "@/helpers/schema";
 import { useForm, useLoading } from "@/hooks";
 import { auth, provider } from "@/lib/firebaseConfig";
 import { useDataStore } from "@/stores";
-import { Button, Checkbox, Input, Link } from "@nextui-org/react";
+import { Welcome } from "@/templates/welcome";
+import { Button as ButtonUI, Image, Input, Link } from "@nextui-org/react";
 import { signInWithPopup } from "firebase/auth";
 import { useCallback } from "react";
 import { Controller } from "react-hook-form";
@@ -22,8 +24,44 @@ export default function Login() {
     schema: login,
   });
 
+  const fetchEmail = async (email?: string) => {
+    /* 
+  curl -X POST 'https://api.resend.com/emails' \
+  -H 'Authorization: Bearer re_VE6pWZD2_LTzBr9QdqJER1NgkjWRNyro2' \
+  -H 'Content-Type: application/json' \
+  -d $'{
+    "from": "onboarding@resend.dev",
+    "to": "info.alvarodesigns@gmail.com",
+    "subject": "Hello World",
+    "html": "<p>Congrats on sending your <strong>first email</strong>!</p>"
+  }'
+
+*/
+
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST", // or 'PUT'
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "http://localhost:3000/",
+        "Access-Control-Allow-Methods": "POST",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        Authorization: "Bearer re_VE6pWZD2_LTzBr9QdqJER1NgkjWRNyro2",
+      },
+      body: JSON.stringify({
+        from: "hello@alvarodesigns.com", // email
+        to: "info.alvarodesigns@gmail.com",
+        subject: "Bienvenido a Together",
+        html: Welcome(),
+      }),
+    }).then((response) => response.json());
+
+    return response;
+  };
+
   const onSubmit = useCallback(
     async (value: unknown) => {
+      console.log("hola");
+      fetchEmail();
       const error = Object.entries(errors).length !== 0;
 
       /* Exit */
@@ -32,15 +70,8 @@ export default function Login() {
       /* Start Loading */
       startLoading();
 
-      /* Set Data */
-      setter({
-        user: {
-          email: value.email,
-        },
-      });
-      navigate(ROUTES.HOME);
-
       /* Call API */
+      console.log(value);
 
       setTimeout(() => stopLoading(), 300);
     },
@@ -68,23 +99,20 @@ export default function Login() {
   };
 
   return (
-    <main className="h-screen text-foreground bg-background md:flex">
-      <div className="relative items-center justify-around hidden w-1/2 overflow-hidden md:flex ">
-        <div>
-          <h1 className="font-sans text-4xl font-bold text-white">GoFinance</h1>
-          <p className="mt-1 text-white">
-            The most popular peer to peer lending at SEA
-          </p>
-        </div>
-        <div className="absolute border-4 border-t-8 rounded-full -bottom-32 -left-40 w-80 h-80 border-opacity-30"></div>
-        <div className="absolute border-4 border-t-8 rounded-full -bottom-40 -left-20 w-80 h-80 border-opacity-30"></div>
-        <div className="absolute border-4 border-t-8 rounded-full -top-40 -right-0 w-80 h-80 border-opacity-30"></div>
-        <div className="absolute border-4 border-t-8 rounded-full -top-20 -right-20 w-80 h-80 border-opacity-30"></div>
-      </div>
-      <div className="flex items-center justify-center px-4 py-10 md:w-1/2">
+    <div className="flex flex-col h-screen text-foreground bg-background">
+      <div className="flex items-center justify-center w-full px-4 py-10">
         <div className="w-full max-w-[400px]">
-          <h1 className={title({ color: "green" })}>Bienvenido!</h1>
-          <p className={subtitle({ color: "black" })}>Crea tu cuenta</p>
+          <div className="flex flex-col justify-center w-full mb-4">
+            <Image
+              removeWrapper
+              alt="together"
+              height={40}
+              className="z-0 object-contain mb-2"
+              src="../../logo.png"
+              onClick={() => navigate("/")}
+            />
+            <p className={subtitle({ color: "black" })}>Crea tu cuenta</p>
+          </div>
           <div className="flex items-center my-4 rounded-2xl">
             <Controller
               name="name"
@@ -93,7 +121,7 @@ export default function Login() {
                 <Input
                   {...field}
                   isRequired
-                  radius="full"
+                  variant="bordered"
                   type="text"
                   label="Nombre"
                   classNames={{
@@ -109,15 +137,66 @@ export default function Login() {
               )}
             />
           </div>
-          <div className="flex items-center my-4 rounded-2xl">
+          <div className="flex items-center mb-4">
             <Controller
-              name="name"
+              name="password"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Password
+                  {...field}
+                  placeholder="Por favor, introduce tu contraseña"
+                  label="Contraseña"
+                  message={fieldState.error?.message}
+                />
+              )}
+            />
+          </div>
+          <div className="flex items-center mb-4">
+            <Controller
+              name="password"
               control={control}
               render={({ field, fieldState }) => (
                 <Input
                   {...field}
                   isRequired
-                  radius="full"
+                  startContent={
+                    <div className="flex items-center">
+                      <select
+                        className="bg-transparent border-0 outline-none text-default-400 text-small"
+                        id="currency"
+                        name="currency"
+                      >
+                        <option>+34</option>
+                        <option>+35</option>
+                        <option>+36</option>
+                      </select>
+                    </div>
+                  }
+                  classNames={{
+                    inputWrapper: "!min-h-[60px] h-10",
+                  }}
+                  fullWidth={true}
+                  isInvalid={Boolean(fieldState.error?.message)}
+                  color={fieldState.error?.message ? "danger" : "default"}
+                  errorMessage={fieldState.error?.message}
+                  value={field.value}
+                  label="Telefono"
+                  variant="bordered"
+                  placeholder="Introduce tu telefono"
+                  type="number"
+                />
+              )}
+            />
+          </div>
+          <div className="flex items-center mb-4">
+            <Controller
+              name="email"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Input
+                  {...field}
+                  isRequired
+                  variant="bordered"
                   type="email"
                   label="Correo"
                   classNames={{
@@ -133,73 +212,32 @@ export default function Login() {
               )}
             />
           </div>
-          <div className="flex items-center mb-4">
-            <Controller
-              name="password"
-              control={control}
-              render={({ field, fieldState }) => (
-                <Input
-                  {...field}
-                  isRequired
-                  radius="full"
-                  classNames={{
-                    inputWrapper: "!min-h-[60px]",
-                  }}
-                  type="password"
-                  label="Contraseña"
-                  fullWidth={true}
-                  isInvalid={Boolean(fieldState.error?.message)}
-                  color={fieldState.error?.message ? "danger" : "default"}
-                  errorMessage={fieldState.error?.message}
-                  value={field.value}
-                  placeholder="Por favor, introduce tu contraseña"
-                />
-              )}
-            />
+          <div className="flex flex-col gap-3 my-4 mt-6">
+            <Button isLoading={isLoading} onPress={handleSubmit(onSubmit)}>
+              Registrarme
+            </Button>
           </div>
-          <div className="flex flex-row justify-between mb-4 text-sm items-left ft text-sx">
-            <Controller
-              name="remember"
-              control={control}
-              render={({ field }) => (
-                <Checkbox
-                  {...field}
-                  size="sm"
-                  color="default"
-                  className="text-gray-600"
-                  defaultSelected
-                >
-                  He leido y entiendo la información básica sobre la proteción
-                  de datos que Together Travel me ha proporcionado.
-                </Checkbox>
-              )}
-            />
-          </div>
-          <Button
-            radius="full"
-            color="primary"
-            type="submit"
-            className="bg-gradient-to-r text-white from-[#009688] text-md to-[#009688] w-full h-14 min-h-[60px] mb-2"
-            isLoading={isLoading}
-            onClick={handleSubmit(onSubmit)}
-          >
-            Registrarme
-          </Button>
           <p className={subtitle()}>OR</p>
-          <Button
+          <ButtonUI
             radius="full"
             color="primary"
-            className="w-full my-2 h-14 min-h-[60px] text-md text-white"
-            onClick={signInGoogle}
+            className="w-full my-3 h-14 min-h-[60px] text-white "
+            onPress={signInGoogle}
           >
             <GoogleLogo />
             Continue with Google
-          </Button>
-          <Link size="sm" className="mr-2 text-gray-600" href="/">
+          </ButtonUI>
+          <Link
+            size="sm"
+            color="foreground"
+            className="mt-2 text-gray-600"
+            href="/"
+          >
             Iniciar sesión
           </Link>
         </div>
       </div>
-    </main>
+      <Footer />
+    </div>
   );
 }
