@@ -1,11 +1,13 @@
 import { ROUTES } from "@/constants";
 import { Login, Register, Step1, Step2 } from "@/pages";
 import { createBrowserRouter, Navigate } from "react-router-dom";
+import { PrivateRoute } from "./privateRoute";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <Login />,
+    children: [],
   },
   {
     path: ROUTES.REGISTER,
@@ -13,14 +15,14 @@ export const router = createBrowserRouter([
   },
   {
     path: ROUTES.HOME,
-    element: <Step1 />,
+    element: <PrivateRoute element={<Step1 />} />,
   },
   {
-    path: "/:nameId",
-    element: <Step2 />,
+    path: "itineray/:nameId",
+    element: <PrivateRoute element={<Step2 />} />,
   },
   {
-    path: ROUTES.ITINERARY,
+    path: "itineray/:nameId/shared",
     element: <Step2 />,
   },
   {

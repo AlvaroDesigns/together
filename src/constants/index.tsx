@@ -32,17 +32,12 @@ export const REGEX: Record<string, RegExp> = {
   DATE: /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(\d{4})$/,
 };
 
-/* Hubspot */
-export const HUBSPOT_LANDING: string = "https://www.nnespana.es/orfandad";
-export const HUBSPOT_THANKS: string =
-  "https://www.nnespana.es/orfandad/gracias";
-
 /* URLS */
 export const BASE_ROUTE: string = "/seguro-orfandad";
 export const ROUTES: Record<string, string> = {
   HOME: "/home",
   REGISTER: "registrame",
-  ITINERARY: "crear-itinerario",
+  ITINERARY: "/itineray",
 };
 
 export const ENDPOINT: Record<string, string> = {
