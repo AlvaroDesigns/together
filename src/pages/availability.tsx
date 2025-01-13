@@ -1,4 +1,10 @@
-import { Button as ButtonUI, Chip, Input } from "@nextui-org/react";
+import {
+  Button as ButtonUI,
+  Chip,
+  Input,
+  Radio,
+  RadioGroup,
+} from "@nextui-org/react";
 
 import { DrawerCustom, RootLayout } from "@/components";
 import { CardHotelList, CardSkeleton } from "@/components/cards";
@@ -49,6 +55,7 @@ export default function Availability() {
           fullWidth
           radius="none"
           className="bg-transparent focus:outline-none"
+          onPress={() => setFilters(true)}
           startContent={
             <ChevronUpDownIcon className="mt-1 text-gray-600 dark:text-gray-300 size-6" />
           }
@@ -59,7 +66,6 @@ export default function Availability() {
         <ButtonUI
           fullWidth
           radius="none"
-          onPress={() => setFilters(true)}
           className="bg-transparent border-s-gray-300 dark:border-s-gray-700 focus:outline-none"
           startContent={
             <AdjustmentsVerticalIcon className="mt-1 text-gray-600 dark:text-gray-300 size-6" />
@@ -69,9 +75,17 @@ export default function Availability() {
         </ButtonUI>
         <DrawerCustom
           isOpen={isFilters}
-          header="Filtrar"
+          header="Ordenar"
           onOpenChange={() => setFilters(false)}
-          body={<p>filtros</p>}
+          body={
+            <div className="px-4">
+              <RadioGroup value="recomendado">
+                <Radio value="recomendado">Recomendaciones Together</Radio>
+                <Radio value="low">Ordenar: Precio más bajo</Radio>
+                <Radio value="alto">ordenar: Precio más alto</Radio>
+              </RadioGroup>
+            </div>
+          }
           footer={undefined}
         />
       </section>

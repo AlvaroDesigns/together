@@ -23,7 +23,7 @@ export const Counter = ({
         >
           <MinusIcon className="m-1 size-6" />
         </Button>
-        <Input type="number" className="min-w-2" value={String(count)} />
+        <Input type="number" className="w-9" value={String(count)} />
         <Button
           isIconOnly
           aria-label="Like"
