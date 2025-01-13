@@ -17,6 +17,7 @@ import { useDataStore, useUserStore } from "@/stores";
 import { getAuth } from "@/utils";
 import { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const DATA = [
   {
@@ -56,6 +57,8 @@ export default function Step1() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSearcherHotel, setSearcherHotel] = useState<boolean>(false);
   const onBoarding = getAuth(ON_BOARDNG);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     /* Start On Boarding */
@@ -122,7 +125,7 @@ export default function Step1() {
               onOpenChange={() => setSearcherHotel(false)}
               body={<Searcher />}
               footer={
-                <Button onPress={() => window.location.assign("/availability")}>
+                <Button onPress={() => navigate("/availability")}>
                   Buscar
                 </Button>
               }
