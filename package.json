@@ -1,7 +1,7 @@
 {
   "name": "together",
   "private": true,
-  "version": "1.1.0",
+  "version": "2.0.0",
   "type": "module",
   "homepage": "https://github.com/AlvaroDesigns/together",
   "scripts": {

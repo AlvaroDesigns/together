@@ -1,11 +1,15 @@
 import { useDisclosure } from "@nextui-org/react";
 
 import {
+  Button,
   Cards,
   DrawerCreateItinerary,
+  DrawerCustom,
   OnBoarding,
   RootLayout,
+  Searcher,
 } from "@/components";
+import { CardHotelPromo } from "@/components/cards";
 import { subtitle, title } from "@/components/primitives";
 import { ENDPOINT, ON_BOARDNG } from "@/constants";
 import Services from "@/services";
@@ -50,6 +54,7 @@ export default function Step1() {
 
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isSearcherHotel, setSearcherHotel] = useState<boolean>(false);
   const onBoarding = getAuth(ON_BOARDNG);
 
   useEffect(() => {
@@ -104,6 +109,27 @@ export default function Step1() {
             />
           </div>
         </div>
+        {!isLoading && (
+          <div className="mt-6">
+            <CardHotelPromo onPressSubmit={() => setSearcherHotel(true)} />
+            <DrawerCustom
+              backdrop="blur"
+              placement="bottom"
+              radius="lg"
+              size="md"
+              isOpen={isSearcherHotel}
+              header="Reservar hoteles"
+              onOpenChange={() => setSearcherHotel(false)}
+              body={<Searcher />}
+              footer={
+                <Button onPress={() => window.location.assign("/availability")}>
+                  Buscar
+                </Button>
+              }
+            />
+          </div>
+        )}
+
         <div className="mt-6">
           <div className="flex flex-row whitespace-nowrap">
             <p className={subtitle()}>Top destinations</p>

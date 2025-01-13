@@ -34,7 +34,7 @@ export default function SectionForm({
       reset({ type: item?.currentKey });
     }
   };
-
+  console.log("edit", edit || type);
   return (
     <div className="flex flex-col gap-1">
       <div className="flex flex-col mx-4">
@@ -52,7 +52,7 @@ export default function SectionForm({
                 label="Tipo"
                 placeholder="Selecciona un tipo de viaje"
                 variant="bordered"
-                defaultSelectedKeys={[field.value || edit?.type]}
+                selectedKeys={[field.value || edit?.type]}
                 isInvalid={Boolean(fieldState.error?.message)}
                 color={fieldState.error?.message ? "danger" : "default"}
                 errorMessage={fieldState.error?.message}
@@ -150,6 +150,7 @@ export default function SectionForm({
                   color={fieldState.error?.message ? "danger" : "default"}
                   errorMessage={fieldState.error?.message}
                   className="max-w-xs"
+                  value={field.value || edit?.description}
                   classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
                   placeholder="Introduce tu descripcion"
                 />
@@ -193,6 +194,7 @@ export default function SectionForm({
                   isInvalid={Boolean(fieldState.error?.message)}
                   color={fieldState.error?.message ? "danger" : "default"}
                   errorMessage={fieldState.error?.message}
+                  value={field.value || edit?.name}
                   classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
                   placeholder="Ej: Hotel Roma"
                 />
@@ -211,6 +213,7 @@ export default function SectionForm({
                   isInvalid={Boolean(fieldState.error?.message)}
                   color={fieldState.error?.message ? "danger" : "default"}
                   errorMessage={fieldState.error?.message}
+                  value={field.value || String(edit?.stars)}
                 >
                   <Radio value="1">
                     <Stars count={1} />
@@ -227,7 +230,9 @@ export default function SectionForm({
                   <Radio value="5">
                     <Stars count={5} />
                   </Radio>
-                  <Radio value="none">Sin categoría</Radio>
+                  <Radio value="none">
+                    <p className="dark:text-gray-600"> Sin categoría</p>
+                  </Radio>
                 </RadioGroup>
               )}
             />
@@ -247,6 +252,7 @@ export default function SectionForm({
                   isInvalid={Boolean(fieldState.error?.message)}
                   color={fieldState.error?.message ? "danger" : "default"}
                   errorMessage={fieldState.error?.message}
+                  value={field.value || edit?.cityName}
                   classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
                   placeholder="Ej: Roma"
                 />
@@ -268,6 +274,7 @@ export default function SectionForm({
                   isInvalid={Boolean(fieldState.error?.message)}
                   color={fieldState.error?.message ? "danger" : "default"}
                   errorMessage={fieldState.error?.message}
+                  value={field.value || edit?.country}
                   classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
                   placeholder="Ej: Italia"
                 />
@@ -289,6 +296,7 @@ export default function SectionForm({
                   isInvalid={Boolean(fieldState.error?.message)}
                   color={fieldState.error?.message ? "danger" : "default"}
                   errorMessage={fieldState.error?.message}
+                  value={field.value || edit?.description}
                   className="max-w-xs"
                   classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
                   placeholder="Introduce tu descripcion"
@@ -324,6 +332,7 @@ export default function SectionForm({
                   isInvalid={Boolean(fieldState.error?.message)}
                   color={fieldState.error?.message ? "danger" : "default"}
                   errorMessage={fieldState.error?.message}
+                  value={field.value || edit?.name}
                   classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
                   placeholder="Ej: Coliseo"
                 />
@@ -345,6 +354,7 @@ export default function SectionForm({
                   isInvalid={Boolean(fieldState.error?.message)}
                   color={fieldState.error?.message ? "danger" : "default"}
                   errorMessage={fieldState.error?.message}
+                  value={field.value || edit?.imageUrl}
                   classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
                   placeholder="Ej: https://www.italia.com/..."
                 />
@@ -366,6 +376,7 @@ export default function SectionForm({
                   isInvalid={Boolean(fieldState.error?.message)}
                   color={fieldState.error?.message ? "danger" : "default"}
                   errorMessage={fieldState.error?.message}
+                  value={field.value || edit?.description}
                   className="max-w-xs"
                   classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
                   placeholder="Introduce tu descripcion"

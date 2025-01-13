@@ -1,4 +1,5 @@
 import { subtitle, title } from "@/components/primitives";
+import { CardFlightTypes } from "@/types";
 import { elipsis, resolverAirFly } from "@/utils";
 import {
   ArrowDownRightIcon,
@@ -18,18 +19,7 @@ export default function CardFlight({
   arrivalTime,
   onPressEdit,
   onPressDelete,
-}: {
-  startDate: string | Date;
-  departure: string | undefined;
-  departureLabel?: string | undefined;
-  destination: string | undefined;
-  destinationLabel?: string | undefined;
-  numberFlight: string | undefined;
-  descriptions?: string[] | null;
-  arrivalTime: string | undefined;
-  onPressEdit: () => void;
-  onPressDelete: () => void;
-}) {
+}: CardFlightTypes) {
   const time = arrivalTime?.split("-");
 
   return (

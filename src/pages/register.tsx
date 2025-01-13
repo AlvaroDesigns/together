@@ -1,13 +1,15 @@
 import { Button, Footer, Password } from "@/components";
 import { GoogleLogo } from "@/components/icons";
 import { subtitle } from "@/components/primitives";
-import { ROUTES } from "@/constants";
+import { ENDPOINT } from "@/constants";
 import { login } from "@/helpers/schema";
 import { useForm, useLoading } from "@/hooks";
 import { auth, provider } from "@/lib/firebaseConfig";
+import Services from "@/services";
 import { useDataStore } from "@/stores";
-import { Welcome } from "@/templates/welcome";
+import { RegisterTypes } from "@/types";
 import { Button as ButtonUI, Image, Input, Link } from "@nextui-org/react";
+import { AxiosResponse } from "axios";
 import { signInWithPopup } from "firebase/auth";
 import { useCallback } from "react";
 import { Controller } from "react-hook-form";
@@ -24,44 +26,8 @@ export default function Login() {
     schema: login,
   });
 
-  const fetchEmail = async (email?: string) => {
-    /* 
-  curl -X POST 'https://api.resend.com/emails' \
-  -H 'Authorization: Bearer re_VE6pWZD2_LTzBr9QdqJER1NgkjWRNyro2' \
-  -H 'Content-Type: application/json' \
-  -d $'{
-    "from": "onboarding@resend.dev",
-    "to": "info.alvarodesigns@gmail.com",
-    "subject": "Hello World",
-    "html": "<p>Congrats on sending your <strong>first email</strong>!</p>"
-  }'
-
-*/
-
-    const response = await fetch("https://api.resend.com/emails", {
-      method: "POST", // or 'PUT'
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "http://localhost:3000/",
-        "Access-Control-Allow-Methods": "POST",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        Authorization: "Bearer re_VE6pWZD2_LTzBr9QdqJER1NgkjWRNyro2",
-      },
-      body: JSON.stringify({
-        from: "hello@alvarodesigns.com", // email
-        to: "info.alvarodesigns@gmail.com",
-        subject: "Bienvenido a Together",
-        html: Welcome(),
-      }),
-    }).then((response) => response.json());
-
-    return response;
-  };
-
   const onSubmit = useCallback(
-    async (value: unknown) => {
-      console.log("hola");
-      fetchEmail();
+    async (value: RegisterTypes) => {
       const error = Object.entries(errors).length !== 0;
 
       /* Exit */
@@ -71,17 +37,29 @@ export default function Login() {
       startLoading();
 
       /* Call API */
-      console.log(value);
+      Services()
+        .post(ENDPOINT.REGISTER, {
+          name: value?.name,
+          email: value?.email,
+          password: value?.password,
+          phone: value?.phone,
+        })
+        .then((res: AxiosResponse) => {
+          const { data } = res || {};
 
-      setTimeout(() => stopLoading(), 300);
+          /* Set */
+          if (data.createdAt) {
+            navigate("/");
+          }
+        })
+        .finally(() => stopLoading());
     },
-    [errors, startLoading, stopLoading]
+    [errors, isLoading]
   );
 
   const signInGoogle = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
-      const user = result.user;
 
       if (result.user.email) {
         setter({
@@ -91,7 +69,7 @@ export default function Login() {
             avatar: result.user.photoURL,
           },
         });
-        navigate(ROUTES.HOME);
+        navigate("/");
       }
     } catch (error) {
       console.error("Error al iniciar sesión con Google:", error);
@@ -111,7 +89,7 @@ export default function Login() {
               src="../../logo.png"
               onClick={() => navigate("/")}
             />
-            <p className={subtitle({ color: "black" })}>Crea tu cuenta</p>
+            <p className={subtitle()}>Crea tu cuenta</p>
           </div>
           <div className="flex items-center my-4 rounded-2xl">
             <Controller
@@ -139,18 +117,29 @@ export default function Login() {
           </div>
           <div className="flex items-center mb-4">
             <Controller
-              name="password"
+              name="email"
               control={control}
               render={({ field, fieldState }) => (
-                <Password
+                <Input
                   {...field}
-                  placeholder="Por favor, introduce tu contraseña"
-                  label="Contraseña"
-                  message={fieldState.error?.message}
+                  isRequired
+                  variant="bordered"
+                  type="email"
+                  label="Correo"
+                  classNames={{
+                    inputWrapper: "!min-h-[60px] h-10",
+                  }}
+                  fullWidth={true}
+                  isInvalid={Boolean(fieldState.error?.message)}
+                  color={fieldState.error?.message ? "danger" : "default"}
+                  errorMessage={fieldState.error?.message}
+                  value={field.value}
+                  placeholder="Introducce tu correo electronico"
                 />
               )}
             />
           </div>
+
           <div className="flex items-center mb-4">
             <Controller
               name="password"
@@ -190,24 +179,14 @@ export default function Login() {
           </div>
           <div className="flex items-center mb-4">
             <Controller
-              name="email"
+              name="password"
               control={control}
               render={({ field, fieldState }) => (
-                <Input
+                <Password
                   {...field}
-                  isRequired
-                  variant="bordered"
-                  type="email"
-                  label="Correo"
-                  classNames={{
-                    inputWrapper: "!min-h-[60px] h-10",
-                  }}
-                  fullWidth={true}
-                  isInvalid={Boolean(fieldState.error?.message)}
-                  color={fieldState.error?.message ? "danger" : "default"}
-                  errorMessage={fieldState.error?.message}
-                  value={field.value}
-                  placeholder="Introducce tu correo electronico"
+                  placeholder="Por favor, introduce tu contraseña"
+                  label="Contraseña"
+                  message={fieldState.error?.message}
                 />
               )}
             />
@@ -230,7 +209,7 @@ export default function Login() {
           <Link
             size="sm"
             color="foreground"
-            className="mt-2 text-gray-600"
+            className="mt-2 text-gray-600 dark:text-gray-400"
             href="/"
           >
             Iniciar sesión

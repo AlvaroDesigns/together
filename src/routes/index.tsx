@@ -1,5 +1,6 @@
 import { ROUTES } from "@/constants";
-import { Login, Register, Step1, Step2 } from "@/pages";
+import { Availability, Login, Register, Step1, Step2 } from "@/pages";
+
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { PrivateRoute } from "./privateRoute";
 
@@ -24,6 +25,10 @@ export const router = createBrowserRouter([
   {
     path: "itineray/:nameId/shared",
     element: <Step2 />,
+  },
+  {
+    path: "availability",
+    element: <Availability />,
   },
   {
     path: "*",

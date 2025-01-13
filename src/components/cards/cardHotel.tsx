@@ -1,4 +1,5 @@
 import { subtitle, title } from "@/components/primitives";
+import { CardTypes } from "@/types";
 import { elipsis } from "@/utils";
 import { MapPinIcon } from "@heroicons/react/24/outline";
 import { Image, Link } from "@nextui-org/react";
@@ -16,19 +17,7 @@ export default function CardHotel({
   descriptions,
   onPressEdit,
   onPressDelete,
-}: {
-  startDate: string | Date;
-  endDate: string | Date;
-  name: string | undefined;
-  imageUrl?: string | undefined;
-  city: string | undefined;
-  country: string | undefined;
-  placeUrl?: string | undefined;
-  stars?: number | undefined;
-  descriptions?: string[] | null;
-  onPressEdit: () => void;
-  onPressDelete: () => void;
-}) {
+}: CardTypes) {
   return (
     <CardBase
       onPressEdit={onPressEdit}

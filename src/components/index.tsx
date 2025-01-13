@@ -17,6 +17,7 @@ import { Cards } from "./cardsProduct";
 import DrawerCreateItinerary from "./drawerCreate";
 import { default as DrawerCustom, default as DrawerFrom } from "./drawerCustom";
 import Footer from "./footer";
+import Searcher from "./form/searcher";
 import SectionForm from "./form/sectionForm";
 import Header from "./header";
 import Hero from "./hero";
@@ -49,6 +50,7 @@ export {
   OnBoarding,
   Password,
   RootLayout,
+  Searcher,
   SectionForm,
   Stars,
   Status,

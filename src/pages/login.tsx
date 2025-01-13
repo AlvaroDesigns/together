@@ -7,6 +7,7 @@ import { useForm, useLoading } from "@/hooks";
 import { auth, provider } from "@/lib/firebaseConfig";
 import Services from "@/services";
 import { useUserStore } from "@/stores";
+import { LoginTypes } from "@/types";
 import { setAuth } from "@/utils";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import {
@@ -35,13 +36,7 @@ export default function Login() {
   });
 
   const onSubmit = useCallback(
-    async (value: {
-      avatar: string;
-      name: string;
-      email: string;
-      password: string;
-      remember: boolean;
-    }) => {
+    async (value: LoginTypes) => {
       const error = Object.entries(errors).length !== 0;
 
       /* Exit */
@@ -57,7 +52,7 @@ export default function Login() {
           password: value.password,
         })
         .then((res: AxiosResponse) => {
-          const { data } = res;
+          const { data } = res || {};
 
           /* Set */
           setter({
@@ -108,7 +103,7 @@ export default function Login() {
               height={40}
               className="z-0 object-cover"
               src="../../logo.png"
-              onClick={() => navigate("/home")}
+              onClick={() => navigate("/")}
             />
           </div>
           <div className="flex items-center my-4 rounded-2xl">

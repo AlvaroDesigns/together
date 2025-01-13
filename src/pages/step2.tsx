@@ -19,6 +19,7 @@ import { sectionSchema } from "@/helpers/schema";
 import { useForm, useLoading } from "@/hooks";
 import Services from "@/services";
 import { useDataStore } from "@/stores";
+import { detailsData } from "@/stores/DataStore";
 import { DetailsTypes, ItineraryTypes } from "@/stores/DataStore/index.types";
 import { VARIANT_TYPE_SECTION } from "@/types";
 import { formatDay, formatDayForDays } from "@/utils";
@@ -65,7 +66,7 @@ const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
       const product = items?.find((item: { id: number }) => item.id === id);
 
       setter({ edit: product });
-      setTimeout(() => onOpen(), 100);
+      setTimeout(() => onOpen(), 500);
     },
     [items, onOpen, setter]
   );
@@ -286,6 +287,12 @@ export default function Step2() {
       )
       .finally(() => setTimeout(() => setIsLoadingPage(false), 1000));
   }, []);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setter({ edit: detailsData });
+    }
+  }, [isOpen, setter]);
 
   return (
     <RootLayout>

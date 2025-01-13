@@ -31,7 +31,7 @@ const itineraryData: ItineraryTypes = {
   load: true,
 };
 
-const detailsData: DetailsTypes = {
+export const detailsData: DetailsTypes = {
   type: undefined,
   startDate: "",
   days: 0,
