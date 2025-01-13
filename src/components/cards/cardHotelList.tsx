@@ -59,7 +59,7 @@ export default function CardHotelList({
                 <p className="text-small text-foreground/50">Wifi</p>
               </div>
               <div className="flex flex-row items-center justify-between w-full gap-2">
-                <div className="flex flex-col items-start mb-2">
+                <div className="flex flex-col items-start">
                   <div className="priceBox">
                     <div className="text-2xl font-semibold text-[#009688]">
                       <span className="">{price}</span>

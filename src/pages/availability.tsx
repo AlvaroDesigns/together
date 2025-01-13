@@ -6,7 +6,7 @@ import {
   RadioGroup,
 } from "@nextui-org/react";
 
-import { DrawerCustom, RootLayout } from "@/components";
+import { DrawerCustom, RootLayout, Searcher } from "@/components";
 import { CardHotelList, CardSkeleton } from "@/components/cards";
 import { subtitle } from "@/components/primitives";
 import { HOTELS } from "@/data";
@@ -26,6 +26,7 @@ export default function Availability() {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isFilters, setFilters] = useState<boolean>(false);
+  const [isSearcher, setSearcher] = useState<boolean>(false);
 
   useEffect(() => {
     /* Start Loading */
@@ -41,6 +42,7 @@ export default function Availability() {
           isReadOnly
           radius="full"
           defaultValue="Jue 12 de Feb - Dom 15 de Feb, 2 adultos"
+          onClick={() => setSearcher(true)}
           classNames={{
             inputWrapper: "!min-h-[60px]",
           }}
@@ -48,6 +50,17 @@ export default function Availability() {
           endContent={
             <MagnifyingGlassIcon className="mt-1 mr-1 dark:text-gray-600 size-6" />
           }
+        />
+        <DrawerCustom
+          backdrop="blur"
+          placement="bottom"
+          radius="lg"
+          size="md"
+          isOpen={isSearcher}
+          header="Buscar"
+          onOpenChange={() => setSearcher(false)}
+          body={<Searcher />}
+          footer={undefined}
         />
       </section>
       <section className="flex flex-row gap-4 p-2 space-x-4 border-b-1 dark:border-default-200/50 ">
