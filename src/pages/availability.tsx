@@ -93,7 +93,15 @@ export default function Availability() {
           body={
             <div className="px-4">
               <RadioGroup value="recomendado">
-                <Radio value="recomendado">Recomendaciones Together</Radio>
+                <Radio
+                  value="recomendado"
+                  classNames={{
+                    control: "bg-[#009688]",
+                    wrapper: "!border-[#009688]",
+                  }}
+                >
+                  Recomendaciones Together
+                </Radio>
                 <Radio value="low">Ordenar: Precio más bajo</Radio>
                 <Radio value="alto">ordenar: Precio más alto</Radio>
               </RadioGroup>
