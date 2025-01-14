@@ -126,11 +126,12 @@ export default function DrawerNavBar({
                     <Listbox
                       aria-label="Listbox menu with descriptions"
                       variant="flat"
+                      className="dark:text-gray-300"
                     >
                       <ListboxItem
                         key="account"
                         textValue="account"
-                        className="flex items-center pb-3 "
+                        className="flex items-center pb-3"
                         showDivider
                         onPress={() => handleInviteFriendsClick("account")}
                         startContent={<UserIcon className="m-1 size-6" />}
@@ -214,7 +215,7 @@ export default function DrawerNavBar({
         size="full"
         header={LITERALS[name as keyof object]}
         body={
-          <div className="flex flex-col items-center justify-center">
+          <div className="flex flex-col items-center justify-center dark:text-gray-300">
             {name === "FRIENDS" && (
               <>
                 <Image
@@ -269,7 +270,7 @@ export default function DrawerNavBar({
               </div>
             )}
             {name === "SECURE" && (
-              <div className="flex flex-col items-center justify-center w-full gap-4 px-4 py-2">
+              <div className="flex flex-col items-center justify-center w-full gap-4 px-4 py-2 dark:text-gray-300">
                 <Password placeholder="" label="Contraseña actual" />
                 <Password placeholder="" label="Nueva contraseña" />
                 <Password placeholder="" label="Repetir nueva contraseña" />

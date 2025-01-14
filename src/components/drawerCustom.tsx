@@ -53,7 +53,7 @@ export default function DrawerCustom({
         <DrawerContent>
           {() => (
             <>
-              <DrawerHeader className="flex flex-col gap-1 mb-2 border-b border-default-200/50">
+              <DrawerHeader className="flex flex-col gap-1 mb-2 border-b border-default-200/50 dark:text-gray-300">
                 {header}
               </DrawerHeader>
               <DrawerBody className="px-0">{body}</DrawerBody>

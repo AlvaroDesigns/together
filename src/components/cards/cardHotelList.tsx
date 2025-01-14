@@ -40,7 +40,7 @@ export default function CardHotelList({
             />
           </div>
           <div className="flex flex-col col-span-8 ">
-            <div className="flex items-start justify-between pb-2 dark:border-slate-200 border-b-1 dark:border-default-200/50 order-b">
+            <div className="flex items-start justify-between pb-2 dark:border-slate-200 border-b-1 dark:border-default-400/50 order-b">
               <div className="flex flex-col gap-0">
                 <h3 className="font-semibold text-foreground/90">{name}</h3>
                 <p className="flex flex-row mb-2 text-small text-foreground/80">
@@ -66,7 +66,9 @@ export default function CardHotelList({
                       <span className="currencySymbol">{currency}</span>
                     </div>
                   </div>
-                  <span className="text-sm text-gray-600">por noche</span>
+                  <span className="text-sm text-gray-600 dark:text-gray-500">
+                    por noche
+                  </span>
                 </div>
                 <Button size="md" className="bg-[#009688] text-white">
                   Reservar
