@@ -7,7 +7,7 @@ export const PrivateRoute = ({ element }: { element: JSX.Element }) => {
   const logger = useUserStore((state) => state.user.logger);
 
   const { pathname } = window.location;
-  console.log(pathname, logger);
+
   if (logger && pathname.length === 1) {
     return <Navigate to="/home" replace />;
   }

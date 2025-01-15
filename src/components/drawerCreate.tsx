@@ -168,7 +168,7 @@ export default function DrawerCreate() {
     values: undefined,
     schema: createItinerary,
   });
-  console.log("errors", errors);
+
   const onSubmit = useCallback(
     async (value: any) => {
       if (isStatus) {

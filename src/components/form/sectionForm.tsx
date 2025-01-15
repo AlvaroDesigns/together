@@ -34,7 +34,7 @@ export default function SectionForm({
       reset({ type: item?.currentKey });
     }
   };
-  console.log("edit", edit || type);
+
   return (
     <div className="flex flex-col gap-1">
       <div className="flex flex-col mx-4">
@@ -43,7 +43,6 @@ export default function SectionForm({
           name="type"
           control={control}
           render={({ field, fieldState }) => {
-            console.log("field", field.value, edit?.type);
             return (
               <Select
                 {...field}
