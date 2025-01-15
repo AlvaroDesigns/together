@@ -95,21 +95,21 @@ export default function Home() {
             <CardVertical
               title="París"
               subtitle="Francia"
-              maxHeight="200px"
+              maxHeight={200}
               onClick={() => navigate("/availability")}
               image="https://wanderlog.com/p/images/66e9a04a24043fa9fcd9a0cd_66bd2d63d57b940bc1b11e26_img%20paris_explore_places.jpg"
             />
             <CardVertical
               title="París"
               subtitle="Francia"
-              maxHeight="200px"
+              maxHeight={200}
               onClick={() => navigate("/availability")}
               image="https://www.youknowboat.com/blog/wp-content/uploads/2024/08/amsterdam.webp"
             />
             <CardVertical
               title="Tokio"
               subtitle="Japon"
-              maxHeight="200px"
+              maxHeight={200}
               onClick={() => navigate("/availability")}
               image="https://wanderlog.com/p/images/66e9a04af169a54a82164ea9_66bd2d63b74cc52cdd91b284_img%20tokyo_explore_places.jpg"
             />
