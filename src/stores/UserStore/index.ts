@@ -9,6 +9,7 @@ const userData: UserTypes = {
   avatar: null,
   userId: undefined,
   remember: false,
+  logger: false,
 };
 
 export const useUserStore = create<UserState>()(
@@ -25,7 +26,7 @@ export const useUserStore = create<UserState>()(
             false,
             `Set User Data`
           ),
-        reset: () => set(() => userData, false, "Reset User Data"),
+        reset: () => set(() => ({ user: userData }), false, "Reset User Data"),
       }))
     ),
     { name: "together-user", storage: createJSONStorage(() => sessionStorage) }

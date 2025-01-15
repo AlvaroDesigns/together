@@ -1,5 +1,11 @@
 import { useUserStore } from "@/stores";
-import { Image, Navbar, NavbarBrand, NavbarContent } from "@nextui-org/react";
+import {
+  Button,
+  Image,
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+} from "@nextui-org/react";
 
 import { useNavigate } from "react-router-dom";
 import DrawerNavBar from "./drawerNavBar";
@@ -9,7 +15,10 @@ export default function Header() {
   const navigate = useNavigate();
 
   return (
-    <Navbar className="dark:border-slate-200 border-b-1 dark:border-default-200/50 order-b">
+    <Navbar
+      maxWidth="xl"
+      className="dark:border-slate-200 border-b-1 dark:border-default-200/50 order-b"
+    >
       <NavbarBrand className="justify-start">
         <Image
           removeWrapper
@@ -20,13 +29,24 @@ export default function Header() {
         />
       </NavbarBrand>
       <NavbarContent as="div" justify="end" className="w-full">
-        <DrawerNavBar
-          user={{
-            name: user?.name || "Nombre",
-            email: user?.email || "Email",
-            avatar: user?.avatar ?? undefined,
-          }}
-        />
+        {!user?.logger ? (
+          <Button
+            radius="full"
+            size="md"
+            className="border-[#009688] bg-transparent text-[#009688]"
+            onPress={() => navigate("/login")}
+          >
+            Acceso
+          </Button>
+        ) : (
+          <DrawerNavBar
+            user={{
+              name: user?.name || "Nombre",
+              email: user?.email || "Email",
+              avatar: user?.avatar ?? undefined,
+            }}
+          />
+        )}
       </NavbarContent>
     </Navbar>
   );

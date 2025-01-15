@@ -39,7 +39,7 @@ export default function CardHotelList({
               width="100%"
             />
           </div>
-          <div className="flex flex-col col-span-8 ">
+          <div className="flex flex-col col-span-8">
             <div className="flex items-start justify-between pb-2 dark:border-slate-200 border-b-1 dark:border-default-400/50 order-b">
               <div className="flex flex-col gap-0">
                 <h3 className="font-semibold text-foreground/90">{name}</h3>

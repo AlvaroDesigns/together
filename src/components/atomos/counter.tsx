@@ -13,7 +13,7 @@ export const Counter = ({
 
   return (
     <div className="flex flex-row items-center w-full gap-2">
-      <div className="min-w-52 dark:text-gray-300">{label}</div>
+      <div className="text-gray-600 min-w-52 dark:text-gray-300">{label}</div>
       <div className="flex flex-row items-center w-full gap-2">
         <Button
           isIconOnly

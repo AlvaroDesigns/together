@@ -82,6 +82,7 @@ export default function Step1() {
             name: data?.name,
             userId: data?.id,
             avatar: data?.avatar,
+            logger: true,
           },
         });
         setter({ home: { items: data?.itinerary } });

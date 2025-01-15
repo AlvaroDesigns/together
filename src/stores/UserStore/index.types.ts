@@ -4,6 +4,7 @@ export interface UserTypes {
   avatar?: string | null;
   userId?: string | undefined;
   remember: boolean;
+  logger: boolean;
 }
 
 export interface UserState {

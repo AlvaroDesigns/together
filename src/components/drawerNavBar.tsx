@@ -1,4 +1,4 @@
-import { useDataStore } from "@/stores";
+import { useUserStore } from "@/stores";
 import {
   ArrowLeftIcon,
   ArrowLeftStartOnRectangleIcon,
@@ -42,7 +42,7 @@ export default function DrawerNavBar({
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [name, setName] = useState<string | null>(null);
 
-  const { reset } = useDataStore((state) => state);
+  const { reset } = useUserStore((state) => state);
   const defaultContent =
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
 
@@ -51,7 +51,7 @@ export default function DrawerNavBar({
     sessionStorage.removeItem("name");
     reset();
 
-    navigate("/");
+    setTimeout(() => navigate("/"), 100);
   };
 
   const handleOnDraweOpen = () => {

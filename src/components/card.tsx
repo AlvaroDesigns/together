@@ -2,12 +2,16 @@ import { Card, CardHeader, Image } from "@nextui-org/react";
 
 export default function CardVertical({
   title = "",
+  subtitle,
+  maxHeight = "240px",
   days,
   onClick,
   image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHZqj-XReJ2R76nji51cZl4ETk6-eHRmZBRw&s",
 }: {
   title: string | undefined;
-  days: number | undefined;
+  subtitle?: string;
+  days?: number;
+  maxHeight?: string;
   image: string | undefined;
   onClick?: () => void;
 }) {
@@ -18,10 +22,13 @@ export default function CardVertical({
     >
       <Card
         isFooterBlurred
-        className="w-full h-[240px] col-span-12 sm:col-span-7"
+        className={`w-full h-[${maxHeight}] col-span-12 sm:col-span-7`}
       >
         <CardHeader className="absolute z-10 flex-col items-start top-1">
           <h4 className="text-xl font-medium text-white/90 ">{title}</h4>
+          {subtitle && (
+            <p className="text-sm font-medium text-white/90 ">{subtitle}</p>
+          )}
           {days && (
             <p className="font-bold uppercase text-tiny text-white/60">
               {days} días

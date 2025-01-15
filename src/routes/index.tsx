@@ -1,14 +1,18 @@
 import { ROUTES } from "@/constants";
-import { Availability, Login, Register, Step1, Step2 } from "@/pages";
+import { Availability, Home, Login, Register, Step1, Step2 } from "@/pages";
 
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { PrivateRoute } from "./privateRoute";
 
 export const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/login",
     element: <Login />,
     children: [],
+  },
+  {
+    path: "/",
+    element: <PrivateRoute element={<Home />} />,
   },
   {
     path: ROUTES.REGISTER,
