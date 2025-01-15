@@ -33,7 +33,7 @@ export default function Header() {
           <Button
             radius="full"
             size="md"
-            className="border-[#009688] bg-transparent text-[#009688]"
+            className="border-[#009688] bg-transparent text-[#009688] hover:border-[#009688]"
             onPress={() => navigate("/login")}
           >
             Acceso
