@@ -32,7 +32,7 @@ export default function CardHotelPromo({
             <Button
               isIconOnly
               aria-label="Like"
-              className="bg-[transparent] focus:outline-none"
+              className="bg-[transparent] focus:outline-none hover:border-transparent"
               onPress={() => {
                 setIsOpen(false);
               }}

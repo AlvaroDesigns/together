@@ -1,7 +1,7 @@
 import { Button, Footer, Password } from "@/components";
 import { GoogleLogo } from "@/components/icons";
 import { subtitle } from "@/components/primitives";
-import { ENDPOINT } from "@/constants";
+import { ENDPOINT, ROUTES } from "@/constants";
 import { login } from "@/helpers/schema";
 import { useForm, useLoading } from "@/hooks";
 import { auth, provider } from "@/lib/firebaseConfig";
@@ -210,7 +210,7 @@ export default function Login() {
             size="sm"
             color="foreground"
             className="mt-2 text-gray-600 dark:text-gray-400"
-            href="/"
+            onPress={() => navigate(ROUTES.LOGIN)}
           >
             Iniciar sesión
           </Link>

@@ -36,7 +36,8 @@ export const REGEX: Record<string, RegExp> = {
 export const BASE_ROUTE: string = "/seguro-orfandad";
 export const ROUTES: Record<string, string> = {
   HOME: "/home",
-  REGISTER: "registrame",
+  LOGIN: "/login",
+  REGISTER: "/registrame",
   ITINERARY: "/itineray",
 };
 

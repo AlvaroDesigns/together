@@ -7,6 +7,7 @@ import {
   NavbarContent,
 } from "@nextui-org/react";
 
+import { ROUTES } from "@/constants";
 import { useNavigate } from "react-router-dom";
 import DrawerNavBar from "./drawerNavBar";
 
@@ -34,7 +35,7 @@ export default function Header() {
             radius="full"
             size="md"
             className="border-[#009688] bg-transparent text-[#009688] hover:border-[#009688]"
-            onPress={() => navigate("/login")}
+            onPress={() => navigate(ROUTES.LOGIN)}
           >
             Acceso
           </Button>

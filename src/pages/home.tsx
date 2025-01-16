@@ -33,7 +33,7 @@ export default function Home() {
               radius="full"
               size="md"
               onPress={() => navigate("/registrame")}
-              className="border-[#009688] bg-transparent text-[#009688]"
+              className="border-[#009688] bg-transparent text-[#009688] hover:border-[#009688]"
             >
               Empezamos
             </Button>

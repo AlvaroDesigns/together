@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button as ButtonUI,
   Chip,
   Input,
@@ -8,9 +9,8 @@ import {
 
 import { DrawerCustom, RootLayout, Searcher } from "@/components";
 import { CardHotelList, CardSkeleton } from "@/components/cards";
-import { subtitle } from "@/components/primitives";
 import { HOTELS } from "@/data";
-import { useDataStore } from "@/stores";
+import { useUserStore } from "@/stores";
 import {
   AdjustmentsVerticalIcon,
   ChevronUpDownIcon,
@@ -19,14 +19,16 @@ import {
 import { useEffect, useState } from "react";
 
 export default function Availability() {
-  const {
-    setter,
-    home: { items },
-  } = useDataStore((state) => state);
+  const { user } = useUserStore((state) => state);
+
+  const title = "Success Notification";
+  const description =
+    "Your action has been completed successfully. We'll notify you when updates are available.";
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isFilters, setFilters] = useState<boolean>(false);
   const [isSearcher, setSearcher] = useState<boolean>(false);
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
     /* Start Loading */
@@ -63,7 +65,7 @@ export default function Availability() {
           footer={undefined}
         />
       </section>
-      <section className="flex flex-row gap-4 p-2 space-x-4 border-b-1 dark:border-default-200/50 ">
+      <section className="flex flex-row gap-4 p-2 space-x-4 border-b-1 dark:border-default-200/50">
         <ButtonUI
           fullWidth
           radius="none"
@@ -110,7 +112,7 @@ export default function Availability() {
           footer={undefined}
         />
       </section>
-      <section className="flex flex-row gap-2 p-3 overflow-x-auto ">
+      <section className="flex flex-row gap-2 p-3 overflow-x-auto border-b-1 dark:border-default-200/50">
         <Chip size="lg" variant="bordered">
           Desayuno gratis
         </Chip>
@@ -122,7 +124,25 @@ export default function Availability() {
         </Chip>
       </section>
       <section className="flex flex-row p-4 text-left">
-        <p className={subtitle({ size: "sm" })}>250 Resultados</p>
+        {user.logger ? (
+          <Alert
+            color="success"
+            description="Genial, estas disfurtando de precios!"
+            isVisible={isVisible}
+            title="¡Bienvenido de nuevo!"
+            variant="faded"
+            onClose={() => setIsVisible(false)}
+          />
+        ) : (
+          <Alert
+            color="warning"
+            description="¡Precios exclusivos para usuarios registrados!"
+            isVisible={isVisible}
+            title="Inicia sesión y accede a ofertas únicas"
+            variant="faded"
+            onClose={() => setIsVisible(false)}
+          />
+        )}
       </section>
       <section className="relative flex flex-col pb-6 mx-4 text-left text-foreground">
         <div className="flex flex-col gap-4 ">

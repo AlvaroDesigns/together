@@ -120,7 +120,7 @@ export default function Step1() {
               backdrop="blur"
               placement="bottom"
               radius="lg"
-              size="md"
+              size="lg"
               isOpen={isSearcherHotel}
               header="Reservar hoteles"
               onOpenChange={() => setSearcherHotel(false)}
