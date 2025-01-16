@@ -74,7 +74,7 @@ export default function Availability() {
         <ButtonUI
           fullWidth
           radius="none"
-          className="bg-transparent focus:outline-none"
+          className="bg-transparent focus:outline-none hover:border-transparent"
           onPress={() => setFilters(true)}
           startContent={
             <ChevronUpDownIcon className="mt-1 text-gray-600 dark:text-gray-300 size-6" />
@@ -86,7 +86,7 @@ export default function Availability() {
         <ButtonUI
           fullWidth
           radius="none"
-          className="bg-transparent border-s-gray-300 dark:border-s-gray-700 focus:outline-none"
+          className="bg-transparent border-s-gray-300 dark:border-s-gray-700 focus:outline-none hover:border-transparent"
           startContent={
             <AdjustmentsVerticalIcon className="mt-1 text-gray-600 dark:text-gray-300 size-6" />
           }

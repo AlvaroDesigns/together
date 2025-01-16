@@ -57,7 +57,7 @@ const privateRoute = ({
   const authentication = getAuth(AUHT_NAME);
 
   if (isLogged) {
-    throw redirect({ to: ROUTES.HOME_B2B });
+    throw redirect({ to: ROUTES.HOME_B2C });
   }
 
   if (!authentication) {
