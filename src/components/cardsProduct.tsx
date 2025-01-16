@@ -8,7 +8,7 @@ import {
 import { Card } from "@/components";
 import { ROUTES } from "@/constants";
 import { useDataStore, useUserStore } from "@/stores";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "@tanstack/react-router";
 
 interface ItineraryItem {
   id: number | null | undefined;
@@ -25,7 +25,7 @@ interface CardsProps {
 export const Cards: React.FC<CardsProps> = ({ itinerary, loading = true }) => {
   const { resetItinerary } = useDataStore((state) => state);
   const { user } = useUserStore((state) => state);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const handelCardOnPress = ({
     id,
@@ -46,12 +46,14 @@ export const Cards: React.FC<CardsProps> = ({ itinerary, loading = true }) => {
     resetItinerary({ itinerary: { title, id, load: true } });
 
     /* Navigate */
-    navigate(`${ROUTES.ITINERARY}/${formatUrl}_${days}_dias`);
+    router.navigate({
+      to: `${ROUTES.ITINERARY}/$productId`,
+      params: { productId: `${formatUrl}_${days}_dias` },
+    });
   };
 
   if (loading || itinerary?.length === undefined) {
-    return Array.from({ length: 3 })
-    .map((_, index) => (
+    return Array.from({ length: 3 }).map((_, index) => (
       <div
         className="p-3 mb-5 bg-conten1 border dark:border-gray-700 min-h-56 rounded-xl w-[200px] min-w-[200px]"
         key={`skeleton-${index}`}

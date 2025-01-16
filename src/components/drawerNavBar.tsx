@@ -29,8 +29,8 @@ import {
 
 import { Button as ButtonT, DrawerCustom, Password } from "@/components";
 import { LITERALS, SUBMIT } from "@/literals/common";
+import { useRouter } from "@tanstack/react-router";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { version } from "../../package.json";
 
 export default function DrawerNavBar({
@@ -43,15 +43,13 @@ export default function DrawerNavBar({
   const [name, setName] = useState<string | null>(null);
 
   const { reset } = useUserStore((state) => state);
-  const defaultContent =
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
 
-  const navigate = useNavigate();
+  const router = useRouter();
   const handelLogOut = () => {
     sessionStorage.removeItem("name");
     reset();
 
-    setTimeout(() => navigate("/"), 100);
+    router.navigate({ to: "/" });
   };
 
   const handleOnDraweOpen = () => {

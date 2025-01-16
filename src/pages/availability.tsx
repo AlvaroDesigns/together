@@ -21,10 +21,6 @@ import { useEffect, useState } from "react";
 export default function Availability() {
   const { user } = useUserStore((state) => state);
 
-  const title = "Success Notification";
-  const description =
-    "Your action has been completed successfully. We'll notify you when updates are available.";
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isFilters, setFilters] = useState<boolean>(false);
   const [isSearcher, setSearcher] = useState<boolean>(false);
@@ -127,7 +123,7 @@ export default function Availability() {
         {user.logger ? (
           <Alert
             color="success"
-            description="Genial, estas disfurtando de precios!"
+            description="Genial, estas disfurtando de precios exclusivos."
             isVisible={isVisible}
             title="¡Bienvenido de nuevo!"
             variant="faded"
@@ -147,11 +143,12 @@ export default function Availability() {
       <section className="relative flex flex-col pb-6 mx-4 text-left text-foreground">
         <div className="flex flex-col gap-4 ">
           {isLoading
-            ? Array.from({ length: 5 }).map(() => (
-                <CardSkeleton variant="vertical" count={1} />
+            ? Array.from({ length: 5 }).map((__, index) => (
+                <CardSkeleton key={index} variant="vertical" count={1} />
               ))
             : HOTELS.map((data) => (
                 <CardHotelList
+                  key={data.hotel.name}
                   name={data.hotel.name}
                   stars={data.hotel.stars}
                   rating={Math.round(Number(data.hotel.tripAdvisor.rating))}

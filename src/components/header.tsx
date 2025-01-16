@@ -8,12 +8,12 @@ import {
 } from "@nextui-org/react";
 
 import { ROUTES } from "@/constants";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "@tanstack/react-router";
 import DrawerNavBar from "./drawerNavBar";
 
 export default function Header() {
   const { user } = useUserStore((state) => state);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   return (
     <Navbar
@@ -26,7 +26,7 @@ export default function Header() {
           alt="together"
           className="z-0 object-cover w-32 h-full"
           src="../../logo.png"
-          onClick={() => navigate("/home")}
+          onClick={() => router.navigate({ to: ROUTES.HOME_B2B })}
         />
       </NavbarBrand>
       <NavbarContent as="div" justify="end" className="w-full">
@@ -35,7 +35,7 @@ export default function Header() {
             radius="full"
             size="md"
             className="border-[#009688] bg-transparent text-[#009688] hover:border-[#009688]"
-            onPress={() => navigate(ROUTES.LOGIN)}
+            onPress={() => router.navigate({ to: ROUTES.LOGIN })}
           >
             Acceso
           </Button>

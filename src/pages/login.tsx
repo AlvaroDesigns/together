@@ -17,14 +17,14 @@ import {
   Input,
   Link,
 } from "@nextui-org/react";
+import { useRouter } from "@tanstack/react-router";
 import { AxiosResponse } from "axios";
 import { signInWithPopup } from "firebase/auth";
 import { useCallback, useState } from "react";
 import { Controller } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const [hide, setHide] = useState(true);
   const { isLoading, startLoading, stopLoading } = useLoading();
@@ -65,7 +65,7 @@ export default function Login() {
           });
 
           setAuth(AUHT_NAME, data.access_token);
-          navigate(ROUTES.HOME);
+          router.navigate({ to: ROUTES.HOME_B2B });
         })
         .finally(() => stopLoading());
     },
@@ -85,7 +85,7 @@ export default function Login() {
             remember: true,
           },
         });
-        navigate(ROUTES.HOME);
+        router.navigate({ to: ROUTES.HOME_B2B });
       }
     } catch (error) {
       console.error("Error al iniciar sesión con Google:", error);
@@ -103,7 +103,7 @@ export default function Login() {
               height={40}
               className="z-0 object-cover"
               src="../../logo.png"
-              onClick={() => navigate("/")}
+              onClick={() => router.navigate({ to: ROUTES.HOME_B2C })}
             />
           </div>
           <div className="flex items-center my-4 rounded-2xl">
@@ -190,7 +190,7 @@ export default function Login() {
             </Button>
             <Button
               variant="bordered"
-              onPress={() => navigate(ROUTES.REGISTER)}
+              onPress={() => router.navigate({ to: ROUTES.REGISTER })}
             >
               Registrarme
             </Button>

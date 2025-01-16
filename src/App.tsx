@@ -1,7 +1,6 @@
-import { RouterProvider } from "react-router-dom";
-
 import { useTheme } from "@nextui-org/use-theme";
 import { I18nProvider } from "@react-aria/i18n";
+import { RouterProvider } from "@tanstack/react-router";
 import "./App.css";
 import { router } from "./routes";
 

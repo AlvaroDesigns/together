@@ -1,11 +1,12 @@
 import { RootLayout } from "@/components";
 import CardVertical from "@/components/card";
 import { subtitle, title } from "@/components/primitives";
+import { ROUTES } from "@/constants";
 import { Button, Image } from "@nextui-org/react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "@tanstack/react-router";
 
 export default function Home() {
-  const navigate = useNavigate();
+  const router = useRouter();
 
   return (
     <RootLayout>
@@ -32,7 +33,10 @@ export default function Home() {
             <Button
               radius="full"
               size="md"
-              onPress={() => navigate("/registrame")}
+              onPress={() => {
+                console.log("Empezamos");
+                router.navigate({ to: ROUTES.REGISTER });
+              }}
               className="border-[#009688] bg-transparent text-[#009688] hover:border-[#009688]"
             >
               Empezamos
@@ -96,21 +100,21 @@ export default function Home() {
               title="París"
               subtitle="Francia"
               maxHeight={200}
-              onClick={() => navigate("/availability")}
+              onClick={() => router.navigate({ to: ROUTES.AVAILABILITY })}
               image="https://wanderlog.com/p/images/66e9a04a24043fa9fcd9a0cd_66bd2d63d57b940bc1b11e26_img%20paris_explore_places.jpg"
             />
             <CardVertical
               title="París"
               subtitle="Francia"
               maxHeight={200}
-              onClick={() => navigate("/availability")}
+              onClick={() => router.navigate({ to: ROUTES.AVAILABILITY })}
               image="https://www.youknowboat.com/blog/wp-content/uploads/2024/08/amsterdam.webp"
             />
             <CardVertical
               title="Tokio"
               subtitle="Japon"
               maxHeight={200}
-              onClick={() => navigate("/availability")}
+              onClick={() => router.navigate({ to: ROUTES.AVAILABILITY })}
               image="https://wanderlog.com/p/images/66e9a04af169a54a82164ea9_66bd2d63b74cc52cdd91b284_img%20tokyo_explore_places.jpg"
             />
           </div>

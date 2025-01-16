@@ -9,14 +9,14 @@ import Services from "@/services";
 import { useDataStore } from "@/stores";
 import { RegisterTypes } from "@/types";
 import { Button as ButtonUI, Image, Input, Link } from "@nextui-org/react";
+import { useRouter } from "@tanstack/react-router";
 import { AxiosResponse } from "axios";
 import { signInWithPopup } from "firebase/auth";
 import { useCallback } from "react";
 import { Controller } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const { isLoading, startLoading, stopLoading } = useLoading();
   const setter = useDataStore((state) => state.setter);
@@ -49,7 +49,7 @@ export default function Login() {
 
           /* Set */
           if (data.createdAt) {
-            navigate("/");
+            router.navigate({ to: ROUTES.HOME_B2C });
           }
         })
         .finally(() => stopLoading());
@@ -69,7 +69,7 @@ export default function Login() {
             avatar: result.user.photoURL,
           },
         });
-        navigate("/");
+        router.navigate({ to: ROUTES.HOME_B2C });
       }
     } catch (error) {
       console.error("Error al iniciar sesión con Google:", error);
@@ -87,7 +87,7 @@ export default function Login() {
               height={40}
               className="z-0 object-contain mb-2"
               src="../../logo.png"
-              onClick={() => navigate("/")}
+              onClick={() => router.navigate({ to: ROUTES.HOME_B2C })}
             />
             <p className={subtitle()}>Crea tu cuenta</p>
           </div>
@@ -142,7 +142,7 @@ export default function Login() {
 
           <div className="flex items-center mb-4">
             <Controller
-              name="password"
+              name="phone"
               control={control}
               render={({ field, fieldState }) => (
                 <Input
@@ -210,7 +210,7 @@ export default function Login() {
             size="sm"
             color="foreground"
             className="mt-2 text-gray-600 dark:text-gray-400"
-            onPress={() => navigate(ROUTES.LOGIN)}
+            onPress={() => router.navigate({ to: ROUTES.LOGIN })}
           >
             Iniciar sesión
           </Link>
