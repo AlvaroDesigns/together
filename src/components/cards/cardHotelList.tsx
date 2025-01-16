@@ -43,10 +43,10 @@ export default function CardHotelList({
             <div className="flex items-start justify-between pb-2 dark:border-slate-200 border-b-1 dark:border-default-400/50 order-b">
               <div className="flex flex-col gap-0">
                 <h3 className="font-semibold text-foreground/90">{name}</h3>
-                <p className="flex flex-row mb-2 text-small text-foreground/80">
+                <div className="flex flex-row mb-2 text-small text-foreground/80">
                   <Stars count={stars} color="Primary" />
                   <p className="ml-2 text-small">Excelente {rating}/5</p>
-                </p>
+                </div>
                 <p className="text-small text-foreground/80">{address}</p>
               </div>
             </div>

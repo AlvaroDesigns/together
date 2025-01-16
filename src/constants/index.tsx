@@ -35,10 +35,13 @@ export const REGEX: Record<string, RegExp> = {
 /* URLS */
 export const BASE_ROUTE: string = "/seguro-orfandad";
 export const ROUTES: Record<string, string> = {
-  HOME: "/home",
+  HOME_B2C: "/",
+  HOME_B2B: "/home",
   LOGIN: "/login",
+  AVAILABILITY: "/availability",
+  AVAILABILITY_PUBLIC: "/availability_public",
   REGISTER: "/registrame",
-  ITINERARY: "/itineray",
+  ITINERARY: "/itinerary",
 };
 
 export const ENDPOINT: Record<string, string> = {
