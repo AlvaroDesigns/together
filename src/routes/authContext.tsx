@@ -18,11 +18,12 @@ export const AuthProvider: React.FC<{
 
   const { pathname } = window.location;
 
+  /*
   if (logger && pathname.length === 1) {
     router.navigate("/home");
     return null;
   }
-
+*/
   return (
     <AuthContext.Provider value={{ storedToken }}>
       {children}
