@@ -17,7 +17,7 @@ export default function CardVertical({
 }) {
   return (
     <div
-      className="max-w-[900px] z-[100] min-w-[200px] gap-2 grid"
+      className="max-w-[900px] z-10 min-w-[200px] gap-2 grid"
       onClick={onClick}
     >
       <Card
