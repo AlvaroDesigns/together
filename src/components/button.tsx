@@ -29,7 +29,7 @@ export default function Button({
       isLoading={isLoading}
       onPress={onPress}
       startContent={startContent}
-      className={variant === "bordered" ? border : solid}
+      className={`${variant === "bordered" ? border : solid} text-medium`}
     >
       {children}
     </NextUIButton>

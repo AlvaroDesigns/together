@@ -191,7 +191,7 @@ export default function Login() {
               )}
             />
           </div>
-          <div className="flex flex-col gap-3 my-4 mt-6">
+          <div className="flex flex-col gap-3 my-4 mt-6 ">
             <Button isLoading={isLoading} onPress={handleSubmit(onSubmit)}>
               Registrarme
             </Button>
@@ -207,9 +207,9 @@ export default function Login() {
             Continue with Google
           </ButtonUI>
           <Link
-            size="sm"
+            size="md"
             color="foreground"
-            className="mt-2 text-gray-600 dark:text-gray-400"
+            className="mt-4 text-gray-600 text-medium dark:text-gray-400"
             onPress={() => router.navigate({ to: ROUTES.LOGIN })}
           >
             Iniciar sesión

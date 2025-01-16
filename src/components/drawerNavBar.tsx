@@ -28,7 +28,9 @@ import {
 } from "@nextui-org/react";
 
 import { Button as ButtonT, DrawerCustom, Password } from "@/components";
+import { AUHT_NAME, ROUTES } from "@/constants";
 import { LITERALS, SUBMIT } from "@/literals/common";
+import { removeAuth } from "@/utils";
 import { useRouter } from "@tanstack/react-router";
 import { useState } from "react";
 import { version } from "../../package.json";
@@ -38,18 +40,18 @@ export default function DrawerNavBar({
 }: {
   user: { name: string; email: string; avatar?: string };
 }) {
+  const router = useRouter();
   const [onClose, setOnClose] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [name, setName] = useState<string | null>(null);
 
   const { reset } = useUserStore((state) => state);
 
-  const router = useRouter();
   const handelLogOut = () => {
-    sessionStorage.removeItem("name");
     reset();
+    removeAuth(AUHT_NAME);
 
-    router.navigate({ to: "/" });
+    setTimeout(() => router.navigate({ to: ROUTES.HOME_B2C }), 1000);
   };
 
   const handleOnDraweOpen = () => {

@@ -65,7 +65,7 @@ export default function CardHotelPromo({
           <Button
             radius="full"
             size="sm"
-            className="bg-[#009688] text-white"
+            className="bg-[#009688] text-small p-4 text-white"
             onPress={onPressSubmit}
           >
             Reservar hoteles

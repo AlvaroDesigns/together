@@ -4,10 +4,13 @@ import {
   createRouter,
   Link,
   Outlet,
+  redirect,
 } from "@tanstack/react-router";
 
-import { ROUTES } from "@/constants";
+import { Status } from "@/components";
+import { AUHT_NAME, ROUTES } from "@/constants";
 import { Availability, Home, Login, Register, Step1, Step2 } from "@/pages";
+import { getAuth } from "@/utils";
 
 // Register things for typesafety
 declare module "@tanstack/react-router" {
@@ -20,15 +23,50 @@ const rootRoute = createRootRoute({
   component: () => <Outlet />,
   notFoundComponent: () => {
     return (
-      <div>
-        <p>This is the notFoundComponent configured on root route</p>
-        <Link to="/">Volver a la home</Link>
-      </div>
+      <>
+        <Status
+          title="Ups! No se encontró la página"
+          text="Por favor, vuelva a intentarlo más tarde."
+          src="../../404.png"
+        />
+        <Link
+          className="mt-2 text-gray-600 dark:text-gray-400"
+          to={ROUTES.HOME_B2C}
+        >
+          Volver a la home
+        </Link>
+      </>
     );
   },
+  errorComponent: ({ error }) => (
+    <>
+      <Status title="Habido un problema" text={error.message} />
+      <Link
+        className="mt-2 text-gray-600 dark:text-gray-400"
+        to={ROUTES.HOME_B2C}
+      >
+        Volver a la home
+      </Link>
+    </>
+  ),
 });
 
+const privateRoute = ({
+  isLogged = false,
+}: { isLogged?: boolean } = {}): void => {
+  const authentication = getAuth(AUHT_NAME);
+
+  if (isLogged) {
+    throw redirect({ to: ROUTES.HOME_B2B });
+  }
+
+  if (!authentication) {
+    throw redirect({ to: ROUTES.LOGIN });
+  }
+};
+
 const indexRoute = createRoute({
+  beforeLoad: async () => privateRoute({ isLogged: true }),
   getParentRoute: () => rootRoute,
   path: ROUTES.HOME_B2C,
   component: Home,
@@ -47,12 +85,14 @@ const registerRoute = createRoute({
 });
 
 const step1Route = createRoute({
+  beforeLoad: async () => privateRoute(),
   getParentRoute: () => rootRoute,
   path: ROUTES.HOME_B2B.slice(1),
   component: Step1,
 });
 
 const step2Route = createRoute({
+  beforeLoad: async () => privateRoute(),
   getParentRoute: () => rootRoute,
   path: `${ROUTES.ITINERARY.slice(1)}/$productId`,
   component: Step2,
@@ -65,6 +105,7 @@ const step2SharedRoute = createRoute({
 });
 
 const availabilityRoute = createRoute({
+  beforeLoad: async () => privateRoute(),
   getParentRoute: () => rootRoute,
   path: ROUTES.AVAILABILITY.slice(1),
   component: Availability,
@@ -76,7 +117,6 @@ const availabilityPublicRoute = createRoute({
   component: Availability,
 });
 
-// Añade las rutas al árbol
 const routeTree = rootRoute.addChildren([
   indexRoute.addChildren([
     loginRoute,
@@ -89,44 +129,7 @@ const routeTree = rootRoute.addChildren([
   availabilityPublicRoute,
 ]);
 
-export const router = createRouter({ routeTree });
-
-/*
-
-export const router = createBrowserRouter([
-  {
-    path: "/login",
-    element: <Login />,
-    children: [],
-  },
-  {
-    path: "/",
-    element: <Home />,
-  },
-  {
-    path: ROUTES.REGISTER,
-    element: <Register />,
-  },
-  {
-    path: ROUTES.HOME,
-    element: <PrivateRoute element={<Step1 />} />,
-  },
-  {
-    path: "itineray/:nameId",
-    element: <PrivateRoute element={<Step2 />} />,
-  },
-  {
-    path: "itineray/:nameId/shared",
-    element: <Step2 />,
-  },
-  {
-    path: "availability",
-    element: <Availability />,
-  },
-  {
-    path: "*",
-    element: <Navigate to="/" replace />,
-  },
-]);
-
-*/
+export const router = createRouter({
+  routeTree,
+  defaultPreload: "intent",
+});

@@ -50,7 +50,12 @@ export default function Searcher() {
         label="Cuando"
       />
       {COUNTER_DATA.map((co) => (
-        <Counter label={co.label} key={co.key} defaultValue={co.defaultValue} />
+        <Counter
+          label={co.label}
+          key={co.key}
+          defaultValue={co.defaultValue}
+          min={co.min}
+        />
       ))}
     </Form>
   );

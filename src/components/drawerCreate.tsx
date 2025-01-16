@@ -146,7 +146,7 @@ export function DrawerItFrom({ control }: DrawerItFromProps) {
             variant="bordered"
             label="Url de la imagen"
             fullWidth={true}
-            placeholder="Introduce tu imagen"
+            placeholder="Introduce tu imagen de internet"
             isInvalid={Boolean(fieldState.error?.message)}
             color={fieldState.error?.message ? "danger" : "default"}
             errorMessage={fieldState.error?.message}

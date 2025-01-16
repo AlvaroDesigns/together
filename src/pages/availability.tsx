@@ -7,8 +7,9 @@ import {
   RadioGroup,
 } from "@nextui-org/react";
 
-import { DrawerCustom, RootLayout, Searcher } from "@/components";
+import { Button, DrawerCustom, RootLayout, Searcher } from "@/components";
 import { CardHotelList, CardSkeleton } from "@/components/cards";
+import { ROUTES } from "@/constants";
 import { HOTELS } from "@/data";
 import { useUserStore } from "@/stores";
 import {
@@ -16,10 +17,12 @@ import {
   ChevronUpDownIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
+import { useRouter } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
 export default function Availability() {
   const { user } = useUserStore((state) => state);
+  const router = useRouter();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isFilters, setFilters] = useState<boolean>(false);
@@ -53,12 +56,18 @@ export default function Availability() {
           backdrop="blur"
           placement="bottom"
           radius="lg"
-          size="md"
+          size="lg"
           isOpen={isSearcher}
           header="Buscar"
           onOpenChange={() => setSearcher(false)}
           body={<Searcher />}
-          footer={undefined}
+          footer={
+            <Button
+              onPress={() => router.navigate({ to: ROUTES.AVAILABILITY })}
+            >
+              Buscar
+            </Button>
+          }
         />
       </section>
       <section className="flex flex-row gap-4 p-2 space-x-4 border-b-1 dark:border-default-200/50">

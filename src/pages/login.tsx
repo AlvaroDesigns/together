@@ -170,7 +170,7 @@ export default function Login() {
               render={({ field }) => (
                 <Checkbox
                   {...field}
-                  size="sm"
+                  size="md"
                   color="default"
                   className="text-gray-600"
                   isSelected={field.value === undefined ? false : field.value}
@@ -180,7 +180,7 @@ export default function Login() {
                 </Checkbox>
               )}
             />
-            <Link size="sm" className="mr-2 text-gray-600" href="#">
+            <Link size="md" className="mr-2 text-gray-600" href="#">
               Forgot password
             </Link>
           </div>
@@ -199,7 +199,7 @@ export default function Login() {
           <ButtonUI
             radius="full"
             color="primary"
-            className="w-full my-2 h-14 min-h-[60px] text-white "
+            className="w-full text-medium my-2 h-14 min-h-[60px] text-white "
             onPress={signInGoogle}
           >
             <GoogleLogo />

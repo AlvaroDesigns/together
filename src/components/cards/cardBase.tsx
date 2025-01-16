@@ -54,7 +54,7 @@ export default function CardBase({
               color="foreground"
               onPress={onPressEdit}
               anchorIcon={
-                <PencilSquareIcon className="mt-1 mr-1 dark:text-gray-400 size-5" />
+                <PencilSquareIcon className="mt-1 mr-2 dark:text-gray-400 size-5" />
               }
             />
           )}

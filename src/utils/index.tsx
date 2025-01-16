@@ -1,4 +1,3 @@
-import { AUHT_NAME } from "@/constants";
 import { addHour, format, parse } from "@formkit/tempo";
 
 // Carga y muestra mensajes almacenados en localStorage
@@ -13,11 +12,6 @@ export const setAuth = (name: string, value: string) => {
 // Romove datos almacenados en localStorage
 export const removeAuth = (name: string) => {
   return localStorage?.removeItem(name);
-};
-/* Send Event Error */
-export const sendEventError = () => {
-  removeAuth(AUHT_NAME);
-  window.location.assign("/");
 };
 
 export const elipsis = (texto: string, maxLength: number) => {

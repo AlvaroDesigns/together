@@ -33,10 +33,7 @@ export default function Home() {
             <Button
               radius="full"
               size="md"
-              onPress={() => {
-                console.log("Empezamos");
-                router.navigate({ to: ROUTES.REGISTER });
-              }}
+              onPress={() => router.navigate({ to: ROUTES.REGISTER })}
               className="border-[#009688] bg-transparent text-[#009688] hover:border-[#009688]"
             >
               Empezamos

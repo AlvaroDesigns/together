@@ -5,9 +5,13 @@ import { useState } from "react";
 export const Counter = ({
   label = "Alojamiento",
   defaultValue = 0,
+  max = 10,
+  min = 0,
 }: {
   label?: string;
   defaultValue: number;
+  max?: number;
+  min?: number;
 }) => {
   const [count, setCount] = useState(defaultValue);
 
@@ -17,16 +21,17 @@ export const Counter = ({
       <div className="flex flex-row items-center w-full gap-2">
         <Button
           isIconOnly
-          aria-label="Like"
-          isDisabled={count === 0}
+          aria-label="min"
+          isDisabled={count <= min}
           onPress={() => setCount(count - 1)}
         >
           <MinusIcon className="m-1 size-6" />
         </Button>
-        <Input type="number" className="w-9" value={String(count)} />
+        <Input isReadOnly type="number" className="w-9" value={String(count)} />
         <Button
           isIconOnly
-          aria-label="Like"
+          aria-label="max"
+          isDisabled={count === max}
           onPress={() => setCount(count + 1)}
         >
           <PlusIcon className="m-1 size-6" />

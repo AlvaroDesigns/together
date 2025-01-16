@@ -22,8 +22,8 @@ export const TRANSFER_DATA = [
 ];
 
 export const COUNTER_DATA = [
-  { key: "room", label: "Habitación", defaultValue: 1 },
-  { key: "adults", label: "Adultos", defaultValue: 2 },
+  { key: "room", label: "Habitación", defaultValue: 1, min: 1 },
+  { key: "adults", label: "Adultos", defaultValue: 2, min: 1 },
   { key: "children", label: "Niños", defaultValue: 0 },
 ];
 
