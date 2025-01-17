@@ -40,7 +40,7 @@ export default function CardHotelPromo({
               <XMarkIcon className="mb-4 ml-4 dark:text-gray-400 size-5" />
             </Button>
           </div>
-          <div className="flex items-center mt-2 mb-4">
+          <div className="flex items-center mt-2 mb-2">
             <div>
               <p
                 className={`${subtitle({

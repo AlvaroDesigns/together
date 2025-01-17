@@ -9,7 +9,16 @@ import {
 
 import { Status } from "@/components";
 import { AUHT_NAME, ROUTES } from "@/constants";
-import { Availability, Home, Login, Register, Step1, Step2 } from "@/pages";
+import {
+  Availability,
+  Home,
+  HotelPage,
+  Login,
+  Register,
+  Step1,
+  Step2,
+} from "@/pages";
+
 import { getAuth } from "@/utils";
 
 // Register things for typesafety
@@ -40,7 +49,11 @@ const rootRoute = createRootRoute({
   },
   errorComponent: ({ error }) => (
     <>
-      <Status title="Habido un problema" text={error.message} />
+      <Status
+        title="Habido un problema"
+        text={error.message}
+        src="../../error.png"
+      />
       <Link
         className="mt-2 text-gray-600 dark:text-gray-400"
         to={ROUTES.HOME_B2C}
@@ -56,17 +69,19 @@ const privateRoute = ({
 }: { isLogged?: boolean } = {}): void => {
   const authentication = getAuth(AUHT_NAME);
 
-  if (isLogged) {
-    throw redirect({ to: ROUTES.HOME_B2C });
+  if (isLogged && authentication) {
+    console.log("authentication", Boolean(authentication));
+    throw redirect({ to: ROUTES.HOME_B2B });
   }
 
   if (!authentication) {
+    console.log("authentication", Boolean(authentication));
     throw redirect({ to: ROUTES.LOGIN });
   }
 };
 
 const indexRoute = createRoute({
-  beforeLoad: async () => privateRoute({ isLogged: true }),
+  // beforeLoad: async () => privateRoute({ isLogged: true }),
   getParentRoute: () => rootRoute,
   path: ROUTES.HOME_B2C,
   component: Home,
@@ -111,6 +126,12 @@ const availabilityRoute = createRoute({
   component: Availability,
 });
 
+const hotelPageRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: `${ROUTES.HOTELS.slice(1)}/$nameId`,
+  component: HotelPage,
+});
+
 const availabilityPublicRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: ROUTES.AVAILABILITY_PUBLIC.slice(1),
@@ -124,6 +145,7 @@ const routeTree = rootRoute.addChildren([
     step1Route,
     step2Route,
     availabilityRoute,
+    hotelPageRoute,
   ]),
   step2SharedRoute,
   availabilityPublicRoute,

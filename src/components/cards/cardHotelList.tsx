@@ -9,6 +9,7 @@ interface CardHotelListProps {
   price: number;
   currency?: string;
   address: string;
+  onPress?: () => void;
 }
 
 export default function CardHotelList({
@@ -19,12 +20,14 @@ export default function CardHotelList({
   price,
   currency = "€",
   address,
+  onPress,
 }: CardHotelListProps) {
   return (
     <Card
       isFooterBlurred
       className="bg-background/60 dark:bg-default-100/50"
       shadow="sm"
+      onPress={onPress}
     >
       <CardBody>
         <div className="grid items-center justify-center grid-cols-12 gap-6 md:gap-4">
@@ -70,7 +73,11 @@ export default function CardHotelList({
                     por noche
                   </span>
                 </div>
-                <Button size="md" className="bg-[#009688] text-white">
+                <Button
+                  size="md"
+                  onPress={onPress}
+                  className="bg-[#009688] text-white focus:outline-none"
+                >
                   Reservar
                 </Button>
               </div>

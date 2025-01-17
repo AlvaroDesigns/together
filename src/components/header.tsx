@@ -7,11 +7,13 @@ import {
   NavbarContent,
 } from "@nextui-org/react";
 
-import { ROUTES } from "@/constants";
+import { AUHT_NAME, ROUTES } from "@/constants";
+import { getAuth } from "@/utils";
 import { useRouter } from "@tanstack/react-router";
 import DrawerNavBar from "./drawerNavBar";
 
 export default function Header() {
+  const auth = getAuth(AUHT_NAME);
   const { user } = useUserStore((state) => state);
   const router = useRouter();
 
@@ -30,7 +32,7 @@ export default function Header() {
         />
       </NavbarBrand>
       <NavbarContent as="div" justify="end" className="w-full">
-        {!user?.logger ? (
+        {!auth ? (
           <Button
             radius="full"
             size="md"

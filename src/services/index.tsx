@@ -1,5 +1,5 @@
-import { AUHT_NAME } from "@/constants";
-import { getAuth } from "@/utils";
+import { AUHT_NAME, ROUTES } from "@/constants";
+import { getAuth, removeAuth } from "@/utils";
 import axios, { AxiosResponse } from "axios";
 
 const controllers: { [key: string]: AbortController } = {};
@@ -36,7 +36,8 @@ const Services = (headers?: object) => {
     },
     (error) => {
       if (error.response && error.response.status === 401) {
-        window.location.href = "/";
+        removeAuth(AUHT_NAME);
+        window.location.href = ROUTES.HOME_B2C;
       }
       return Promise.reject(error);
     }

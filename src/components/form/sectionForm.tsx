@@ -51,7 +51,7 @@ export default function SectionForm({
                 label="Tipo"
                 placeholder="Selecciona un tipo de viaje"
                 variant="bordered"
-                selectedKeys={[field.value || edit?.type]}
+                selectedKeys={[field.value === undefined ? type : field.value]}
                 isInvalid={Boolean(fieldState.error?.message)}
                 color={fieldState.error?.message ? "danger" : "default"}
                 errorMessage={fieldState.error?.message}

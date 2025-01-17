@@ -42,6 +42,7 @@ export const ROUTES: Record<string, string> = {
   AVAILABILITY_PUBLIC: "/availability_public",
   REGISTER: "/registrame",
   ITINERARY: "/itinerary",
+  HOTELS: "/hotels",
 };
 
 export const ENDPOINT: Record<string, string> = {

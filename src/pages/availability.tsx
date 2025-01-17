@@ -12,6 +12,7 @@ import { CardHotelList, CardSkeleton } from "@/components/cards";
 import { ROUTES } from "@/constants";
 import { HOTELS } from "@/data";
 import { useUserStore } from "@/stores";
+import { formatString } from "@/utils";
 import {
   AdjustmentsVerticalIcon,
   ChevronUpDownIcon,
@@ -82,7 +83,6 @@ export default function Availability() {
         >
           Ordenar
         </ButtonUI>
-
         <ButtonUI
           fullWidth
           radius="none"
@@ -164,6 +164,12 @@ export default function Availability() {
                   image={data.hotel.image}
                   price={data.hotel.selectedDistribution.averageNightlyRate}
                   address={data.hotel.location.address}
+                  onPress={() =>
+                    router.navigate({
+                      to: `${ROUTES.HOTELS}/$nameId`,
+                      params: { nameId: formatString(data.hotel.name) },
+                    })
+                  }
                 />
               ))}
         </div>

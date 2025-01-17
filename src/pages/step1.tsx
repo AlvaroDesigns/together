@@ -135,7 +135,6 @@ export default function Step1() {
             />
           </div>
         )}
-
         <div className="mt-6">
           <div className="flex flex-row whitespace-nowrap">
             <p className={subtitle()}>Top destinations</p>

@@ -108,15 +108,12 @@ export function DrawerItFrom({ control }: DrawerItFromProps) {
             isRequired
             variant="bordered"
             label="Fecha del viaje"
-            // visibleMonths={2}
             isInvalid={Boolean(fieldState.error?.message)}
             color={fieldState.error?.message ? "danger" : "default"}
             errorMessage={fieldState.error?.message}
             minValue={today(getLocalTimeZone())}
             maxValue={today(getLocalTimeZone()).add({ days: 365 })}
             classNames={{
-              // calendarContent: "w-[500px]",
-              // selectorButton: "bg-[#009688] text-white",
               calendar:
                 "w-full bg-white shadow-lg border border-default-200/60",
               calendarContent: "w-[300px] bg-red-500/10",

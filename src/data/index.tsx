@@ -2401,3 +2401,28 @@ export const HOTELS = [
     hasExcludedTaxes: false,
   },
 ];
+
+export const FACILITIES = [
+  { key: "room", label: "Wifi Gratis" },
+  { key: "adults", label: "Piscina" },
+  { key: "children", label: "Restaurante" },
+  { key: "room", label: "Spa" },
+  { key: "adults", label: "Smart Tv" },
+  { key: "children", label: "Lavandería" },
+];
+
+export const ROOMS_PRICE = [
+  {
+    boardCode: "RO",
+    travellerRefs: [1, 2],
+    roomCode: "DBL.ST",
+    refundable: true,
+    cancellationPolicy: [
+      {
+        amount: 205,
+        from: "2025-01-15T12:00:00",
+      },
+    ],
+    netAmount: 9778.56,
+  },
+];

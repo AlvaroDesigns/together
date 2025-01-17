@@ -14,6 +14,10 @@ export const removeAuth = (name: string) => {
   return localStorage?.removeItem(name);
 };
 
+export const formatString = (text: string) => {
+  return text.toLowerCase().replace(/ /g, "_");
+};
+
 export const elipsis = (texto: string, maxLength: number) => {
   if (texto === null || texto === undefined) {
     return texto;

@@ -283,21 +283,21 @@ export default function DrawerNavBar({
                   aria-label="Accordion 1"
                   title="Quienes somos"
                 >
-                  {defaultContent}
+                  Pendiente de texto
                 </AccordionItem>
                 <AccordionItem
                   key="2"
                   aria-label="Accordion 2"
                   title="Como funciona"
                 >
-                  {defaultContent}
+                  Pendiente de texto
                 </AccordionItem>
                 <AccordionItem
                   key="3"
                   aria-label="Accordion 3"
                   title="Dudas frecuentes"
                 >
-                  {defaultContent}
+                  Pendiente de texto
                 </AccordionItem>
               </Accordion>
             )}
