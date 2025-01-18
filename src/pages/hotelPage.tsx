@@ -23,6 +23,7 @@ export default function HotelPage() {
               className={`${title({
                 color: "base",
                 size: "s",
+                weight: "bold",
               })}`}
             >
               Axor Feria

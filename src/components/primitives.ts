@@ -24,6 +24,8 @@ export const title = tv({
     },
     weight: {
       light: "font-normal",
+      bold: "font-bold",
+      semibold: "font-semibold",
     },
     fullWidth: {
       true: "w-full block",
