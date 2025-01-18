@@ -1,6 +1,5 @@
 import { Button, Footer } from "@/components";
 import { GoogleLogo } from "@/components/icons";
-import { subtitle } from "@/components/primitives";
 import { AUHT_NAME, ENDPOINT, ROUTES } from "@/constants";
 import { login } from "@/helpers/schema";
 import { useForm, useLoading } from "@/hooks";
@@ -13,6 +12,7 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import {
   Button as ButtonUI,
   Checkbox,
+  Divider,
   Image,
   Input,
   Link,
@@ -200,7 +200,11 @@ export default function Login() {
               Registrarme
             </Button>
           </div>
-          <p className={subtitle()}>OR</p>
+          <div className="flex items-center gap-4 px-2">
+            <Divider className="flex-1" />
+            <p className="shrink-0 text-medium text-default-500">OR</p>
+            <Divider className="flex-1" />
+          </div>
           <ButtonUI
             radius="full"
             color="primary"

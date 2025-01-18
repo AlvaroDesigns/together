@@ -48,8 +48,8 @@ export interface CardTypes {
   placeUrl?: string | undefined;
   descriptions?: string[] | null;
   arrivalTime?: string | Date;
-  onPressEdit: () => void;
-  onPressDelete: () => void;
+  onPressEdit?: () => void;
+  onPressDelete?: () => void;
 }
 
 export interface CardFlightTypes {

@@ -9,7 +9,7 @@ import Services from "@/services";
 import { useDataStore } from "@/stores";
 import { Welcome } from "@/templates/welcome";
 import { RegisterTypes } from "@/types";
-import { Button as ButtonUI, Image, Input, Link } from "@heroui/react";
+import { Button as ButtonUI, Divider, Image, Input, Link } from "@heroui/react";
 import { useRouter } from "@tanstack/react-router";
 import axios from "axios";
 import { signInWithPopup } from "firebase/auth";
@@ -211,14 +211,18 @@ export default function Login() {
               Registrarme
             </Button>
           </div>
-          <p className={subtitle()}>OR</p>
+          <div className="flex items-center gap-4 px-2">
+            <Divider className="flex-1" />
+            <p className="shrink-0 text-medium text-default-500">OR</p>
+            <Divider className="flex-1" />
+          </div>
           <ButtonUI
             radius="full"
             color="primary"
+            startContent={<GoogleLogo />}
             className="w-full my-3 h-14 min-h-[60px] bg-[#0072f5] text-white "
             onPress={signInGoogle}
           >
-            <GoogleLogo />
             Continue with Google
           </ButtonUI>
           <Link

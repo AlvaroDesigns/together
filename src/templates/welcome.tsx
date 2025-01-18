@@ -89,7 +89,7 @@ export const Welcome = ({ name = "amig@" }: { name?: string }) => {
               conocido. ¿Nos ayudas? Es 1 minuto, prometido 🤗
             </p>
             <a href="#" class="cta-button"
-              >¿Como no has conocido?</a
+              >¿Como nos has conocido?</a
             >
           </div>
           <div class="footer">
