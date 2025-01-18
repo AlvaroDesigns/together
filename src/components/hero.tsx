@@ -1,5 +1,5 @@
 import { format } from "@formkit/tempo";
-import { Card, CardBody, Image, Skeleton } from "@heroui/react";
+import { Card, CardBody, Skeleton } from "@heroui/react";
 
 export default function Hero({
   startDate,
@@ -52,16 +52,23 @@ export default function Hero({
             </>
           )}
         </CardBody>
-
-        <Image
-          removeWrapper
-          isLoading={loading}
-          radius="none"
-          alt={title}
-          className="z-0 object-cover w-full h-full"
-          fallbackSrc="dummy.jpg"
-          src={image}
-        />
+        {loading ? (
+          <Skeleton className="rounded-lg">
+            <div className="h-64 rounded-lg bg-default-300" />
+          </Skeleton>
+        ) : image ? (
+          <img
+            alt={title}
+            className="z-0 object-cover w-full h-full"
+            src={image}
+          />
+        ) : (
+          <img
+            alt={title}
+            className="z-0 object-cover w-full h-full"
+            src="../../dummy.jpg"
+          />
+        )}
       </Card>
     </section>
   );

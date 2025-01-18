@@ -24,6 +24,7 @@ import {
   Link,
   Listbox,
   ListboxItem,
+  Switch,
   Tooltip,
 } from "@heroui/react";
 
@@ -34,6 +35,7 @@ import { removeAuth } from "@/utils";
 import { useRouter } from "@tanstack/react-router";
 import { useState } from "react";
 import { version } from "../../package.json";
+import { subtitle } from "./primitives";
 
 export default function DrawerNavBar({
   user,
@@ -233,7 +235,10 @@ export default function DrawerNavBar({
               </>
             )}
             {name === "ACCOUNT" && (
-              <div className="flex flex-col items-center justify-center w-full gap-4 px-4 py-2">
+              <div className="flex flex-col w-full gap-4 px-4 py-2">
+                <div className="flex flex-row whitespace-nowrap">
+                  <p className={subtitle()}>Información personal</p>
+                </div>
                 <Input
                   fullWidth={true}
                   variant="bordered"
@@ -259,14 +264,29 @@ export default function DrawerNavBar({
                   startContent="+34"
                   type="number"
                 />
-                <Link
-                  isExternal
-                  className="text-default-600 hover:text-default-600"
-                  color="foreground"
-                  href="https://github.com/nextui-org/nextui"
-                >
-                  Eliminar mi cuenta
-                </Link>
+                <div className="flex flex-row whitespace-nowrap">
+                  <p className={subtitle()}>Idioma</p>
+                </div>
+                <div className="flex flex-row gap-4">
+                  <p className={subtitle({ fullWidth: false })}>ES</p>
+                  <Switch
+                    defaultSelected
+                    isDisabled
+                    isSelected={false}
+                    aria-label="Idioma"
+                  />
+                  <p className={subtitle({ fullWidth: false })}>EN</p>
+                </div>
+                <div className="flex flex-row justify-center mt-2 whitespace-nowrap">
+                  <Link
+                    isExternal
+                    className="text-default-600 hover:text-default-600"
+                    color="foreground"
+                    href="https://github.com/nextui-org/nextui"
+                  >
+                    Eliminar mi cuenta
+                  </Link>
+                </div>
               </div>
             )}
             {name === "SECURE" && (
