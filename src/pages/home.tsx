@@ -87,7 +87,7 @@ export default function Home() {
             <h3
               className={`${title({
                 size: "sm",
-              })} md:w-2/5`}
+              })} md:w-3/5`}
             >
               Explora cientos de lugares para visitar en cada rincón del mundo.
             </h3>
