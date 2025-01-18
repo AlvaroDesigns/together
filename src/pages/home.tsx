@@ -10,7 +10,7 @@ export default function Home() {
 
   return (
     <RootLayout>
-      <section className="container max-h-[400px] h-[400px] md:mt-5 items-center grid grid-cols-1 md:grid-cols-2 md:grid-rows-1 gap-4">
+      <section className="container grid items-center grid-cols-1 gap-4 md:mt-5 md:grid-cols-2 md:grid-rows-1">
         <div className="flex flex-col text-center px-7 md:mx-auto my-7 offset-1 offset-md-0 text-md-left d-flex flex-column align-items-center align-items-md-start md:m-2 ">
           <h1
             className={`${title({
