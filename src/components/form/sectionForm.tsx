@@ -6,27 +6,30 @@ import {
   Select,
   SelectItem,
   Textarea,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 import { Calendar, Label, Stars } from "@/components";
 import { TRANSFER_DATA, TRIP } from "@/data";
 import { useForm } from "@/hooks";
 import { useDataStore } from "@/stores";
+import { DetailsTypes } from "@/stores/DataStore/index.types";
 import { VARIANT_TYPE_SECTION } from "@/types";
 import { Controller } from "react-hook-form";
 
 interface SectionFormProps {
+  data?: DetailsTypes;
   control: ReturnType<typeof useForm>["control"];
   reset: ReturnType<typeof useForm>["reset"];
   type: "FLIGHT" | "HOTEL" | "TRANSFER" | "TRIP" | "RENT";
 }
 
 export default function SectionForm({
+  data,
   control,
   reset,
   type = "FLIGHT",
 }: SectionFormProps) {
-  const { itinerary, edit } = useDataStore((state) => state);
+  const { itinerary } = useDataStore((state) => state);
 
   const handleChange = (item: { currentKey: string }) => {
     if (type) {
@@ -34,7 +37,7 @@ export default function SectionForm({
       reset({ type: item?.currentKey });
     }
   };
-
+  console.log("data", data?.type);
   return (
     <div className="flex flex-col gap-1">
       <div className="flex flex-col mx-4">
@@ -51,7 +54,9 @@ export default function SectionForm({
                 label="Tipo"
                 placeholder="Selecciona un tipo de viaje"
                 variant="bordered"
-                selectedKeys={[field.value === undefined ? type : field.value]}
+                selectedKeys={[
+                  field.value === undefined ? data?.type : field.value,
+                ]}
                 isInvalid={Boolean(fieldState.error?.message)}
                 color={fieldState.error?.message ? "danger" : "default"}
                 errorMessage={fieldState.error?.message}
@@ -90,7 +95,7 @@ export default function SectionForm({
                   color={fieldState.error?.message ? "danger" : "default"}
                   errorMessage={fieldState.error?.message}
                   classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
-                  value={field.value}
+                  value={field.value || data?.numberFlight}
                   placeholder="Ej: FR1234"
                 />
               )}
@@ -121,7 +126,7 @@ export default function SectionForm({
                   className="max-w-xs"
                   items={TRANSFER_DATA}
                   label="Tipo"
-                  selectedKeys={[field.value || edit?.name]}
+                  selectedKeys={[field.value || data?.name]}
                   placeholder="Selecciona un transporte"
                   variant="bordered"
                   isInvalid={Boolean(fieldState.error?.message)}
@@ -149,7 +154,7 @@ export default function SectionForm({
                   color={fieldState.error?.message ? "danger" : "default"}
                   errorMessage={fieldState.error?.message}
                   className="max-w-xs"
-                  value={field.value || edit?.description}
+                  value={field.value || data?.description}
                   classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
                   placeholder="Introduce tu descripcion"
                 />
@@ -193,7 +198,7 @@ export default function SectionForm({
                   isInvalid={Boolean(fieldState.error?.message)}
                   color={fieldState.error?.message ? "danger" : "default"}
                   errorMessage={fieldState.error?.message}
-                  value={field.value || edit?.name}
+                  value={field.value || data?.name}
                   classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
                   placeholder="Ej: Hotel Roma"
                 />
@@ -212,7 +217,7 @@ export default function SectionForm({
                   isInvalid={Boolean(fieldState.error?.message)}
                   color={fieldState.error?.message ? "danger" : "default"}
                   errorMessage={fieldState.error?.message}
-                  value={field.value || String(edit?.stars)}
+                  value={field.value || String(data?.stars)}
                 >
                   <Radio value="1">
                     <Stars count={1} />
@@ -251,7 +256,7 @@ export default function SectionForm({
                   isInvalid={Boolean(fieldState.error?.message)}
                   color={fieldState.error?.message ? "danger" : "default"}
                   errorMessage={fieldState.error?.message}
-                  value={field.value || edit?.cityName}
+                  value={field.value || data?.cityName}
                   classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
                   placeholder="Ej: Roma"
                 />
@@ -273,7 +278,7 @@ export default function SectionForm({
                   isInvalid={Boolean(fieldState.error?.message)}
                   color={fieldState.error?.message ? "danger" : "default"}
                   errorMessage={fieldState.error?.message}
-                  value={field.value || edit?.country}
+                  value={field.value || data?.country}
                   classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
                   placeholder="Ej: Italia"
                 />
@@ -295,7 +300,7 @@ export default function SectionForm({
                   isInvalid={Boolean(fieldState.error?.message)}
                   color={fieldState.error?.message ? "danger" : "default"}
                   errorMessage={fieldState.error?.message}
-                  value={field.value || edit?.description}
+                  value={field.value || data?.description}
                   className="max-w-xs"
                   classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
                   placeholder="Introduce tu descripcion"
@@ -331,7 +336,7 @@ export default function SectionForm({
                   isInvalid={Boolean(fieldState.error?.message)}
                   color={fieldState.error?.message ? "danger" : "default"}
                   errorMessage={fieldState.error?.message}
-                  value={field.value || edit?.name}
+                  value={field.value || data?.name}
                   classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
                   placeholder="Ej: Coliseo"
                 />
@@ -353,7 +358,7 @@ export default function SectionForm({
                   isInvalid={Boolean(fieldState.error?.message)}
                   color={fieldState.error?.message ? "danger" : "default"}
                   errorMessage={fieldState.error?.message}
-                  value={field.value || edit?.imageUrl}
+                  value={field.value || data?.imageUrl}
                   classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
                   placeholder="Ej: https://www.italia.com/..."
                 />
@@ -375,7 +380,7 @@ export default function SectionForm({
                   isInvalid={Boolean(fieldState.error?.message)}
                   color={fieldState.error?.message ? "danger" : "default"}
                   errorMessage={fieldState.error?.message}
-                  value={field.value || edit?.description}
+                  value={field.value || data?.description}
                   className="max-w-xs"
                   classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
                   placeholder="Introduce tu descripcion"

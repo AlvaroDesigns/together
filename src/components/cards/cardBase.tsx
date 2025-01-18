@@ -12,7 +12,7 @@ import {
   CardHeader,
   Divider,
   Link,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 export default function CardBase({
   header = new Date(),

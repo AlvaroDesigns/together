@@ -1,9 +1,9 @@
-import { Button as NextUIButton } from "@nextui-org/react";
+import { Button as UIButton } from "@heroui/react";
 
 interface ButtonProps {
   isLoading?: boolean;
   startContent?: React.ReactNode;
-  onPress?: (e: any) => void;
+  onPress?: () => void;
   variant?: "solid" | "bordered" | "light";
   children: React.ReactNode;
 }
@@ -16,13 +16,13 @@ export default function Button({
   children,
 }: ButtonProps) {
   const border =
-    "border-2 border-[#009688] bg-transparent text-[#009688] w-full h-14 min-h-[60px] mb-2";
+    "border-2 border-primary hover:border-primary bg-transparent text-primary w-full h-14 min-h-[60px] mb-2";
 
   const solid =
-    "bg-gradient-to-r shadow-medium text-md from-[#009688] to-[#009688] text-white h-14 w-full min-h-[60px] hover:border-transparent";
+    "bg-gradient-to-r shadow-medium text-md bg-primary text-white h-14 w-full min-h-[60px] hover:border-transparent";
 
   return (
-    <NextUIButton
+    <UIButton
       radius="full"
       variant={variant}
       type="submit"
@@ -32,6 +32,6 @@ export default function Button({
       className={`${variant === "bordered" ? border : solid} text-medium`}
     >
       {children}
-    </NextUIButton>
+    </UIButton>
   );
 }

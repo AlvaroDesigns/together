@@ -2,7 +2,7 @@ import { RootLayout } from "@/components";
 import CardVertical from "@/components/card";
 import { subtitle, title } from "@/components/primitives";
 import { ROUTES } from "@/constants";
-import { Button, Image } from "@nextui-org/react";
+import { Button, Image } from "@heroui/react";
 import { useRouter } from "@tanstack/react-router";
 
 export default function Home() {
@@ -15,7 +15,7 @@ export default function Home() {
           <h1
             className={`${title({
               color: "green",
-            })} mb-5 `}
+            })} mb-5  leading-tight`}
           >
             Una aplicación para todas tus necesidades de planificación de viajes
           </h1>
@@ -34,7 +34,7 @@ export default function Home() {
               radius="full"
               size="md"
               onPress={() => router.navigate({ to: ROUTES.REGISTER })}
-              className="border-[#009688] bg-transparent text-[#009688] hover:border-[#009688]"
+              className="bg-transparent border-primary text-primary hover:border-primary"
             >
               Empezamos
             </Button>
@@ -97,21 +97,27 @@ export default function Home() {
               title="París"
               subtitle="Francia"
               maxHeight={200}
-              onClick={() => router.navigate({ to: ROUTES.AVAILABILITY })}
+              onClick={() =>
+                router.navigate({ to: ROUTES.AVAILABILITY_PUBLIC })
+              }
               image="https://wanderlog.com/p/images/66e9a04a24043fa9fcd9a0cd_66bd2d63d57b940bc1b11e26_img%20paris_explore_places.jpg"
             />
             <CardVertical
               title="París"
               subtitle="Francia"
               maxHeight={200}
-              onClick={() => router.navigate({ to: ROUTES.AVAILABILITY })}
+              onClick={() =>
+                router.navigate({ to: ROUTES.AVAILABILITY_PUBLIC })
+              }
               image="https://www.youknowboat.com/blog/wp-content/uploads/2024/08/amsterdam.webp"
             />
             <CardVertical
               title="Tokio"
               subtitle="Japon"
               maxHeight={200}
-              onClick={() => router.navigate({ to: ROUTES.AVAILABILITY })}
+              onClick={() =>
+                router.navigate({ to: ROUTES.AVAILABILITY_PUBLIC })
+              }
               image="https://wanderlog.com/p/images/66e9a04af169a54a82164ea9_66bd2d63b74cc52cdd91b284_img%20tokyo_explore_places.jpg"
             />
           </div>

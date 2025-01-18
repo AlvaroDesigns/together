@@ -1,5 +1,5 @@
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
-import { Button, Input } from "@nextui-org/react";
+import { Button, Input } from "@heroui/react";
 import { useState } from "react";
 
 export const Counter = ({

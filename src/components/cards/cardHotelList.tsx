@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, Image } from "@nextui-org/react";
+import { Button, Card, CardBody, Image } from "@heroui/react";
 import { Stars } from "../atomos/stars";
 
 interface CardHotelListProps {
@@ -64,7 +64,7 @@ export default function CardHotelList({
               <div className="flex flex-row items-center justify-between w-full gap-2">
                 <div className="flex flex-col items-start">
                   <div className="priceBox">
-                    <div className="text-2xl font-semibold text-[#009688]">
+                    <div className="text-2xl font-semibold text-primary">
                       <span className="">{price}</span>
                       <span className="currencySymbol">{currency}</span>
                     </div>
@@ -76,7 +76,7 @@ export default function CardHotelList({
                 <Button
                   size="md"
                   onPress={onPress}
-                  className="bg-[#009688] text-white focus:outline-none"
+                  className="text-white bg-primary focus:outline-none"
                 >
                   Reservar
                 </Button>

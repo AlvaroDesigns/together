@@ -1,5 +1,5 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { Button, Card, CardBody, Image } from "@nextui-org/react";
+import { Button, Card, CardBody, Image } from "@heroui/react";
 import { useState } from "react";
 import { subtitle, title } from "../primitives";
 
@@ -65,7 +65,7 @@ export default function CardHotelPromo({
           <Button
             radius="full"
             size="sm"
-            className="bg-[#009688] text-small p-4 text-white"
+            className="p-4 text-white bg-primary text-small"
             onPress={onPressSubmit}
           >
             Reservar hoteles

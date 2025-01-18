@@ -10,7 +10,7 @@ export const siteConfig = {
       active: true,
     },
     {
-      label: "Provacidad",
+      label: "Privacidad",
       href: "/",
       active: true,
     },

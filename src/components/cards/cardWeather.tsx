@@ -1,5 +1,5 @@
 import { SunIcon } from "@heroicons/react/24/outline";
-import { Card, CardBody } from "@nextui-org/react";
+import { Card, CardBody } from "@heroui/react";
 
 export default function CardWeather({
   humidity,
@@ -50,7 +50,7 @@ export default function CardWeather({
           {Math.round(humidity)}%
         </div>
         <div className="flex flex-row items-center">
-          <SunIcon className="mr-1 text-[#009688] size-5" />
+          <SunIcon className="mr-1 text-primary size-5" />
           {Math.round(min)} °C / {Math.round(max)} °C
         </div>
       </CardBody>

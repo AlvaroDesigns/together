@@ -6,8 +6,7 @@
 
 export const AUHT_NAME = "auth";
 export const ON_BOARDNG = "onBoarding";
-export const IS_APP: string = "mobile";
-export const COUNTRY_ES: string = "E-ESPAÑA";
+export const MAIL: string = "noreplay@together.alvarodesigns.com";
 
 /* Calendar */
 export const MAX_DATE_CLIENT: number = 206;
@@ -54,6 +53,7 @@ export const ENDPOINT: Record<string, string> = {
   FLIGHTS: "v1/operative/fight",
   DIRECTIONS: "v1/operative/directions",
   OPERATIVE: "v1/operative/weather",
+  EMAIL: "v1/operative/email",
 };
 
 /* GTM */

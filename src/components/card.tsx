@@ -1,4 +1,4 @@
-import { Card, CardHeader, Image } from "@nextui-org/react";
+import { Card, CardHeader, Image } from "@heroui/react";
 
 export default function CardVertical({
   title = "",

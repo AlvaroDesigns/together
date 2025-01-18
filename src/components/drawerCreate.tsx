@@ -15,7 +15,7 @@ import {
   DateRangePicker,
   Input,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useAsyncList } from "@react-stately/data";
 import { AxiosResponse } from "axios";
 import { useCallback, useEffect, useState } from "react";
@@ -211,7 +211,7 @@ export default function DrawerCreate() {
         radius="full"
         color="primary"
         onPress={onOpen}
-        className="bg-gradient-to-r z-50 text-md from-[#009688] to-[#009688] text-white h-14 min-h-[60px] fixed bottom-5 w-[calc(100%-33px)] hover:border-transparent"
+        className="bg-gradient-to-r z-50 text-md bg-primary text-white h-14 min-h-[60px] fixed bottom-5 w-[calc(100%-33px)] hover:border-transparent"
       >
         Crear mi plan de viaje
       </ButtonUI>

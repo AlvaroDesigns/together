@@ -1,11 +1,11 @@
 import { COUNTER_DATA } from "@/data";
-import { parseDate } from "@internationalized/date";
 import {
   Autocomplete,
   AutocompleteItem,
   DateRangePicker,
   Form,
-} from "@nextui-org/react";
+} from "@heroui/react";
+import { parseDate } from "@internationalized/date";
 import { Counter } from "../atomos/counter";
 
 export default function Searcher() {

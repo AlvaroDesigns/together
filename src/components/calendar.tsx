@@ -1,11 +1,11 @@
 import { convertToISO } from "@/utils";
+import { DateInput, DatePicker } from "@heroui/react";
 import {
   getLocalTimeZone,
   now,
   parseAbsoluteToLocal,
   today,
 } from "@internationalized/date";
-import { DateInput, DatePicker } from "@nextui-org/react";
 import { Controller, useForm } from "react-hook-form";
 
 export default function Calendar({

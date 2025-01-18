@@ -1,11 +1,11 @@
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
-import { Input } from "@nextui-org/react";
+import { Input } from "@heroui/react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { ControllerRenderProps } from "react-hook-form";
 
-interface ButtonProps {
+interface PasswordProps {
   message?: string;
-  field?: ReturnType<typeof useForm>["register"];
+  field?: ControllerRenderProps;
   value?: string;
   label?: string;
   placeholder?: string;
@@ -17,7 +17,7 @@ export default function Password({
   value,
   label,
   placeholder,
-}: ButtonProps) {
+}: PasswordProps) {
   const [hide, setHide] = useState(true);
   return (
     <Input

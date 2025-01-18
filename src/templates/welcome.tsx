@@ -1,100 +1,110 @@
-export const Welcome = () => {
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bienvenida</title>
-  <style>
-    /* Estilos generales */
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-    }
-
-    .email-container {
-      max-width: 600px;
-      margin: 20px auto;
-      background: #ffffff;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Encabezado */
-    .email-header {
-      background-color: #0073e6;
-      padding: 20px;
-      text-align: center;
-    }
-
-    .email-header img {
-      max-width: 150px;
-      height: auto;
-    }
-
-    /* Cuerpo del correo */
-    .email-body {
-      padding: 20px;
-      color: #333333;
-      line-height: 1.6;
-      text-align: center;
-    }
-
-    .email-body h1 {
-      font-size: 24px;
-      color: #0073e6;
-      margin-bottom: 10px;
-    }
-
-    .email-body p {
-      font-size: 16px;
-      margin-bottom: 20px;
-    }
-
-    /* Footer */
-    .email-footer {
-      text-align: center;
-      padding: 20px;
-      background-color: #f4f4f4;
-      border-top: 1px solid #dddddd;
-      color: #666666;
-    }
-
-    .email-footer img {
-      max-width: 120px;
-      height: auto;
-      margin-bottom: 10px;
-    }
-
-    .email-footer p {
-      font-size: 12px;
-      margin: 0;
-    }
-  </style>
-</head>
-<body>
-  <div class="email-container">
-    <!-- Encabezado -->
-    <div class="email-header">
-      <img src="https://together.alvarodesigns.com/logo.png" alt="Together Logo">
-    </div>
-
-    <!-- Cuerpo -->
-    <div class="email-body">
-      <h1>Hola Pablo,</h1>
-      <p>Estamos encantados de que inicies esta etapa con nosotros. ¡Te damos la bienvenida con los brazos abiertos a Together Labs!</p>
-    </div>
-
-    <!-- Footer -->
-    <div class="email-footer">
-      <img src="https://together.alvarodesigns.com/logo_footer_black.png" alt="Together Footer Logo">
-      <p>© 2025 Together Labs Inc.</p>
-    </div>
-  </div>
-</body>
-</html>
+export const Welcome = ({ name = "amig@" }: { name?: string }) => {
+  return `<html lang="es">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Bienvenido a Together</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+          }
+          .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f7f7f7;
+          }
+          .header {
+            text-align: center;
+            padding: 20px 0;
+          }
+          .header img {
+            max-width: 150px;
+          }
+          .content {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+          }
+          .content h1 {
+            color: #009688;
+            font-size: 18px;
+            margin-bottom: 8px;
+            font-weight: bold;
+          }
+          .cta-button {
+            display: inline-block;
+            margin: 10px 0;
+            padding: 10px 20px;
+            background-color: #009688;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+          }
+          .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #666;
+          }
+          .footer a {
+            color: #009688;
+            text-decoration: none;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="email-container">
+          <div class="header">
+            <img
+              src="https://together.alvarodesigns.com/logo.png"
+              alt="Together Logo"
+            />
+          </div>
+          <div class="content">
+            <h1>Hola ${name}, te damos la bienvenida a la familia</h1>
+            <p>
+             <strong>Esta es una de las pocas comunicaciones que recibirás de
+              nosotros.</strong> simplemente queremos agradecerte tu apoyo y 
+              confianza en Together.
+            </p>
+            <p>
+              Los mismos se conservarán en todo momento bloqueados, siguiendo el
+              principio de limitación del tratamiento, así como de integridad y
+              confidencialidad de los datos, garantizando la seguridad en el
+              tratamiento de los mismos, y únicamente con la finalidad de
+              ponerlos a disposición de las autoridades competentes en caso de
+              ser requeridos o para la exigencia de posibles responsabilidades o
+              reclamaciones. Para más información puedes consultar nuestra
+              <a href="#">Política de Privacidad</a>.
+            </p>
+            <p>
+              Por último, nos ayudaría mucho a mejorar conocer el por qué nos has
+              conocido. ¿Nos ayudas? Es 1 minuto, prometido 🤗
+            </p>
+            <a href="#" class="cta-button"
+              >¿Como no has conocido?</a
+            >
+          </div>
+          <div class="footer">
+            <p>Estamos encantados de verte 💗</p>
+            <p>© Together Labs inc 2025</p>
+            <p>
+              <a href="#>Twitter</a> |
+              <a href="#">Instagram</a> |
+              <a href="#">Facebook</a> |
+              <a href="#">Linkedin</a>
+            </p>
+            <p><a href="#">Centro de ayuda</a></p>
+          </div>
+        </div>
+      </body>
+    </html>
 `;
 };

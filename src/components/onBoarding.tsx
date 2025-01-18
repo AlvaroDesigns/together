@@ -6,7 +6,7 @@ import {
   DrawerContent,
   DrawerFooter,
   Image,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import Button from "./button";
 import { title } from "./primitives";
 

@@ -10,7 +10,7 @@ const SIZES: Record<StarsProps, string> = {
 };
 
 const COLORS: Record<StarsColorsProps, string> = {
-  Primary: "text-[#009688]",
+  Primary: "text-primary",
   Gray: "text-gray-600",
 };
 

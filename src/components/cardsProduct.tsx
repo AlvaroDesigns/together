@@ -1,9 +1,4 @@
-import {
-  CardHeader,
-  Image,
-  Card as NextCard,
-  Skeleton,
-} from "@nextui-org/react";
+import { CardHeader, Card as CardUI, Image, Skeleton } from "@heroui/react";
 
 import { Card } from "@/components";
 import { ROUTES } from "@/constants";
@@ -81,7 +76,7 @@ export const Cards: React.FC<CardsProps> = ({ itinerary, loading = true }) => {
   if (itinerary.length === 0) {
     return (
       <>
-        <NextCard
+        <CardUI
           isFooterBlurred
           className="w-full h-[200px] col-span-12 sm:col-span-7 relative"
         >
@@ -100,7 +95,7 @@ export const Cards: React.FC<CardsProps> = ({ itinerary, loading = true }) => {
             className="z-0 object-cover w-full h-full opacity-70"
             src="/female-travelers-waving-cars-road-small.jpg"
           />
-        </NextCard>
+        </CardUI>
       </>
     );
   }

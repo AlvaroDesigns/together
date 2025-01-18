@@ -23,8 +23,8 @@ import { detailsData } from "@/stores/DataStore";
 import { DetailsTypes, ItineraryTypes } from "@/stores/DataStore/index.types";
 import { VARIANT_TYPE_SECTION } from "@/types";
 import { formatDay, formatDayForDays } from "@/utils";
-import { Button as ButtonUi, useDisclosure } from "@nextui-org/react";
-import { useTheme } from "@nextui-org/use-theme";
+import { Button as ButtonUi, useDisclosure } from "@heroui/react";
+import { useTheme } from "@heroui/use-theme";
 import axios, { AxiosResponse } from "axios";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFieldArray } from "react-hook-form";
@@ -304,7 +304,7 @@ export default function Step2() {
         days={itinerary?.days}
         image={itinerary?.image}
       />
-      <div
+      <section
         className="z-[30] flex"
         data-height="250"
         data-style="curve"
@@ -320,7 +320,7 @@ export default function Step2() {
         >
           <path d="M 0 0 c 0 0 200 50 500 50 s 500 -50 500 -50 v 101 h -1000 v -100 z" />
         </svg>
-      </div>
+      </section>
       {data?.weather && data?.weather?.temperatureMax && (
         <section className="relative flex flex-col mx-4 mt-5 mb-3">
           <CardWeather
@@ -345,7 +345,7 @@ export default function Step2() {
         <ButtonUi
           radius="full"
           color="primary"
-          className="bg-gradient-to-r shadow-medium z-50 text-md from-[#009688] to-[#009688] text-white h-14 min-h-[60px] fixed bottom-5 w-[calc(100%-33px)] hover:border-transparent"
+          className="bg-gradient-to-r shadow-medium z-50 text-md bg-primary text-white h-14 min-h-[60px] fixed bottom-5 w-[calc(100%-33px)] hover:border-transparent"
           onPress={onOpen}
         >
           Añadir sección
@@ -355,7 +355,12 @@ export default function Step2() {
           header="Configura tu viaje"
           onOpenChange={onOpenChange}
           body={
-            <SectionForm type={TYPE} control={controlForm} reset={resetForm} />
+            <SectionForm
+              data={edit}
+              type={edit?.type}
+              control={controlForm}
+              reset={resetForm}
+            />
           }
           footer={
             <Button isLoading={isLoading} onPress={handleSubmit(onSubmit)}>

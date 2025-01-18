@@ -2,7 +2,7 @@ import { RootLayout, Stars } from "@/components";
 import { subtitle, title } from "@/components/primitives";
 import { FACILITIES } from "@/data";
 import { WifiIcon } from "@heroicons/react/24/outline";
-import { Image } from "@nextui-org/react";
+import { Image } from "@heroui/react";
 
 export default function HotelPage() {
   return (
@@ -49,7 +49,7 @@ export default function HotelPage() {
             {FACILITIES.map((f) => (
               <div className="flex flex-col items-center mr-4">
                 <div className="p-2.5 mb-4 rounded-full bg-slate-100">
-                  <WifiIcon className="dark:text-gray-400 text-[#009688] size-5" />
+                  <WifiIcon className="dark:text-gray-400 text-primary size-5" />
                 </div>
                 <p className="text-xs text-gray-500 whitespace-nowrap">
                   {f.label.toUpperCase()}

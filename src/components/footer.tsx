@@ -1,8 +1,7 @@
 import { Label } from "@/components";
 import { siteConfig } from "@/config/site";
-import { Link } from "@nextui-org/link";
-import { Divider, Image } from "@nextui-org/react";
-import { useTheme } from "@nextui-org/use-theme";
+import { Divider, Image, Link } from "@heroui/react";
+import { useTheme } from "@heroui/use-theme";
 
 export default function Footer() {
   const { theme } = useTheme();

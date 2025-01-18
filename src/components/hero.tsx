@@ -1,5 +1,5 @@
 import { format } from "@formkit/tempo";
-import { Card, CardBody, Image, Skeleton } from "@nextui-org/react";
+import { Card, CardBody, Image, Skeleton } from "@heroui/react";
 
 export default function Hero({
   startDate,

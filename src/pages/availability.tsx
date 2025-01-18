@@ -5,7 +5,7 @@ import {
   Input,
   Radio,
   RadioGroup,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 import { Button, DrawerCustom, RootLayout, Searcher } from "@/components";
 import { CardHotelList, CardSkeleton } from "@/components/cards";
@@ -23,6 +23,7 @@ import { useEffect, useState } from "react";
 
 export default function Availability() {
   const { user } = useUserStore((state) => state);
+
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -103,8 +104,8 @@ export default function Availability() {
                 <Radio
                   value="recomendado"
                   classNames={{
-                    control: "bg-[#009688]",
-                    wrapper: "!border-[#009688]",
+                    control: "bg-primary",
+                    wrapper: "!border-primary",
                   }}
                 >
                   Recomendaciones Together
@@ -121,7 +122,7 @@ export default function Availability() {
         <Chip size="lg" variant="bordered">
           Desayuno gratis
         </Chip>
-        <Chip size="lg" className="bg-[#009688] text-white">
+        <Chip size="lg" className="text-white bg-primary">
           Ofertas exclusivas
         </Chip>
         <Chip size="lg" variant="bordered">

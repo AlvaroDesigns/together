@@ -2,7 +2,7 @@ import { subtitle, title } from "@/components/primitives";
 import { CardTypes } from "@/types";
 import { elipsis } from "@/utils";
 import { MapPinIcon } from "@heroicons/react/24/outline";
-import { Image, Link } from "@nextui-org/react";
+import { Image, Link } from "@heroui/react";
 import { Stars } from "../atomos/stars";
 import CardBase from "./cardBase";
 

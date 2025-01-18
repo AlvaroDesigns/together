@@ -25,7 +25,7 @@ import {
   Listbox,
   ListboxItem,
   Tooltip,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 import { Button as ButtonT, DrawerCustom, Password } from "@/components";
 import { AUHT_NAME, ROUTES } from "@/constants";
@@ -194,14 +194,14 @@ export default function DrawerNavBar({
               <DrawerFooter className="flex flex-row justify-between gap-1">
                 <Link
                   className="text-default-400"
-                  href="mailto:hello@nextui.org"
+                  href="mailto:hello@together@alvarodesigns.com"
                   size="sm"
                 >
                   © 2025 Together Labs Inc.
                 </Link>
                 <Link
                   className="text-default-400"
-                  href="mailto:hello@nextui.org"
+                  href="mailto:hello@together@alvarodesigns.com"
                   size="sm"
                 >
                   Versión apha-{version}

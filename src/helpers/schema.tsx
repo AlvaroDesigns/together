@@ -9,11 +9,7 @@ export const register = yup.object().shape({
     .min(3, LITERALS.NUMBER_VALUE.replace("[number]", "3"))
     .required(LITERALS.REQUEST_LABEL)
     .matches(REGEX.ALPHABETIC, LITERALS.ERROR_LABEL),
-  surname: yup
-    .string()
-    .min(3, LITERALS.NUMBER_VALUE.replace("[number]", "3"))
-    .required(LITERALS.REQUEST_LABEL)
-    .matches(REGEX.ALPHABETIC, LITERALS.ERROR_LABEL),
+
   email: yup
     .string()
     .min(6, LITERALS.NUMBER_VALUE.replace("[number]", "6"))
@@ -24,7 +20,10 @@ export const register = yup.object().shape({
     .string()
     .required(LITERALS.REQUEST_LABEL)
     .matches(REGEX.PHONE, LITERALS.ERROR_LABEL),
-  acceptsAccount: yup.bool().oneOf([true], LITERALS.REQUEST_LABEL),
+  password: yup
+    .string()
+    .required(LITERALS.REQUEST_LABEL)
+    .matches(REGEX.PASSWORD, LITERALS.ERROR_LABEL),
 });
 
 export const login = yup.object().shape({

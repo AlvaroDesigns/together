@@ -16,7 +16,7 @@ import {
   Image,
   Input,
   Link,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useRouter } from "@tanstack/react-router";
 import { AxiosResponse } from "axios";
 import { signInWithPopup } from "firebase/auth";
@@ -180,7 +180,12 @@ export default function Login() {
                 </Checkbox>
               )}
             />
-            <Link size="md" className="mr-2 text-gray-600" href="#">
+            <Link
+              size="md"
+              color="foreground"
+              className="text-gray-600 dark:text-gray-500"
+              href="#"
+            >
               Forgot password
             </Link>
           </div>
@@ -199,7 +204,7 @@ export default function Login() {
           <ButtonUI
             radius="full"
             color="primary"
-            className="w-full text-medium my-2 h-14 min-h-[60px] text-white "
+            className="w-full text-medium my-2 h-14 min-h-[60px] bg-[#0072f5] text-white "
             onPress={signInGoogle}
           >
             <GoogleLogo />

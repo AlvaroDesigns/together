@@ -4,7 +4,7 @@ import {
   DrawerContent,
   DrawerFooter,
   DrawerHeader,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import React from "react";
 
 interface DrawerCustomProps {

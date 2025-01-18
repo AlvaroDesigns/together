@@ -6,7 +6,7 @@ import {
   ModalBody,
   ModalContent,
   ModalHeader,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 export default function ModalItinerary({
   isOpen,
@@ -66,7 +66,7 @@ export default function ModalItinerary({
                 color="primary"
                 type="submit"
                 onPress={onClose}
-                className="bg-gradient-to-r text-md from-[#009688] to-[#009688] text-white h-14 min-h-[60px] hover:border-transparent"
+                className="bg-gradient-to-r text-md bg-primary text-white h-14 min-h-[60px] hover:border-transparent"
               >
                 Guardar itinerario
               </Button>

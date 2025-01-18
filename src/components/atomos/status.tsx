@@ -1,6 +1,6 @@
 import { subtitle } from "@/components/primitives";
 import { CheckIcon } from "@heroicons/react/24/outline";
-import { Image } from "@nextui-org/react";
+import { Image } from "@heroui/react";
 
 export const Status = ({
   title,
@@ -16,8 +16,8 @@ export const Status = ({
       {src ? (
         <Image width="100%" height="auto" radius="lg" alt="Trip" src={src} />
       ) : (
-        <div className="flex items-center justify-center w-20 h-20 border-2 border-[#009688] rounded-full">
-          <CheckIcon className="mt-1 mr-1 text-[#009688] size-8" />
+        <div className="flex items-center justify-center w-20 h-20 border-2 rounded-full border-primary">
+          <CheckIcon className="mt-1 mr-1 text-primary size-8" />
         </div>
       )}
     </div>

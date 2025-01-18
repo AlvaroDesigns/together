@@ -1,7 +1,7 @@
 import { subtitle, title } from "@/components/primitives";
 import { CardTypes } from "@/types";
 import { ClockIcon } from "@heroicons/react/24/outline";
-import { Image, Link } from "@nextui-org/react";
+import { Image, Link } from "@heroui/react";
 import CardBase from "./cardBase";
 
 export default function CardTrip({

@@ -1,16 +1,17 @@
 import { Button, Footer, Password } from "@/components";
 import { GoogleLogo } from "@/components/icons";
 import { subtitle } from "@/components/primitives";
-import { ENDPOINT, ROUTES } from "@/constants";
+import { ENDPOINT, MAIL, ROUTES } from "@/constants";
 import { login } from "@/helpers/schema";
 import { useForm, useLoading } from "@/hooks";
 import { auth, provider } from "@/lib/firebaseConfig";
 import Services from "@/services";
 import { useDataStore } from "@/stores";
+import { Welcome } from "@/templates/welcome";
 import { RegisterTypes } from "@/types";
-import { Button as ButtonUI, Image, Input, Link } from "@nextui-org/react";
+import { Button as ButtonUI, Image, Input, Link } from "@heroui/react";
 import { useRouter } from "@tanstack/react-router";
-import { AxiosResponse } from "axios";
+import axios from "axios";
 import { signInWithPopup } from "firebase/auth";
 import { useCallback } from "react";
 import { Controller } from "react-hook-form";
@@ -22,7 +23,7 @@ export default function Login() {
   const setter = useDataStore((state) => state.setter);
 
   const { control, errors, handleSubmit } = useForm({
-    values: { email: "", password: "", remember: true },
+    values: undefined,
     schema: login,
   });
 
@@ -37,20 +38,33 @@ export default function Login() {
       startLoading();
 
       /* Call API */
-      Services()
-        .post(ENDPOINT.REGISTER, {
-          name: value?.name,
-          email: value?.email,
-          password: value?.password,
-          phone: value?.phone,
-        })
-        .then((res: AxiosResponse) => {
-          const { data } = res || {};
+      axios
+        .all([
+          Services().post(ENDPOINT.EMAIL, {
+            from: MAIL,
+            to: value?.email,
+            subject: "Bienvenido a Together Labs",
+            html: Welcome({ name: value?.name }),
+          }),
+          Services().post(ENDPOINT.REGISTER, {
+            name: value?.name,
+            email: value?.email,
+            phone: value?.phone,
+            password: value?.password,
+          }),
+        ])
+        .then(
+          axios.spread((response1, response2) => {
+            console.log("Response 1:", response1.data);
+            console.log("Response 2:", response2.data);
 
-          /* Set */
-          if (data.createdAt) {
-            router.navigate({ to: ROUTES.HOME_B2C });
-          }
+            if (response2.data.createdAt) {
+              router.navigate({ to: ROUTES.LOGIN });
+            }
+          })
+        )
+        .catch((error) => {
+          console.error("Error occurred:", error.message);
         })
         .finally(() => stopLoading());
     },
@@ -183,9 +197,10 @@ export default function Login() {
               control={control}
               render={({ field, fieldState }) => (
                 <Password
-                  {...field}
+                  field={field}
                   placeholder="Por favor, introduce tu contraseña"
                   label="Contraseña"
+                  value={field.value}
                   message={fieldState.error?.message}
                 />
               )}
@@ -200,7 +215,7 @@ export default function Login() {
           <ButtonUI
             radius="full"
             color="primary"
-            className="w-full my-3 h-14 min-h-[60px] text-white "
+            className="w-full my-3 h-14 min-h-[60px] bg-[#0072f5] text-white "
             onPress={signInGoogle}
           >
             <GoogleLogo />

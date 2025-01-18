@@ -5,7 +5,7 @@ import {
   Navbar,
   NavbarBrand,
   NavbarContent,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 import { AUHT_NAME, ROUTES } from "@/constants";
 import { getAuth } from "@/utils";
@@ -36,7 +36,7 @@ export default function Header() {
           <Button
             radius="full"
             size="md"
-            className="border-[#009688] bg-transparent text-[#009688] hover:border-[#009688]"
+            className="bg-transparent border-primary text-primary hover:border-primary"
             onPress={() => router.navigate({ to: ROUTES.LOGIN })}
           >
             Acceso

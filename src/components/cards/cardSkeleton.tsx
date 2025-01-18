@@ -1,4 +1,4 @@
-import { Divider, Skeleton } from "@nextui-org/react";
+import { Divider, Skeleton } from "@heroui/react";
 
 type VARIANT_TYPE_SECTION = "vertical" | "horizontal";
 const VARIANT_TYPE_VERTICAL: VARIANT_TYPE_SECTION = "vertical";
