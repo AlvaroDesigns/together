@@ -11,6 +11,7 @@ import { Button, DrawerCustom, RootLayout, Searcher } from "@/components";
 import { CardHotelList, CardSkeleton } from "@/components/cards";
 import { ROUTES } from "@/constants";
 import { HOTELS } from "@/data";
+import { LITERAL } from "@/i18/es";
 import { useUserStore } from "@/stores";
 import { formatString } from "@/utils";
 import {
@@ -72,7 +73,7 @@ export default function Availability() {
           }
         />
       </section>
-      <section className="flex flex-row gap-4 p-2 space-x-4 border-b-1 dark:border-default-200/50">
+      <section className="flex-row hidden gap-4 p-2 space-x-4 border-b-1 dark:border-default-200/50">
         <ButtonUI
           fullWidth
           radius="none"
@@ -87,7 +88,7 @@ export default function Availability() {
         <ButtonUI
           fullWidth
           radius="none"
-          className="bg-transparent border-s-gray-300 dark:border-s-gray-700 focus:outline-none hover:border-transparent"
+          className="font-normal bg-transparent border-s-gray-300 dark:border-s-gray-700 focus:outline-none hover:border-s-gray-300"
           startContent={
             <AdjustmentsVerticalIcon className="mt-1 text-gray-600 dark:text-gray-300 size-6" />
           }
@@ -95,6 +96,10 @@ export default function Availability() {
           Filtrar
         </ButtonUI>
         <DrawerCustom
+          backdrop="blur"
+          placement="bottom"
+          radius="lg"
+          size="lg"
           isOpen={isFilters}
           header="Ordenar"
           onOpenChange={() => setFilters(false)}
@@ -118,40 +123,72 @@ export default function Availability() {
           footer={undefined}
         />
       </section>
-      <section className="flex flex-row gap-2 p-3 overflow-x-auto border-b-1 dark:border-default-200/50">
-        <Chip size="lg" variant="bordered">
-          Desayuno gratis
-        </Chip>
-        <Chip size="lg" className="text-white bg-primary">
-          Ofertas exclusivas
-        </Chip>
-        <Chip size="lg" variant="bordered">
-          Cancelación gratis
-        </Chip>
+      <section className="flex flex-row gap-2 px-5 py-2 border-b-1 dark:border-default-200/50">
+        <ButtonUI
+          isIconOnly
+          radius="sm"
+          className="mr-1 bg-transparent border-2 h-9 focus:outline-none hover:border-default-400/50 border-default-400/50"
+          startContent={
+            <AdjustmentsVerticalIcon className="text-gray-600 rotate-90 dark:text-gray-300 size-5" />
+          }
+        />
+
+        <div className="flex flex-row gap-2 overflow-x-auto custom-scrollbar">
+          <ButtonUI
+            radius="sm"
+            className="bg-transparent border-2 h-9 focus:outline-none border-default-400/50 hover:border-transparent"
+            onPress={() => setFilters(true)}
+            endContent={
+              <ChevronUpDownIcon className="w-3 h-3 text-gray-600 dark:text-gray-300 size-6" />
+            }
+          >
+            Ordenar
+          </ButtonUI>
+          <Chip
+            size="md"
+            radius="sm"
+            variant="bordered"
+            className="min-h-[36px] text-white bg-primary border-primary"
+          >
+            Desayuno gratis
+          </Chip>
+          <Chip
+            size="md"
+            radius="sm"
+            variant="bordered"
+            className="min-h-[36px]"
+          >
+            Ofertas exclusivas
+          </Chip>
+          <Chip
+            size="md"
+            radius="sm"
+            variant="bordered"
+            className="min-h-[36px] "
+          >
+            Cancelación gratis
+          </Chip>
+        </div>
       </section>
-      <section className="flex flex-row p-4 text-left">
-        {user.logger ? (
+
+      <section className="relative flex flex-col pt-4 pb-6 mx-4 text-left text-foreground">
+        <div className="flex flex-col gap-4">
           <Alert
-            color="success"
-            description="Genial, estas disfurtando de precios exclusivos."
+            color={user.logger ? "success" : "warning"}
+            title={
+              user.logger
+                ? LITERAL.LOGGED_SESSION.TITLE
+                : LITERAL.NO_LOGGED_SESSION.TITLE
+            }
+            description={
+              user.logger
+                ? LITERAL.LOGGED_SESSION.SUBTITLE
+                : LITERAL.NO_LOGGED_SESSION.SUBTITLE
+            }
             isVisible={isVisible}
-            title="¡Bienvenido de nuevo!"
             variant="faded"
             onClose={() => setIsVisible(false)}
           />
-        ) : (
-          <Alert
-            color="warning"
-            description="¡Precios exclusivos para usuarios registrados!"
-            isVisible={isVisible}
-            title="Inicia sesión y accede a ofertas únicas"
-            variant="faded"
-            onClose={() => setIsVisible(false)}
-          />
-        )}
-      </section>
-      <section className="relative flex flex-col pb-6 mx-4 text-left text-foreground">
-        <div className="flex flex-col gap-4 ">
           {isLoading
             ? Array.from({ length: 5 }).map((__, index) => (
                 <CardSkeleton key={index} variant="vertical" count={1} />

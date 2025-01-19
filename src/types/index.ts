@@ -4,6 +4,7 @@ export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
 };
 
+export type AlertType = "success" | "info" | "warning" | "error";
 export type VariantTypeSection =
   | "FLIGHT"
   | "HOTEL"
@@ -11,6 +12,13 @@ export type VariantTypeSection =
   | "TRIP"
   | "RENT"
   | "OTHER";
+
+export const VARIANT_ALERT: Record<string, AlertType> = {
+  SUCCESS: "success",
+  INFO: "info",
+  WARNING: "warning",
+  ERROR: "error",
+};
 
 export const VARIANT_TYPE_SECTION = {
   FLIGHT: "FLIGHT",
