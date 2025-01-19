@@ -3,6 +3,7 @@ import CardVertical from "@/components/card";
 import { subtitle, title } from "@/components/primitives";
 import { ROUTES } from "@/constants";
 import { Button, Image } from "@heroui/react";
+
 import { useRouter } from "@tanstack/react-router";
 
 export default function Home() {

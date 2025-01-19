@@ -8,6 +8,7 @@ import { router } from "./routes";
 
 function App() {
   const { theme } = useTheme();
+  const { language } = navigator;
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   if (!isMobile) {
@@ -28,7 +29,7 @@ function App() {
 
   return (
     <main className={`${theme} text-foreground bg-background`}>
-      <I18nProvider locale="es-ES">
+      <I18nProvider locale={language}>
         <RouterProvider router={router} />
       </I18nProvider>
     </main>
