@@ -1,12 +1,4 @@
-import {
-  Button,
-  Card,
-  CardFooter,
-  CardHeader,
-  Divider,
-  Image,
-  Input,
-} from "@heroui/react";
+import { Button, Card, CardHeader, Image, Input } from "@heroui/react";
 
 import { RootLayout, Stars } from "@/components";
 import { subtitle } from "@/components/primitives";
@@ -48,14 +40,14 @@ export default function CheckOut() {
   return (
     <RootLayout>
       <section className="m-4">
-        <Card className="w-full col-span-12 sm:col-span-7">
+        <Card className="w-full col-span-12 p-2 sm:col-span-7">
           <CardHeader className="flex gap-3">
             <div className="flex flex-col items-start">
               <h2 className="text-lg font-semibold text-left text-foreground/90">
                 Axor feria
               </h2>
               <div className="flex flex-col items-start mb-2 text-small text-foreground/80">
-                <Stars count={4} color="Primary" />
+                <Stars size="Small" count={4} color="Primary" />
                 <p className="my-2 text-left text-small">Excelente 5/5</p>
                 <p className="text-left text-small text-foreground/80">
                   CALLE CAMPEZO, 4 MADRID
@@ -70,11 +62,6 @@ export default function CheckOut() {
               width="100%"
             />
           </CardHeader>
-          <CardFooter className="pt-0">
-            <div className="flex w-full">
-              <Divider />
-            </div>
-          </CardFooter>
         </Card>
       </section>
       <section className="m-4">

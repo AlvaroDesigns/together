@@ -11,6 +11,9 @@ export default defineConfig({
     port: 3000,
     host: true,
   },
+  optimizeDeps: {
+    include: ["mapbox-gl"],
+  },
   resolve: {
     alias: [{ find: "@", replacement: resolve(__dirname, "./src") }],
   },

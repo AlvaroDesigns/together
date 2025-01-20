@@ -2,15 +2,13 @@ import { useTheme } from "@heroui/use-theme";
 import { I18nProvider } from "@react-aria/i18n";
 import { RouterProvider } from "@tanstack/react-router";
 import "./App.css";
-import { Status } from "./components";
-import { useMediaQuery } from "./hooks";
 import { router } from "./routes";
 
 function App() {
   const { theme } = useTheme();
   const { language } = navigator;
-  const isMobile = useMediaQuery("(max-width: 768px)");
 
+  /*
   if (!isMobile) {
     return (
       <main
@@ -26,7 +24,7 @@ function App() {
       </main>
     );
   }
-
+*/
   return (
     <main className={`${theme} text-foreground bg-background`}>
       <I18nProvider locale={language}>

@@ -9,11 +9,11 @@ import {
 
 import { Button, DrawerCustom, RootLayout, Searcher } from "@/components";
 import { CardHotelList, CardSkeleton } from "@/components/cards";
-import { ROUTES } from "@/constants";
+import { AUHT_NAME, ROUTES } from "@/constants";
 import { HOTELS } from "@/data";
 import { LITERAL } from "@/i18/es";
 import { useUserStore } from "@/stores";
-import { formatString } from "@/utils";
+import { formatString, getAuth } from "@/utils";
 import {
   AdjustmentsVerticalIcon,
   ChevronUpDownIcon,
@@ -24,6 +24,7 @@ import { useEffect, useState } from "react";
 
 export default function Availability() {
   const { user } = useUserStore((state) => state);
+  const auth = getAuth(AUHT_NAME);
 
   const router = useRouter();
 
@@ -173,14 +174,14 @@ export default function Availability() {
       <section className="relative flex flex-col pt-4 pb-6 mx-4 text-left text-foreground">
         <div className="flex flex-col gap-4">
           <Alert
-            color={user.logger ? "success" : "warning"}
+            color={auth ? "success" : "warning"}
             title={
-              user.logger
+              auth
                 ? LITERAL.LOGGED_SESSION.TITLE
                 : LITERAL.NO_LOGGED_SESSION.TITLE
             }
             description={
-              user.logger
+              auth
                 ? LITERAL.LOGGED_SESSION.SUBTITLE
                 : LITERAL.NO_LOGGED_SESSION.SUBTITLE
             }

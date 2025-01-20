@@ -24,6 +24,7 @@ import Hero from "./hero";
 import RootLayout from "./layout";
 
 import Password from "./atomos/password";
+import { Maps } from "./maps";
 import ModalItinerary from "./modalItinerary";
 import OnBoarding from "./onBoarding";
 
@@ -46,6 +47,7 @@ export {
   Header,
   Hero,
   Label,
+  Maps,
   ModalItinerary,
   OnBoarding,
   Password,

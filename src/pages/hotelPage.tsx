@@ -1,13 +1,15 @@
-import { RootLayout, Stars } from "@/components";
+import { Maps, RootLayout, Stars } from "@/components";
+
 import { subtitle, title } from "@/components/primitives";
 import { ROUTES } from "@/constants";
 import { FACILITIES } from "@/data";
 import { router } from "@/routes";
 import {
   CheckIcon,
+  ChevronRightIcon,
   ClockIcon,
-  HeartIcon,
   MapPinIcon,
+  ShareIcon,
   WifiIcon,
 } from "@heroicons/react/24/outline";
 import {
@@ -20,6 +22,7 @@ import {
 } from "@heroui/react";
 import { useEffect } from "react";
 import { Toaster, toast } from "sonner";
+
 export default function HotelPage() {
   useEffect(() => {
     setTimeout(() => {
@@ -44,11 +47,11 @@ export default function HotelPage() {
           isIconOnly
           aria-label="Like"
         >
-          <HeartIcon className="dark:text-gray-400 text-primary size-5" />
+          <ShareIcon className="dark:text-gray-400 text-primary size-5" />
         </Button>
       </section>
-      <section className="container grid grid-cols-1 md:mt-5 md:grid-cols-2 md:grid-rows-1">
-        <div className="flex flex-row justify-between pb-5 m-6 mb-2 text-left md:mx-auto offset-1 offset-md-0 text-md-left d-flex flex-column align-items-start align-items-md-start md:m-2 border-b-1 dark:border-default-200/50">
+      <section className="container grid grid-cols-1 px-4 my-2 md:mt-5 md:grid-cols-2 md:grid-rows-1 mt-[-35px] z-10 relative">
+        <Card className="flex flex-row justify-between p-3 text-left md:mx-auto offset-1 offset-md-0 text-md-left d-flex flex-column align-items-start align-items-md-start md:m-2 border-b-1 dark:border-default-200/50">
           <div className="flex flex-col w-full gap-1">
             <h1
               className={`${title({
@@ -58,7 +61,7 @@ export default function HotelPage() {
               })} flex items-center gap-1 `}
             >
               Axor Feria
-              <Stars count={4} />
+              <Stars size="Small" count={4} />
             </h1>
             <h3
               className={`${subtitle({
@@ -79,10 +82,10 @@ export default function HotelPage() {
               />
             </div>
           </div>
-        </div>
+        </Card>
       </section>
-      <section className="container grid px-4 py-1 mx-2 text-left md:grid-cols-2 md:mt-5">
-        <div className="grid gap-4 pb-5 mb-2 border-b-1 dark:border-default-200/50 ">
+      <section className="container grid px-4 my-3 text-left md:grid-cols-2 md:mt-5">
+        <Card className="grid gap-4 p-3 border-b-1 dark:border-default-200/50 ">
           <h3
             className={`${subtitle({
               weight: "bold",
@@ -103,10 +106,10 @@ export default function HotelPage() {
               </li>
             ))}
           </ul>
-        </div>
+        </Card>
       </section>
-      <section className="container grid px-4 mx-2 text-left md:grid-cols-2 md:mt-5">
-        <div className="grid gap-4 pb-5 mb-2 border-b-1 dark:border-default-200/50 ">
+      <section className="container grid px-4 my-3 text-left md:grid-cols-2 md:mt-5">
+        <Card className="grid gap-4 p-3 border-b-1 dark:border-default-200/50">
           <h3
             className={`${subtitle({
               weight: "bold",
@@ -121,27 +124,54 @@ export default function HotelPage() {
             <li>Recepción 24h</li>
             <li>Ideal para relajarse</li>
           </ul>
-        </div>
+        </Card>
       </section>
-      <section className="container grid px-4 mx-2 mt-2 text-left md:grid-cols-2 md:mt-5">
-        <div className="flex gap-4 pb-4 mb-4 border-b-1 dark:border-default-200/50 ">
-          <div className="relative flex flex-row gap-2">
-            <ClockIcon className="dark:text-gray-400 text-primary size-11" />
-            <div className="flex flex-col">
-              <p className="text-base font-semibold text-primary">Check in</p>
-              <p className="text-sm text-gray-500">
-                A partir de las 12:00 horas
-              </p>
+      <section className="container grid gap-4 px-4 my-3 text-left">
+        <Card className="grid gap-4 p-3 border-b-1 dark:border-default-200/50">
+          <h3
+            className={`${subtitle({
+              weight: "bold",
+              size: "sm",
+            })}`}
+          >
+            Ubicación
+          </h3>
+          <Maps />
+        </Card>
+      </section>
+      <section className="container grid px-4 my-3 text-left md:grid-cols-2 md:mt-5">
+        <Card className="flex gap-4 p-3 border-b-1 dark:border-default-200/50">
+          <h3
+            className={`${subtitle({
+              weight: "bold",
+              size: "sm",
+            })}`}
+          >
+            Hora de entrada y de salida
+          </h3>
+          <div className="flex flex-row">
+            <div className="relative flex flex-row gap-2">
+              <ClockIcon className="dark:text-gray-400 text-primary size-11" />
+              <div className="flex flex-col">
+                <p className="text-base font-semibold text-primary">Check in</p>
+                <p className="text-sm text-gray-500">
+                  A partir de las 12:00 horas
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-row gap-2">
+              <ClockIcon className="dark:text-gray-400 text-primary size-11" />
+              <div className="flex flex-col mr-1">
+                <p className="text-base font-semibold text-primary">
+                  Check out
+                </p>
+                <p className="text-sm text-gray-500">
+                  Antes de las 12:00 horas
+                </p>
+              </div>
             </div>
           </div>
-          <div className="flex flex-row gap-2">
-            <ClockIcon className="dark:text-gray-400 text-primary size-11" />
-            <div className="flex flex-col">
-              <p className="text-base font-semibold text-primary">Check out</p>
-              <p className="text-sm text-gray-500">Antes de las 12:00 horas</p>
-            </div>
-          </div>
-        </div>
+        </Card>
       </section>
       <section className="container grid px-4 text-left md:grid-cols-2 md:mt-5 pb-7">
         <div className="grid gap-4">
@@ -155,12 +185,21 @@ export default function HotelPage() {
           </h3>
           <div className="flex flex-col gap-3">
             <Card className="w-full col-span-12 sm:col-span-7">
-              <CardHeader className="flex gap-3">
-                <div className="flex flex-col items-start">
-                  <p className="text-lg">Habitación Doble</p>
-                  <div className="px-2 py-1 text-xs text-white rounded-md bg-primary">
+              <CardHeader className="flex flex-col items-start gap-3">
+                <div className="relative">
+                  <div className="absolute z-20 top-2 left-2 px-2 py-1 text-xs  rounded-lg bg-[#e1f6e4]">
                     15 reservas esta semana
                   </div>
+                  <Image
+                    radius="lg"
+                    alt="Hotel"
+                    height={200}
+                    src="https://res.cloudinary.com/lastminute/image/upload/v1585217488/22_Superior_Room_s2wzqa.jpg"
+                    width="100%"
+                  />
+                </div>
+                <div className="text-left">
+                  <h3 className="text-lg font-semibold">Habitación Doble</h3>
                 </div>
               </CardHeader>
               <Divider />
@@ -168,8 +207,8 @@ export default function HotelPage() {
                 <div className="flex flex-col justify-between min-h-28 h-28">
                   <div>
                     <p className="text-lg">Solo Alojamiento</p>
-                    <div className="flex items-center gap-1 text-primary">
-                      <CheckIcon className="dark:text-gray-400 text-primary size-5" />
+                    <div className="flex items-center gap-1 text-[#14884c]">
+                      <CheckIcon className="dark:text-gray-400 size-5" />
                       Cancelación gratuita
                     </div>
                   </div>
@@ -189,6 +228,9 @@ export default function HotelPage() {
                       size="md"
                       className="text-white bg-primary focus:outline-none"
                       onPress={() => router.navigate({ to: ROUTES.CHECK_OUT })}
+                      endContent={
+                        <ChevronRightIcon className="dark:text-gray-400 size-5" />
+                      }
                     >
                       Reservar
                     </Button>
@@ -218,6 +260,9 @@ export default function HotelPage() {
                       <Button
                         size="md"
                         className="text-white bg-primary focus:outline-none"
+                        endContent={
+                          <ChevronRightIcon className="dark:text-gray-400 size-5" />
+                        }
                         onPress={() =>
                           router.navigate({ to: ROUTES.CHECK_OUT })
                         }
@@ -230,12 +275,23 @@ export default function HotelPage() {
               </CardBody>
             </Card>
             <Card className="w-full col-span-12 sm:col-span-7">
-              <CardHeader className="flex gap-3">
-                <div className="flex flex-col items-start ">
-                  <p className="text-lg">Habitación Doble Superior</p>
-                  <div className="px-2 py-1 text-xs text-white rounded-md bg-primary">
-                    15 reservas esta semana
+              <CardHeader className="flex flex-col items-start gap-3">
+                <div className="relative">
+                  <div className="absolute z-20 top-2 left-2 px-2 py-1 text-xs  rounded-lg bg-[#e1f6e4]">
+                    10 reservas esta semana
                   </div>
+                  <Image
+                    radius="lg"
+                    alt="Hotel"
+                    height={200}
+                    src="https://res.cloudinary.com/lastminute/image/upload/v1591806651/triple_itfhop.jpg"
+                    width="100%"
+                  />
+                </div>
+                <div className="text-left">
+                  <h3 className="text-lg font-semibold">
+                    Habitación Superior Twin
+                  </h3>
                 </div>
               </CardHeader>
               <Divider />
@@ -243,8 +299,8 @@ export default function HotelPage() {
                 <div className="flex flex-col justify-between min-h-28 h-28">
                   <div>
                     <p className="text-lg">Solo Alojamiento</p>
-                    <div className="flex items-center gap-1 text-primary">
-                      <CheckIcon className="dark:text-gray-400 text-primary size-5" />
+                    <div className="flex items-center gap-1 text-[#14884c]">
+                      <CheckIcon className="dark:text-gray-400 size-5" />
                       Cancelación gratuita
                     </div>
                   </div>
@@ -264,6 +320,9 @@ export default function HotelPage() {
                       size="md"
                       className="text-white bg-primary focus:outline-none"
                       onPress={() => router.navigate({ to: ROUTES.CHECK_OUT })}
+                      endContent={
+                        <ChevronRightIcon className="dark:text-gray-400 size-5" />
+                      }
                     >
                       Reservar
                     </Button>
@@ -293,10 +352,12 @@ export default function HotelPage() {
                       <Button
                         size="md"
                         className="text-white bg-primary focus:outline-none"
-                        onPress={() => {
-                          console.log(ROUTES.CHECK_OUT);
-                          router.navigate({ to: ROUTES.CHECK_OUT });
-                        }}
+                        endContent={
+                          <ChevronRightIcon className="dark:text-gray-400 size-5" />
+                        }
+                        onPress={() =>
+                          router.navigate({ to: ROUTES.CHECK_OUT })
+                        }
                       >
                         Reservar
                       </Button>
