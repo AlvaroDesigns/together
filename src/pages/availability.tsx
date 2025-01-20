@@ -12,7 +12,6 @@ import { CardHotelList, CardSkeleton } from "@/components/cards";
 import { AUHT_NAME, ROUTES } from "@/constants";
 import { HOTELS } from "@/data";
 import { LITERAL } from "@/i18/es";
-import { useUserStore } from "@/stores";
 import { formatString, getAuth } from "@/utils";
 import {
   AdjustmentsVerticalIcon,
@@ -23,7 +22,6 @@ import { useRouter } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
 export default function Availability() {
-  const { user } = useUserStore((state) => state);
   const auth = getAuth(AUHT_NAME);
 
   const router = useRouter();
@@ -39,6 +37,7 @@ export default function Availability() {
 
     setTimeout(() => setIsLoading(false), 1000);
   }, []);
+  console.log("HOTELS", HOTELS);
 
   return (
     <RootLayout>

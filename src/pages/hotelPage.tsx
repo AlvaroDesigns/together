@@ -26,7 +26,7 @@ import { Toaster, toast } from "sonner";
 export default function HotelPage() {
   useEffect(() => {
     setTimeout(() => {
-      toast.info("¡Solo quedan 5 habitaciones!", {
+      toast.info(`Hay 2 usuarios mirando ahora mismo.`, {
         duration: 5000,
       });
     });
@@ -97,8 +97,8 @@ export default function HotelPage() {
           <ul className="flex flex-row gap-8 overflow-x-auto">
             {FACILITIES.map((f) => (
               <li key={f.label} className="flex flex-col items-center">
-                <div className="p-2.5 mb-4 rounded-full bg-slate-100">
-                  <WifiIcon className="dark:text-gray-400 text-primary size-5" />
+                <div className="p-2.5 mb-4 rounded-full bg-slate-100 dark:bg-default-200/50">
+                  <WifiIcon className="text-primary size-5" />
                 </div>
                 <p className="text-xs text-gray-500 whitespace-nowrap">
                   {f.label.toUpperCase()}
@@ -187,7 +187,7 @@ export default function HotelPage() {
             <Card className="w-full col-span-12 sm:col-span-7">
               <CardHeader className="flex flex-col items-start gap-3">
                 <div className="relative">
-                  <div className="absolute z-20 top-2 left-2 px-2 py-1 text-xs  rounded-lg bg-[#e1f6e4]">
+                  <div className="absolute z-20 top-2 left-2 px-2 py-1 text-xs rounded-lg bg-[#e1f6e4]">
                     15 reservas esta semana
                   </div>
                   <Image
@@ -208,7 +208,7 @@ export default function HotelPage() {
                   <div>
                     <p className="text-lg">Solo Alojamiento</p>
                     <div className="flex items-center gap-1 text-[#14884c]">
-                      <CheckIcon className="dark:text-gray-400 size-5" />
+                      <CheckIcon className="size-5 text-[#14884c]" />
                       Cancelación gratuita
                     </div>
                   </div>
@@ -228,9 +228,7 @@ export default function HotelPage() {
                       size="md"
                       className="text-white bg-primary focus:outline-none"
                       onPress={() => router.navigate({ to: ROUTES.CHECK_OUT })}
-                      endContent={
-                        <ChevronRightIcon className="dark:text-gray-400 size-5" />
-                      }
+                      endContent={<ChevronRightIcon className="size-5" />}
                     >
                       Reservar
                     </Button>
@@ -260,9 +258,7 @@ export default function HotelPage() {
                       <Button
                         size="md"
                         className="text-white bg-primary focus:outline-none"
-                        endContent={
-                          <ChevronRightIcon className="dark:text-gray-400 size-5" />
-                        }
+                        endContent={<ChevronRightIcon className="size-5" />}
                         onPress={() =>
                           router.navigate({ to: ROUTES.CHECK_OUT })
                         }
@@ -300,7 +296,7 @@ export default function HotelPage() {
                   <div>
                     <p className="text-lg">Solo Alojamiento</p>
                     <div className="flex items-center gap-1 text-[#14884c]">
-                      <CheckIcon className="dark:text-gray-400 size-5" />
+                      <CheckIcon className="size-5" />
                       Cancelación gratuita
                     </div>
                   </div>
@@ -320,9 +316,7 @@ export default function HotelPage() {
                       size="md"
                       className="text-white bg-primary focus:outline-none"
                       onPress={() => router.navigate({ to: ROUTES.CHECK_OUT })}
-                      endContent={
-                        <ChevronRightIcon className="dark:text-gray-400 size-5" />
-                      }
+                      endContent={<ChevronRightIcon className="size-5" />}
                     >
                       Reservar
                     </Button>
@@ -352,9 +346,7 @@ export default function HotelPage() {
                       <Button
                         size="md"
                         className="text-white bg-primary focus:outline-none"
-                        endContent={
-                          <ChevronRightIcon className="dark:text-gray-400 size-5" />
-                        }
+                        endContent={<ChevronRightIcon className="size-5" />}
                         onPress={() =>
                           router.navigate({ to: ROUTES.CHECK_OUT })
                         }

@@ -23,10 +23,11 @@ export default function CardHotelList({
   onPress,
 }: CardHotelListProps) {
   return (
-    <div onClick={onPress}>
+    <div>
       <Card
+        isPressable
         isFooterBlurred
-        className="bg-background/60 dark:bg-default-100/50"
+        className="p-0 bg-background/60 dark:bg-default-100/50"
         shadow="sm"
         onPress={onPress}
       >
