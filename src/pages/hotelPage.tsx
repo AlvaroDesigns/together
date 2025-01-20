@@ -1,6 +1,8 @@
 import { RootLayout, Stars } from "@/components";
 import { subtitle, title } from "@/components/primitives";
+import { ROUTES } from "@/constants";
 import { FACILITIES } from "@/data";
+import { router } from "@/routes";
 import {
   CheckIcon,
   ClockIcon,
@@ -186,6 +188,7 @@ export default function HotelPage() {
                     <Button
                       size="md"
                       className="text-white bg-primary focus:outline-none"
+                      onPress={() => router.navigate({ to: ROUTES.CHECK_OUT })}
                     >
                       Reservar
                     </Button>
@@ -215,6 +218,9 @@ export default function HotelPage() {
                       <Button
                         size="md"
                         className="text-white bg-primary focus:outline-none"
+                        onPress={() =>
+                          router.navigate({ to: ROUTES.CHECK_OUT })
+                        }
                       >
                         Reservar
                       </Button>
@@ -257,6 +263,7 @@ export default function HotelPage() {
                     <Button
                       size="md"
                       className="text-white bg-primary focus:outline-none"
+                      onPress={() => router.navigate({ to: ROUTES.CHECK_OUT })}
                     >
                       Reservar
                     </Button>
@@ -286,6 +293,10 @@ export default function HotelPage() {
                       <Button
                         size="md"
                         className="text-white bg-primary focus:outline-none"
+                        onPress={() => {
+                          console.log(ROUTES.CHECK_OUT);
+                          router.navigate({ to: ROUTES.CHECK_OUT });
+                        }}
                       >
                         Reservar
                       </Button>

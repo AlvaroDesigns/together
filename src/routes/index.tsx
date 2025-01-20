@@ -11,6 +11,7 @@ import { Status } from "@/components";
 import { AUHT_NAME, ROUTES } from "@/constants";
 import {
   Availability,
+  CheckOut,
   Home,
   HotelPage,
   Login,
@@ -119,17 +120,24 @@ const step2SharedRoute = createRoute({
   component: Step2,
 });
 
+const hotelPageRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: `${ROUTES.HOTELS.slice(1)}/$nameId`,
+  component: HotelPage,
+});
+
+const checkOutRoute = createRoute({
+  // beforeLoad: async () => privateRoute(),
+  getParentRoute: () => rootRoute,
+  path: ROUTES.CHECK_OUT.slice(1),
+  component: CheckOut,
+});
+
 const availabilityRoute = createRoute({
   beforeLoad: async () => privateRoute(),
   getParentRoute: () => rootRoute,
   path: ROUTES.AVAILABILITY.slice(1),
   component: Availability,
-});
-
-const hotelPageRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: `${ROUTES.HOTELS.slice(1)}/$nameId`,
-  component: HotelPage,
 });
 
 const availabilityPublicRoute = createRoute({
@@ -146,6 +154,7 @@ const routeTree = rootRoute.addChildren([
     step2Route,
     availabilityRoute,
     hotelPageRoute,
+    checkOutRoute,
   ]),
   step2SharedRoute,
   availabilityPublicRoute,

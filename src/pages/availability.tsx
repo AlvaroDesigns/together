@@ -170,7 +170,6 @@ export default function Availability() {
           </Chip>
         </div>
       </section>
-
       <section className="relative flex flex-col pt-4 pb-6 mx-4 text-left text-foreground">
         <div className="flex flex-col gap-4">
           <Alert

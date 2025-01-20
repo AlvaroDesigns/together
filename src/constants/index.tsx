@@ -38,6 +38,7 @@ export const ROUTES: Record<string, string> = {
   HOME_B2B: "/home",
   LOGIN: "/login",
   AVAILABILITY: "/availability",
+  CHECK_OUT: "/check-out",
   AVAILABILITY_PUBLIC: "/availability_public",
   REGISTER: "/registrame",
   ITINERARY: "/itinerary",
