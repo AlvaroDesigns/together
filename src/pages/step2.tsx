@@ -1,5 +1,4 @@
 import {
-  Button,
   CardFlight,
   CardHotel,
   CardOut,
@@ -7,25 +6,22 @@ import {
   CardTransfer,
   CardTrip,
   CardWeather,
-  DrawerCustom,
+  DrawerUpdate,
   Hero,
   RootLayout,
-  SectionForm,
 } from "@/components";
 
 import { subtitle } from "@/components/primitives";
 import { ENDPOINT } from "@/constants";
 import { sectionSchema } from "@/helpers/schema";
-import { useForm, useLoading } from "@/hooks";
+import { useForm } from "@/hooks";
 import Services from "@/services";
 import { useDataStore } from "@/stores";
-import { detailsData } from "@/stores/DataStore";
 import { DetailsTypes, ItineraryTypes } from "@/stores/DataStore/index.types";
-import { VARIANT_TYPE_SECTION } from "@/types";
-import { formatDay, formatDayForDays } from "@/utils";
+import { formatDayForDays } from "@/utils";
 import { Button as ButtonUi, useDisclosure } from "@heroui/react";
 import { useTheme } from "@heroui/use-theme";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFieldArray } from "react-hook-form";
 
@@ -63,15 +59,13 @@ const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
         return console.log("No data");
       }
 
-      const product = items?.find((item: { id: number }) => item.id === id);
-
-      setter({ edit: product });
-      setTimeout(() => onOpen(), 500);
+      setter({ editId: id });
+      setTimeout(() => onOpen(), 100);
     },
     [items, onOpen, setter]
   );
 
-  const switchCard = (data: any, index: number | number[] | undefined) => {
+  const switchCard = (data: any, index: number | undefined) => {
     const {
       id,
       startDate,
@@ -90,6 +84,10 @@ const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
       numberFlight,
     } = data;
 
+    const handleRemove = (index: number | undefined) => {
+      console.log("Remove", index);
+    };
+
     const CARDS = {
       TRIP: (
         <CardTrip
@@ -101,7 +99,7 @@ const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
           arrivalTime={arrivalTime}
           descriptions={description}
           onPressEdit={() => onEdit(id)}
-          onPressDelete={() => remove(index)}
+          onPressDelete={() => handleRemove(index)}
         />
       ),
       TRANSFER: (
@@ -148,7 +146,7 @@ const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
       ),
     };
 
-    return CARDS[data.type.toUpperCase() as keyof object];
+    return CARDS[data?.type.toUpperCase() as keyof object];
   };
 
   return (
@@ -180,10 +178,9 @@ export default function Step2() {
   const { theme } = useTheme();
 
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-  const { setter, itinerary, edit } = useDataStore((state) => state);
+  const { setter, itinerary } = useDataStore((state) => state);
   const items = useDataStore((state) => state.itinerary?.items);
 
-  const { isLoading, startLoading, stopLoading } = useLoading();
   const [isLoadingPage, setIsLoadingPage] = useState(true);
   const [data, setData] = useState<ItineraryTypes | null>(null);
 
@@ -191,76 +188,6 @@ export default function Step2() {
     values: { items },
     schema: sectionSchema,
   });
-
-  const {
-    control: controlForm,
-    reset: resetForm,
-    watch: watchForm,
-    handleSubmit,
-  } = useForm({
-    values: edit,
-    schema: sectionSchema,
-  });
-
-  const TYPE = watchForm("type");
-  const ServiceDetails = async (value: any, data: any | object) => {
-    return await Services()
-      .post(`${ENDPOINT.DETAILS}/${itinerary?.id}`, {
-        type: TYPE || VARIANT_TYPE_SECTION.FLIGHT,
-        days: 1,
-        startDate: value.startDate,
-        endDate: data.endDate || value?.endDate,
-        departure: data?.depart?.iata || value.departure,
-        departureLabel: data?.depart?.cityName,
-        destination: data?.arrive?.iata || value.destination,
-        destinationLabel: data?.arrive?.cityName,
-        arrivalTime:
-          data?.depart?.time && data?.arrive?.time
-            ? `${data?.depart?.time}-${data?.arrive?.time}`
-            : null,
-        stars: Number(value.category),
-        placeUrl: null,
-        numberFlight: value?.numberFlight,
-        description: value?.description?.split("\n"),
-        imageUrl: value?.image_url,
-        cityName: value?.city,
-        region: null,
-        country: value?.country,
-        name: value?.name || value?.transferName,
-        collapse: false,
-      })
-      .then((res: AxiosResponse) => {
-        const { data } = res;
-      })
-      .catch((error) => console.log("Error", error))
-      .finally(() => {
-        stopLoading();
-        if (!isLoadingPage) {
-          onClose();
-        }
-      });
-  };
-
-  const onSubmit = useCallback(
-    async (value: any) => {
-      startLoading();
-
-      if (TYPE === VARIANT_TYPE_SECTION.FLIGHT) {
-        const date = formatDay(value.startDate);
-
-        const res = await Services().get(
-          `${ENDPOINT.FLIGHTS}?flightNumber=${value?.numberFlight}&date=${date}`
-        );
-        const dt = res?.data || {};
-        /* Call API */
-        return ServiceDetails(value, { items, ...dt });
-      }
-
-      /* Call API */
-      return ServiceDetails(value, items);
-    },
-    [TYPE]
-  );
 
   useEffect(() => {
     axios
@@ -288,11 +215,11 @@ export default function Step2() {
       .finally(() => setTimeout(() => setIsLoadingPage(false), 1000));
   }, []);
 
-  useEffect(() => {
-    if (!isOpen) {
-      setter({ edit: detailsData });
-    }
-  }, [isOpen, setter]);
+  const handlelOpen = useCallback(() => {
+    setter({ isSection: true });
+
+    onOpen();
+  }, []);
 
   return (
     <RootLayout>
@@ -346,27 +273,15 @@ export default function Step2() {
           radius="full"
           color="primary"
           className="bg-gradient-to-r shadow-medium z-50 text-md bg-primary text-white h-14 min-h-[60px] fixed bottom-5 w-[calc(100%-33px)] hover:border-transparent"
-          onPress={onOpen}
+          onPress={handlelOpen}
         >
           Añadir sección
         </ButtonUi>
-        <DrawerCustom
+        <DrawerUpdate
+          data-testid="drawer-update"
           isOpen={isOpen}
-          header="Configura tu viaje"
+          onClose={onClose}
           onOpenChange={onOpenChange}
-          body={
-            <SectionForm
-              data={edit}
-              type={edit?.type}
-              control={controlForm}
-              reset={resetForm}
-            />
-          }
-          footer={
-            <Button isLoading={isLoading} onPress={handleSubmit(onSubmit)}>
-              Guardar Actividad
-            </Button>
-          }
         />
       </section>
     </RootLayout>

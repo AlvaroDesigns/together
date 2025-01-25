@@ -1,14 +1,13 @@
+import { useLocation } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 
-const ScrollToTop = () => {
-  const { pathname } = useLocation();
+export const useScrollTop = () => {
+  const location = useLocation(); // Accede a la ubicación actual del router
 
   useEffect(() => {
+    // Desplazamiento hacia la parte superior de la página cuando cambie la ubicación
     window.scrollTo(0, 0);
-  }, [pathname]);
+  }, [location]);
 
   return null;
 };
-
-export default ScrollToTop;

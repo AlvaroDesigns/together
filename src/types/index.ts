@@ -4,6 +4,14 @@ export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
 };
 
+export type ColorType =
+  | "danger"
+  | "default"
+  | "primary"
+  | "secondary"
+  | "success"
+  | "warning";
+
 export type AlertType = "success" | "info" | "warning" | "error";
 export type VariantTypeSection =
   | "FLIGHT"
@@ -13,6 +21,8 @@ export type VariantTypeSection =
   | "RENT"
   | "OTHER";
 
+export type VariantProfileType = "FRIENDS" | "ACCOUNT" | "SECURE" | "FAQS";
+
 export const VARIANT_ALERT: Record<string, AlertType> = {
   SUCCESS: "success",
   INFO: "info",
@@ -20,13 +30,20 @@ export const VARIANT_ALERT: Record<string, AlertType> = {
   ERROR: "error",
 };
 
-export const VARIANT_TYPE_SECTION = {
+export const VARIANT_TYPE_SECTION: Record<string, VariantTypeSection> = {
   FLIGHT: "FLIGHT",
   HOTEL: "HOTEL",
   TRANSFER: "TRANSFER",
   TRIP: "TRIP",
   RENT: "RENT",
   OTHER: "OTHER",
+};
+
+export const VARIANT_TYPE_PROFILE: Record<string, VariantProfileType> = {
+  FRIENDS: "FRIENDS",
+  ACCOUNT: "ACCOUNT",
+  SECURE: "SECURE",
+  FAQS: "FAQS",
 };
 
 export type VariantTypeSectionIcon = "ACCOUNT" | "FRIENDS" | "SECURE" | "FAQS";

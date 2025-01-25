@@ -3,7 +3,7 @@ import { useForm as useReactForm } from "react-hook-form";
 import { ObjectSchema } from "yup";
 
 interface Props {
-  schema: ObjectSchema<Record<string, unknown>>;
+  schema: ObjectSchema<Record<string, any>>;
   mod?: "all" | "onBlur" | "onChange" | "onSubmit" | "onTouched" | undefined;
   values?: any;
 }

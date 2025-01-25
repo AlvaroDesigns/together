@@ -23,7 +23,11 @@ module.exports = {
         },
         dark: {
           colors: {
-            primary: "#009688",
+            primary: {
+              DEFAULT: "#009688",
+            },
+            focus: "red",
+            hover: "red",
           },
         },
       },

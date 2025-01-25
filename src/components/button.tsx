@@ -1,14 +1,16 @@
 import { Button as UIButton } from "@heroui/react";
+import { PropsWithChildren } from "react";
 
-interface ButtonProps {
+export type ButtonProps = PropsWithChildren<{
   isLoading?: boolean;
+  type?: "button" | "submit" | "reset";
   startContent?: React.ReactNode;
   onPress?: () => void;
   variant?: "solid" | "bordered" | "light";
-  children: React.ReactNode;
-}
+}>;
 
 export default function Button({
+  type = "submit",
   isLoading,
   onPress,
   startContent,
@@ -23,9 +25,9 @@ export default function Button({
 
   return (
     <UIButton
+      type={type}
       radius="full"
       variant={variant}
-      type="submit"
       isLoading={isLoading}
       onPress={onPress}
       startContent={startContent}

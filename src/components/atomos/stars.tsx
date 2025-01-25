@@ -29,3 +29,5 @@ export const Stars = ({
     ))}
   </div>
 );
+
+export default Stars;

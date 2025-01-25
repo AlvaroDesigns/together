@@ -1,6 +1,6 @@
 import { REGEX } from "@/constants";
 import { LITERALS } from "@/literals/common";
-import { VARIANT_TYPE_SECTION } from "@/types";
+import { VARIANT_TYPE_PROFILE, VARIANT_TYPE_SECTION } from "@/types";
 import * as yup from "yup";
 
 export const register = yup.object().shape({
@@ -52,11 +52,46 @@ export const createItinerary = yup.object().shape({
         ),
     })
     .required("Debe seleccionar un rango de fechas"),
-  image: yup
-    .string()
-    .min(3, LITERALS.NUMBER_VALUE.replace("[number]", "3"))
-    .required(LITERALS.REQUEST_LABEL),
 });
+
+export const profileSchmea = (ty: string) =>
+  yup.object().shape({
+    name:
+      ty === VARIANT_TYPE_PROFILE.ACCOUNT
+        ? yup
+            .string()
+            .min(5, LITERALS.NUMBER_VALUE.replace("[number]", "5"))
+            .required(LITERALS.REQUEST_LABEL)
+        : yup.string().nullable().optional(),
+    email:
+      ty === VARIANT_TYPE_PROFILE.ACCOUNT
+        ? yup
+            .string()
+            .min(5, LITERALS.NUMBER_VALUE.replace("[number]", "5"))
+            .required(LITERALS.REQUEST_LABEL)
+        : yup.string().nullable().optional(),
+    phone:
+      ty === VARIANT_TYPE_PROFILE.ACCOUNT
+        ? yup
+            .string()
+            .min(5, LITERALS.NUMBER_VALUE.replace("[number]", "5"))
+            .required(LITERALS.REQUEST_LABEL)
+        : yup.string().nullable().optional(),
+    password:
+      ty === VARIANT_TYPE_PROFILE.SECURE
+        ? yup
+            .string()
+            .min(5, LITERALS.NUMBER_VALUE.replace("[number]", "5"))
+            .required(LITERALS.REQUEST_LABEL)
+        : yup.string().nullable().optional(),
+    newPassword:
+      ty === VARIANT_TYPE_PROFILE.SECURE
+        ? yup
+            .string()
+            .min(5, LITERALS.NUMBER_VALUE.replace("[number]", "5"))
+            .required(LITERALS.REQUEST_LABEL)
+        : yup.string().nullable().optional(),
+  });
 
 export const sectionSchema = yup.object().shape({
   type: yup.string(),
@@ -77,14 +112,14 @@ export const sectionSchema = yup.object().shape({
       ? schema
           .min(5, LITERALS.NUMBER_VALUE.replace("[number]", "5"))
           .required(LITERALS.REQUEST_LABEL)
-      : schema.optional();
+      : schema.nullable().optional();
   }),
   name: yup.string().when("type", (type, schema) => {
     return type[0] === VARIANT_TYPE_SECTION.TRIP
       ? schema
-          .min(3, LITERALS.NUMBER_VALUE.replace("[number]", "3"))
+          .min(5, LITERALS.NUMBER_VALUE.replace("[number]", "5"))
           .required(LITERALS.REQUEST_LABEL)
-      : schema.optional();
+      : schema.nullable().optional();
   }),
   city: yup.string().when("type", (type, schema) => {
     return type[0] === VARIANT_TYPE_SECTION.HOTEL
@@ -96,20 +131,20 @@ export const sectionSchema = yup.object().shape({
   country: yup.string().when("type", (type, schema) => {
     return type[0] === VARIANT_TYPE_SECTION.HOTEL
       ? schema
-          .min(3, LITERALS.NUMBER_VALUE.replace("[number]", "3"))
+          .min(5, LITERALS.NUMBER_VALUE.replace("[number]", "3"))
           .required(LITERALS.REQUEST_LABEL)
-      : schema.optional();
+      : schema.nullable().optional();
   }),
   description: yup
     .string()
-    .defined()
+    .transform((value) => (Array.isArray(value) ? value.join(" ") : value))
     .when("type", (type, schema) => {
       return type[0] === VARIANT_TYPE_SECTION.TRIP
         ? schema
             .min(3, LITERALS.NUMBER_VALUE.replace("[number]", "3"))
             .max(500, LITERALS.NUMBER_VALUE.replace("[number]", "500"))
             .required(LITERALS.REQUEST_LABEL)
-        : schema.optional();
+        : schema.nullable().optional();
     }),
   transferName: yup.string().optional(),
   image_url: yup.string().optional(),
@@ -118,6 +153,6 @@ export const sectionSchema = yup.object().shape({
       ? schema
           .oneOf(["1", "2", "3", "4", "5", "none"], "Invalid gender selected")
           .required(LITERALS.REQUEST_LABEL)
-      : schema.optional();
+      : schema.nullable().optional();
   }),
 });

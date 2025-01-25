@@ -58,7 +58,9 @@ export interface DetailsTypes {
 export interface DataState {
   home: HomeTypes;
   itinerary: ItineraryTypes | undefined;
-  edit?: Partial<DetailsTypes> | undefined;
+  editId: number | null;
+  isDelete: boolean;
+  isSection: boolean;
   details: DetailsTypes | undefined;
   setter: (value: Partial<DataState>) => void;
   reset(): void;

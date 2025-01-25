@@ -6,7 +6,6 @@ import {
   ChevronRightIcon,
   NewspaperIcon,
   ShieldCheckIcon,
-  UserGroupIcon,
   UserIcon,
 } from "@heroicons/react/24/outline";
 import {
@@ -30,12 +29,26 @@ import {
 
 import { Button as ButtonT, DrawerCustom, Password } from "@/components";
 import { AUHT_NAME, ROUTES } from "@/constants";
+import { PROFILE_DATA } from "@/data";
+import { profileSchmea } from "@/helpers/schema";
+import { useForm } from "@/hooks";
 import { LITERALS, SUBMIT } from "@/literals/common";
+import { VARIANT_TYPE_PROFILE } from "@/types";
 import { removeAuth } from "@/utils";
 import { useRouter } from "@tanstack/react-router";
 import { useState } from "react";
+import { Controller } from "react-hook-form";
 import { version } from "../../package.json";
+import ShareButton from "./atomos/share";
 import { subtitle } from "./primitives";
+
+const ICONS = {
+  account: <UserIcon className="m-1 size-6" />,
+  friends: <ShieldCheckIcon className="m-1 size-6" />,
+  secure: <NewspaperIcon className="m-1 size-6" />,
+  faqs: <NewspaperIcon className="m-1 size-6" />,
+  delete: <ArrowLeftStartOnRectangleIcon className="m-1 size-6" />,
+};
 
 export default function DrawerNavBar({
   user,
@@ -48,6 +61,11 @@ export default function DrawerNavBar({
   const [name, setName] = useState<string | null>(null);
 
   const { reset } = useUserStore((state) => state);
+
+  const { control } = useForm({
+    values: user,
+    schema: profileSchmea(name as string),
+  });
 
   const handelLogOut = () => {
     reset();
@@ -72,6 +90,17 @@ export default function DrawerNavBar({
   const handleCloseDrawer = () => {
     setName(null);
     setIsDrawerOpen(false);
+  };
+
+  const handleSubmit = () => {
+    if ((name as keyof object) === "FRIENDS") {
+      ShareButton({
+        url: "http://together.alvarodesigns.com",
+        title: "¡Mira este enlace interesante!",
+      });
+    }
+
+    console.log("Guardando cambios");
   };
 
   return (
@@ -130,65 +159,41 @@ export default function DrawerNavBar({
                       variant="flat"
                       className="dark:text-gray-300"
                     >
-                      <ListboxItem
-                        key="account"
-                        textValue="account"
-                        className="flex items-center pb-3"
-                        showDivider
-                        onPress={() => handleInviteFriendsClick("account")}
-                        startContent={<UserIcon className="m-1 size-6" />}
-                        endContent={<ChevronRightIcon className="m-1 size-6" />}
-                      >
-                        <span className="my-5 text-medium">Mi cuenta</span>
-                      </ListboxItem>
-                      <ListboxItem
-                        textValue="friends"
-                        key="friends"
-                        className="flex items-center py-3"
-                        showDivider
-                        onPress={() => handleInviteFriendsClick("friends")}
-                        startContent={<UserGroupIcon className="m-1 size-6" />}
-                        endContent={<ChevronRightIcon className="m-1 size-6" />}
-                      >
-                        <span className="text-medium">Invitar amigos</span>
-                      </ListboxItem>
-                      <ListboxItem
-                        textValue="secure"
-                        key="secure"
-                        className="flex items-center py-3"
-                        showDivider
-                        onPress={() => handleInviteFriendsClick("secure")}
-                        startContent={
-                          <ShieldCheckIcon className="m-1 size-6" />
-                        }
-                        endContent={<ChevronRightIcon className="m-1 size-6" />}
-                      >
-                        <span className="text-medium">Seguridad</span>
-                      </ListboxItem>
-                      <ListboxItem
-                        key="faqs"
-                        textValue="faqs"
-                        className="flex items-center py-3"
-                        showDivider
-                        onPress={() => handleInviteFriendsClick("faqs")}
-                        startContent={<NewspaperIcon className="m-1 size-6" />}
-                        endContent={<ChevronRightIcon className="m-1 size-6" />}
-                      >
-                        <span className="text-medium">Faqs</span>
-                      </ListboxItem>
-                      <ListboxItem
-                        textValue="delete"
-                        key="delete"
-                        className="flex items-center pt-3 text-danger"
-                        color="danger"
-                        onPress={handelLogOut}
-                        startContent={
-                          <ArrowLeftStartOnRectangleIcon className="m-1 size-6" />
-                        }
-                        endContent={<ChevronRightIcon className="m-1 size-6" />}
-                      >
-                        <span className="text-medium">Cerrar Sesión</span>
-                      </ListboxItem>
+                      <>
+                        {PROFILE_DATA.map((item) => (
+                          <ListboxItem
+                            key={item.key}
+                            textValue={item.key}
+                            className="flex items-center pb-3"
+                            showDivider
+                            color={item.color}
+                            onPress={() => handleInviteFriendsClick(item.key)}
+                            startContent={ICONS[item.key as keyof object]}
+                            endContent={
+                              <ChevronRightIcon className="m-1 size-6" />
+                            }
+                          >
+                            <span className="my-5 text-medium">
+                              {item.title}
+                            </span>
+                          </ListboxItem>
+                        ))}
+                        <ListboxItem
+                          textValue="delete"
+                          key="delete"
+                          className="flex items-center pt-3 text-danger"
+                          color="danger"
+                          onPress={handelLogOut}
+                          startContent={
+                            <ArrowLeftStartOnRectangleIcon className="m-1 size-6" />
+                          }
+                          endContent={
+                            <ChevronRightIcon className="m-1 size-6" />
+                          }
+                        >
+                          <span className="text-medium">Cerrar Sesión</span>
+                        </ListboxItem>
+                      </>
                     </Listbox>
                   </div>
                 </div>
@@ -218,7 +223,7 @@ export default function DrawerNavBar({
         header={LITERALS[name as keyof object]}
         body={
           <div className="flex flex-col items-center justify-center dark:text-gray-300">
-            {name === "FRIENDS" && (
+            {name === VARIANT_TYPE_PROFILE.FRIENDS && (
               <>
                 <Image
                   alt="invitar amigos"
@@ -234,35 +239,77 @@ export default function DrawerNavBar({
                 </p>
               </>
             )}
-            {name === "ACCOUNT" && (
+            {name === VARIANT_TYPE_PROFILE.ACCOUNT && (
               <div className="flex flex-col w-full gap-4 px-4 py-2">
                 <div className="flex flex-row whitespace-nowrap">
                   <p className={subtitle()}>Información personal</p>
                 </div>
-                <Input
-                  fullWidth={true}
-                  variant="bordered"
-                  placeholder="Ej. Pedro"
-                  value={user.name}
-                  label="Nombre"
-                  type="email"
+                <Controller
+                  name="name"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <Input
+                      {...field}
+                      isRequired
+                      variant="bordered"
+                      type="text"
+                      label="Nombre"
+                      classNames={{
+                        inputWrapper: "!min-h-[60px] h-10",
+                      }}
+                      fullWidth={true}
+                      isInvalid={Boolean(fieldState.error?.message)}
+                      color={fieldState.error?.message ? "danger" : "default"}
+                      errorMessage={fieldState.error?.message}
+                      value={field.value}
+                      placeholder="Ej. Pedro"
+                    />
+                  )}
                 />
-                <Input
-                  fullWidth={true}
-                  variant="bordered"
-                  placeholder="Ej. david@toogeder.com"
-                  value={user.email}
-                  label="Email"
-                  type="email"
+                <Controller
+                  name="email"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <Input
+                      {...field}
+                      isRequired
+                      variant="bordered"
+                      type="email"
+                      label="Correo"
+                      classNames={{
+                        inputWrapper: "!min-h-[60px] h-10",
+                      }}
+                      fullWidth={true}
+                      isInvalid={Boolean(fieldState.error?.message)}
+                      color={fieldState.error?.message ? "danger" : "default"}
+                      errorMessage={fieldState.error?.message}
+                      value={field.value}
+                      placeholder="Introduce tu correo electronico"
+                    />
+                  )}
                 />
-                <Input
-                  fullWidth={true}
-                  variant="bordered"
-                  placeholder="666 666 666"
-                  value={user.email}
-                  label="Telefono"
-                  startContent="+34"
-                  type="number"
+                <Controller
+                  name="phone"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <Input
+                      {...field}
+                      isRequired
+                      variant="bordered"
+                      type="number"
+                      label="Correo"
+                      classNames={{
+                        inputWrapper: "!min-h-[60px] h-10",
+                      }}
+                      fullWidth={true}
+                      startContent="+34"
+                      isInvalid={Boolean(fieldState.error?.message)}
+                      color={fieldState.error?.message ? "danger" : "default"}
+                      errorMessage={fieldState.error?.message}
+                      value={field.value}
+                      placeholder="666 666 666"
+                    />
+                  )}
                 />
                 <div className="flex flex-row whitespace-nowrap">
                   <p className={subtitle()}>Idioma</p>
@@ -289,14 +336,37 @@ export default function DrawerNavBar({
                 </div>
               </div>
             )}
-            {name === "SECURE" && (
+            {name === VARIANT_TYPE_PROFILE.SECURE && (
               <div className="flex flex-col items-center justify-center w-full gap-4 px-4 py-2 dark:text-gray-300">
-                <Password placeholder="" label="Contraseña actual" />
-                <Password placeholder="" label="Nueva contraseña" />
-                <Password placeholder="" label="Repetir nueva contraseña" />
+                <Controller
+                  name="password"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <Password
+                      placeholder=""
+                      field={field}
+                      message={fieldState.error?.message}
+                      value={field.value}
+                      label="Nueva contraseña"
+                    />
+                  )}
+                />
+                <Controller
+                  name="newPassword"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <Password
+                      field={field}
+                      placeholder=""
+                      message={fieldState.error?.message}
+                      value={field.value}
+                      label="Repetir nueva contraseña"
+                    />
+                  )}
+                />
               </div>
             )}
-            {name === "FAQS" && (
+            {name === VARIANT_TYPE_PROFILE.FAQS && (
               <Accordion selectionMode="multiple">
                 <AccordionItem
                   key="1"
@@ -326,8 +396,8 @@ export default function DrawerNavBar({
         isOpen={isDrawerOpen}
         onOpenChange={handleCloseDrawer}
         footer={
-          name !== "FAQS" && (
-            <ButtonT variant="light" onPress={ShareButton}>
+          name !== VARIANT_TYPE_PROFILE.FAQS && (
+            <ButtonT variant="light" onPress={handleSubmit}>
               {SUBMIT[name as keyof object]}
             </ButtonT>
           )
@@ -336,21 +406,3 @@ export default function DrawerNavBar({
     </>
   );
 }
-
-const ShareButton = async () => {
-  const shareUrl = "http://together.alvarodesigns.com";
-  const shareText = "¡Mira este enlace interesante!";
-
-  if (navigator.share) {
-    await navigator
-      .share({
-        title: "Compartir URL",
-        text: shareText,
-        url: shareUrl,
-      })
-      .then(() => console.log("¡Enlace compartido! Muchas gracias"))
-      .catch((error) => console.log("Ups, se ha producido un error", error));
-  } else {
-    alert("La función de compartir no está soportada en este dispositivo.");
-  }
-};

@@ -1,4 +1,6 @@
 import { Label } from "./atomos/label";
+import Password from "./atomos/password";
+import Share from "./atomos/share";
 import { Stars } from "./atomos/stars";
 import { Status } from "./atomos/status";
 import Button from "./button";
@@ -16,14 +18,13 @@ import {
 import { Cards } from "./cardsProduct";
 import DrawerCreateItinerary from "./drawerCreate";
 import { default as DrawerCustom, default as DrawerFrom } from "./drawerCustom";
+import DrawerUpdate from "./drawerUpdate";
 import Footer from "./footer";
 import Searcher from "./form/searcher";
 import SectionForm from "./form/sectionForm";
 import Header from "./header";
 import Hero from "./hero";
 import RootLayout from "./layout";
-
-import Password from "./atomos/password";
 import { Maps } from "./maps";
 import ModalItinerary from "./modalItinerary";
 import OnBoarding from "./onBoarding";
@@ -43,6 +44,7 @@ export {
   DrawerCreateItinerary,
   DrawerCustom,
   DrawerFrom,
+  DrawerUpdate,
   Footer,
   Header,
   Hero,
@@ -54,6 +56,7 @@ export {
   RootLayout,
   Searcher,
   SectionForm,
+  Share,
   Stars,
   Status,
 };

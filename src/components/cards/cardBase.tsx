@@ -54,7 +54,7 @@ export default function CardBase({
               color="foreground"
               onPress={onPressEdit}
               anchorIcon={
-                <PencilSquareIcon className="mt-1 mr-2 dark:text-gray-400 size-5" />
+                <PencilSquareIcon className="mr-2 dark:text-gray-400 size-[22px]" />
               }
             />
           )}
@@ -66,7 +66,7 @@ export default function CardBase({
               color="foreground"
               onPress={onPressDelete}
               anchorIcon={
-                <TrashIcon className="mt-1 ml-2 mr-1 dark:text-gray-400 size-5" />
+                <TrashIcon className="ml-2 mr-1 dark:text-gray-400 size-[22px]" />
               }
             />
           )}

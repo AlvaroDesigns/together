@@ -4,16 +4,15 @@ import { createItinerary } from "@/helpers/schema";
 import { useForm, useLoading } from "@/hooks";
 import Services from "@/services";
 import { useUserStore } from "@/stores";
-import { betweenDates } from "@/utils";
-import { addHour } from "@formkit/tempo";
 import { getLocalTimeZone, today } from "@internationalized/date";
 
+import { betweenDates } from "@/utils";
+import { addHour } from "@formkit/tempo";
 import {
   Autocomplete,
   AutocompleteItem,
   Button as ButtonUI,
   DateRangePicker,
-  Input,
   useDisclosure,
 } from "@heroui/react";
 import { useAsyncList } from "@react-stately/data";
@@ -37,7 +36,6 @@ export function DrawerItFrom({ control }: DrawerItFromProps) {
       const resp = await Services().get(
         `${ENDPOINT.DIRECTIONS}?query=${inputValue}`
       );
-      console.log("resp", list);
 
       return {
         items: resp.data.data,
@@ -132,25 +130,6 @@ export function DrawerItFrom({ control }: DrawerItFromProps) {
           />
         )}
       />
-      <Controller
-        name="image"
-        control={control}
-        render={({ field, fieldState }) => (
-          <Input
-            {...field}
-            isRequired
-            type="url"
-            variant="bordered"
-            label="Url de la imagen"
-            fullWidth={true}
-            placeholder="Introduce tu imagen de internet"
-            isInvalid={Boolean(fieldState.error?.message)}
-            color={fieldState.error?.message ? "danger" : "default"}
-            errorMessage={fieldState.error?.message}
-            value={field.value as string}
-          />
-        )}
-      />
     </div>
   );
 }
@@ -182,25 +161,29 @@ export default function DrawerCreate() {
 
       /* Call API */
       Services()
-        .post(`${ENDPOINT.ITINERARY}/${userId}`, {
-          title: value.title,
-          days: betweenDates(value.dates.start, value.dates.end),
-          startDate: addHour(value?.dates?.start, 1),
-          endDate: addHour(value?.dates?.end, 1),
-          image: value.image,
-          date: new Date(),
-        })
-        .then((res: AxiosResponse) => {
-          const { status } = res;
-          if (status !== 201) {
-            stopLoading();
-            return console.log("Error");
-          }
+        .get(`${ENDPOINT.IMAGE}?query=${value.title}`)
+        .then((res) => {
+          Services()
+            .post(`${ENDPOINT.ITINERARY}/${userId}`, {
+              title: value.title,
+              days: betweenDates(value.dates.start, value.dates.end),
+              startDate: addHour(value?.dates?.start, 1),
+              endDate: addHour(value?.dates?.end, 1),
+              image: res.data,
+              date: new Date(),
+            })
+            .then((res: AxiosResponse) => {
+              const { status } = res;
+              if (status !== 201) {
+                stopLoading();
+                return console.log("Error");
+              }
 
-          setStatus(true);
-        })
-        .catch((error) => console.log("Error", error))
-        .finally(() => stopLoading());
+              setStatus(true);
+            })
+            .catch((error) => console.log("Error", error))
+            .finally(() => stopLoading());
+        });
     },
     [isStatus]
   );

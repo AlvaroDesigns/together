@@ -55,7 +55,6 @@ export default function CardHotelList({
                   <p className="text-small text-foreground/80">{address}</p>
                 </div>
               </div>
-
               <div className="flex flex-col gap-2 pt-2">
                 <div className="flex flex-col justify-center w-full">
                   <p className="text-small text-foreground/50">

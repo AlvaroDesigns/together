@@ -15,6 +15,7 @@ import { ENDPOINT, ON_BOARDNG, ROUTES } from "@/constants";
 import Services from "@/services";
 import { useDataStore, useUserStore } from "@/stores";
 import { getAuth } from "@/utils";
+
 import { useRouter } from "@tanstack/react-router";
 import { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
@@ -137,7 +138,7 @@ export default function Step1() {
         )}
         <div className="mt-6">
           <div className="flex flex-row whitespace-nowrap">
-            <p className={subtitle()}>Top destinations</p>
+            <p className={subtitle()}>Top destinos</p>
           </div>
           <div className="flex flex-row gap-4 mt-4 overflow-x-auto">
             <Cards itinerary={DATA} loading={isLoading} />

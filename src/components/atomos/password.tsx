@@ -19,6 +19,7 @@ export default function Password({
   placeholder,
 }: PasswordProps) {
   const [hide, setHide] = useState(true);
+
   return (
     <Input
       {...field}

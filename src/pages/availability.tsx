@@ -37,7 +37,6 @@ export default function Availability() {
 
     setTimeout(() => setIsLoading(false), 1000);
   }, []);
-  console.log("HOTELS", HOTELS);
 
   return (
     <RootLayout>

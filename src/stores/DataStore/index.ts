@@ -1,3 +1,4 @@
+import { VARIANT_TYPE_SECTION } from "@/types";
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
@@ -32,7 +33,7 @@ const itineraryData: ItineraryTypes = {
 };
 
 export const detailsData: DetailsTypes = {
-  type: undefined,
+  type: VARIANT_TYPE_SECTION.FLIGHT,
   startDate: "",
   days: 0,
   endDate: null,
@@ -59,16 +60,18 @@ export const useDataStore = create<DataState>()(
       immer((set) => ({
         home: homeData,
         itinerary: itineraryData,
-        edit: detailsData,
+        editId: null,
+        isDelete: false,
+        isSection: false,
         details: detailsData,
         setter: (value: Partial<DataState>) =>
           set(
             (state) => ({
-              ...state,
-              ...value,
+              editId: value.editId,
+              isDelete: state.isDelete || value.isDelete,
+              isSection: value.isSection,
               home: { ...state.home, ...value.home },
               itinerary: { ...state.itinerary, ...value.itinerary },
-              edit: { ...state.edit, ...value.edit },
               details: { ...state.details, ...value.details },
             }),
             false,
@@ -78,7 +81,6 @@ export const useDataStore = create<DataState>()(
           set({
             home: homeData,
             itinerary: itineraryData,
-            edit: detailsData,
             details: detailsData,
           }),
         resetItinerary: (value: Partial<DataState>) =>

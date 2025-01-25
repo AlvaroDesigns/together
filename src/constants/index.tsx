@@ -54,6 +54,7 @@ export const ENDPOINT: Record<string, string> = {
   FLIGHTS: "v1/operative/fight",
   DIRECTIONS: "v1/operative/directions",
   OPERATIVE: "v1/operative/weather",
+  IMAGE: "v1/operative/image",
   EMAIL: "v1/operative/email",
 };
 

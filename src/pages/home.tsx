@@ -82,6 +82,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+
       <section className="flex flex-col justify-center py-12 dark:bg-black ">
         <div className="container px-7 md:mx-auto my-7">
           <div className="flex items-center justify-center w-full mb-8 text-center ">

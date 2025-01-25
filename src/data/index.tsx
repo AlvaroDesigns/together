@@ -1,3 +1,5 @@
+import { ColorType } from "@/types";
+
 export const TRIP = [
   { key: "FLIGHT", label: "Vuelo" },
   { key: "HOTEL", label: "Hotel" },
@@ -20,6 +22,26 @@ export const TRANSFER_DATA = [
   { key: "taxi", label: "Taxi" },
   { key: "otros", label: "Otros" },
 ];
+
+export const PROFILE_DATA: { title: string; key: string; color?: ColorType }[] =
+  [
+    {
+      title: "Mi cuenta",
+      key: "account",
+    },
+    {
+      title: "Invitar amigos",
+      key: "friends",
+    },
+    {
+      title: "Seguridad",
+      key: "secure",
+    },
+    {
+      title: "Faqs",
+      key: "faqs",
+    },
+  ];
 
 export const COUNTER_DATA = [
   { key: "room", label: "Habitación", defaultValue: 1, min: 1 },
