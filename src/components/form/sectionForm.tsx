@@ -28,7 +28,7 @@ export default function SectionForm({
 }: SectionFormProps) {
   const { itinerary } = useDataStore((state) => state);
 
-  const handleChange = (item: { currentKey: string }) => {
+  const handleChange = (item: any) => {
     if (type) {
       reset({ type: item?.currentKey });
     }
@@ -41,25 +41,23 @@ export default function SectionForm({
         <Controller
           name="type"
           control={control}
-          render={({ field, fieldState }) => {
-            return (
-              <Select
-                {...field}
-                className="max-w-xs"
-                items={TRIP}
-                label="Tipo"
-                placeholder="Selecciona un tipo de viaje"
-                variant="bordered"
-                selectedKeys={[field.value]}
-                isInvalid={Boolean(fieldState.error?.message)}
-                color={fieldState.error?.message ? "danger" : "default"}
-                errorMessage={fieldState.error?.message}
-                onSelectionChange={handleChange}
-              >
-                {(op) => <SelectItem key={op.key}>{op.label}</SelectItem>}
-              </Select>
-            );
-          }}
+          render={({ field, fieldState }) => (
+            <Select
+              {...field}
+              className="max-w-xs"
+              items={TRIP}
+              label="Tipo"
+              placeholder="Selecciona un tipo de viaje"
+              variant="bordered"
+              selectedKeys={[field.value]}
+              isInvalid={Boolean(fieldState.error?.message)}
+              color={fieldState.error?.message ? "danger" : "default"}
+              errorMessage={fieldState.error?.message}
+              onSelectionChange={handleChange}
+            >
+              {(op) => <SelectItem key={op.key}>{op.label}</SelectItem>}
+            </Select>
+          )}
         />
       </div>
       {type === VARIANT_TYPE_SECTION.FLIGHT && (
@@ -166,6 +164,7 @@ export default function SectionForm({
               name="startDate"
               control={control}
               startDate={itinerary?.startDate}
+              endDate={itinerary?.endDate}
             />
           </div>
           <Divider className="mt-5 mb-3" />
@@ -175,6 +174,7 @@ export default function SectionForm({
               name="endDate"
               control={control}
               startDate={itinerary?.startDate}
+              endDate={itinerary?.endDate}
             />
           </div>
           <Divider className="mt-5 mb-3" />

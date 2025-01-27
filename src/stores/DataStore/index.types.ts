@@ -60,7 +60,7 @@ export interface DataState {
   itinerary: ItineraryTypes | undefined;
   editId: number | null;
   isDelete: boolean;
-  isSection: boolean;
+  isEdits: boolean;
   details: DetailsTypes | undefined;
   setter: (value: Partial<DataState>) => void;
   reset(): void;

@@ -12,7 +12,7 @@ export default function CardWeather({
 }) {
   return (
     <Card isFooterBlurred className="w-full col-span-12 sm:col-span-7">
-      <CardBody className="flex flex-row items-center justify-between pt-0 mt-3 mb-1">
+      <CardBody className="flex flex-row items-center justify-between pt-0 mt-3">
         <div className="flex flex-row items-center">
           <svg
             fill="#009688"
@@ -25,7 +25,7 @@ export default function CardWeather({
           >
             <path d="M28 5.25h-1.25v-3.25c0-0.414-0.336-0.75-0.75-0.75s-0.75 0.336-0.75 0.75v0 3.25h-18.5v-3.25c0-0.414-0.336-0.75-0.75-0.75s-0.75 0.336-0.75 0.75v0 3.25h-1.25c-1.518 0.002-2.748 1.232-2.75 2.75v19.998c0.002 1.518 1.232 2.748 2.75 2.75h24c1.518-0.002 2.748-1.232 2.75-2.75v-19.998c-0.002-1.518-1.232-2.748-2.75-2.75h-0zM4 6.75h24c0.69 0.001 1.249 0.56 1.25 1.25v3.25h-26.5v-3.25c0.001-0.69 0.56-1.249 1.25-1.25h0zM28 29.248h-24c-0.69-0.001-1.249-0.56-1.25-1.25v-15.248h26.5v15.248c-0.001 0.69-0.56 1.249-1.25 1.25h-0z" />
           </svg>
-          Today
+          Hoy
         </div>
         <div className="flex flex-row items-center">
           <svg

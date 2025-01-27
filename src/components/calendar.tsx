@@ -12,11 +12,13 @@ export default function Calendar({
   name,
   control,
   startDate,
+  endDate,
   variant = "default",
 }: {
   name: string;
   control: ReturnType<typeof useForm>["control"];
   startDate: string | undefined;
+  endDate?: string | undefined;
   variant?: "default" | "hour";
 }) {
   return (
@@ -45,7 +47,11 @@ export default function Calendar({
                 ? parseAbsoluteToLocal(startDate)
                 : now(getLocalTimeZone())
             }
-            maxValue={today(getLocalTimeZone()).add({ days: 365 })}
+            maxValue={
+              endDate
+                ? parseAbsoluteToLocal(endDate)
+                : today(getLocalTimeZone()).add({ days: 365 })
+            }
             onChange={(e) => field.onChange(convertToISO(e))}
           />
         ) : (
@@ -71,7 +77,11 @@ export default function Calendar({
                 ? parseAbsoluteToLocal(startDate)
                 : now(getLocalTimeZone())
             }
-            maxValue={today(getLocalTimeZone()).add({ days: 365 })}
+            maxValue={
+              endDate
+                ? parseAbsoluteToLocal(endDate)
+                : today(getLocalTimeZone()).add({ days: 365 })
+            }
             onChange={(e) => field.onChange(convertToISO(e))}
           />
         );

@@ -31,8 +31,8 @@ export default function CardHotel({
               height={100}
               className="min-w-[100px]"
               alt="AIR company"
-              fallbackSrc="dummy.jpg"
-              src={imageUrl}
+              fallbackSrc="../../../dummy.jpg"
+              src={imageUrl || "../../../dummy.jpg"}
             />
             <div className="ml-4">
               <h3

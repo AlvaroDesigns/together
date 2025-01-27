@@ -1,4 +1,4 @@
-export const LITERAL = {
+export const LITERAL_ES = {
   LOGGED_SESSION: {
     TITLE: "¡Bienvenido de nuevo!",
     SUBTITLE: "Genial, estas disfurtando de precios exclusivos.",

@@ -35,11 +35,7 @@ const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
   const { setter, itinerary } = useDataStore((state) => state);
   const items = useDataStore((state) => state.itinerary?.items);
 
-  const { fields, remove, append } = useFieldArray({ control, name: "items" });
-
-  if (fields.length === 0 && items && items?.length > 0) {
-    items?.forEach((item) => append(item));
-  }
+  const { fields, remove } = useFieldArray({ control, name: "items" });
 
   const watchFieldArray: DetailsTypes[] = watch("items");
   const controlledFields: DetailsTypes[] = useMemo(
@@ -52,7 +48,7 @@ const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
       }),
     [fields, watchFieldArray]
   );
-
+  console.log(controlledFields);
   const onEdit = useCallback(
     (id: number) => {
       if (Array.isArray(items) && items.length === 0) {
@@ -85,7 +81,8 @@ const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
     } = data;
 
     const handleRemove = (index: number | undefined) => {
-      console.log("Remove", index);
+      // remove(index);
+      console.log("Remove", controlledFields);
     };
 
     const CARDS = {
@@ -184,10 +181,16 @@ export default function Step2() {
   const [isLoadingPage, setIsLoadingPage] = useState(true);
   const [data, setData] = useState<ItineraryTypes | null>(null);
 
-  const { control, watch } = useForm({
-    values: { items },
+  const { control, watch, reset } = useForm({
+    values: { items: items || [] },
     schema: sectionSchema,
   });
+
+  useEffect(() => {
+    if (items) {
+      reset({ items }); // Usa el método reset de `useForm`
+    }
+  }, [items]);
 
   useEffect(() => {
     axios
@@ -216,8 +219,6 @@ export default function Step2() {
   }, []);
 
   const handlelOpen = useCallback(() => {
-    setter({ isSection: true });
-
     onOpen();
   }, []);
 
@@ -232,13 +233,13 @@ export default function Step2() {
         image={itinerary?.image}
       />
       <section
-        className="z-[30] flex"
+        className="flex"
         data-height="250"
         data-style="curve"
         data-position="bottom"
       >
         <svg
-          className="absolute w-full left-0 top-[270px] h-[70px] transform rotate-180 scale-y-[-1]"
+          className="absolute w-full left-0 top-[240px] h-[70px] transform rotate-180 scale-y-[-1]"
           aria-hidden="true"
           fill={`${theme === "dark" ? "#000" : "#fff"}`}
           xmlns="http://www.w3.org/2000/svg"
@@ -249,7 +250,7 @@ export default function Step2() {
         </svg>
       </section>
       {data?.weather && data?.weather?.temperatureMax && (
-        <section className="relative flex flex-col mx-4 mt-5 mb-3">
+        <section className="relative flex flex-col mx-4 mt-4 mb-3">
           <CardWeather
             humidity={data?.weather?.humidityAvg}
             max={data?.weather?.temperatureMax}

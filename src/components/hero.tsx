@@ -17,7 +17,7 @@ export default function Hero({
   loading: boolean;
 }) {
   return (
-    <section className="relative overflow-hidden flex flex-col justify-start w-full min-h-[250px] max-h-[250px]">
+    <section className="relative overflow-hidden flex flex-col justify-start w-full min-h-[220px] max-h-[220px]">
       <div className="absolute inset-0 z-20 opacity-50 bg-gradient-to-b from-black to-transparent" />
       <Card
         radius="none"

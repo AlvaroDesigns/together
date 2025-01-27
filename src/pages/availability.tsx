@@ -11,7 +11,7 @@ import { Button, DrawerCustom, RootLayout, Searcher } from "@/components";
 import { CardHotelList, CardSkeleton } from "@/components/cards";
 import { AUHT_NAME, ROUTES } from "@/constants";
 import { HOTELS } from "@/data";
-import { LITERAL } from "@/i18/es";
+
 import { formatString, getAuth } from "@/utils";
 import {
   AdjustmentsVerticalIcon,
@@ -20,8 +20,10 @@ import {
 } from "@heroicons/react/24/outline";
 import { useRouter } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function Availability() {
+  const { t } = useTranslation();
   const auth = getAuth(AUHT_NAME);
 
   const router = useRouter();
@@ -174,14 +176,12 @@ export default function Availability() {
           <Alert
             color={auth ? "success" : "warning"}
             title={
-              auth
-                ? LITERAL.LOGGED_SESSION.TITLE
-                : LITERAL.NO_LOGGED_SESSION.TITLE
+              auth ? t("LOGGED_SESSION.TITLE") : t("NO_LOGGED_SESSION.TITLE")
             }
             description={
               auth
-                ? LITERAL.LOGGED_SESSION.SUBTITLE
-                : LITERAL.NO_LOGGED_SESSION.SUBTITLE
+                ? t("LOGGED_SESSION.SUBTITLE")
+                : t("NO_LOGGED_SESSION.SUBTITLE")
             }
             isVisible={isVisible}
             variant="faded"

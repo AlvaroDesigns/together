@@ -23,15 +23,14 @@ export const DrawerUpdate = ({
   onOpenChange,
 }: DrawerUpdateProps) => {
   const { isLoading, startLoading, stopLoading } = useLoading();
-  const { itinerary, setter, editId, isSection } = useDataStore(
-    (state) => state
-  );
+  const { itinerary, setter, editId, isEdits } = useDataStore((state) => state);
 
   const { items } = itinerary || {};
   const product = items?.find((item: { id: number }) => item.id === editId);
 
-  const { control, reset, handleSubmit, watch, errors } = useForm({
+  const { control, reset, handleSubmit, watch } = useForm({
     values: { type: VARIANT_TYPE_SECTION.FLIGHT, ...product },
+
     schema: sectionSchema,
   });
 
@@ -42,13 +41,21 @@ export const DrawerUpdate = ({
       if (product) {
         reset(product);
       }
-    } else {
-      if (isSection) {
-        setter({ isSection: false, editId: null });
+    }
+  }, [isOpen, editId, items, reset]);
+
+  const handleDrawerClose = useCallback(
+    (isOpen: boolean) => {
+      onOpenChange(isOpen);
+      if (!isOpen) {
+        if (isEdits) {
+          setter({ editId: null });
+        }
         reset({ type: VARIANT_TYPE_SECTION.FLIGHT });
       }
-    }
-  }, [isOpen, editId, items, reset, product, isSection]);
+    },
+    [isEdits, isOpen]
+  );
 
   const ServiceDetails = async (value: any, data: any | object) => {
     return await Services()
@@ -88,7 +95,6 @@ export const DrawerUpdate = ({
 
   const onSubmit = useCallback(
     async (value: any) => {
-      return console.log("--------------Submit", errors, watch());
       startLoading();
 
       if (TYPE === VARIANT_TYPE_SECTION.FLIGHT) {
@@ -112,7 +118,7 @@ export const DrawerUpdate = ({
     <DrawerCustom
       isOpen={isOpen}
       header="Configura tu viaje"
-      onOpenChange={onOpenChange}
+      onOpenChange={handleDrawerClose}
       body={<SectionForm type={TYPE} control={control} reset={reset} />}
       footer={
         <Button isLoading={isLoading} onPress={handleSubmit(onSubmit)}>

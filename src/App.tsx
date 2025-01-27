@@ -1,8 +1,9 @@
 import { useTheme } from "@heroui/use-theme";
-import { I18nProvider } from "@react-aria/i18n";
 import { RouterProvider } from "@tanstack/react-router";
+import { I18nextProvider } from "react-i18next";
 
 import "./App.css";
+import i18n from "./i18";
 import { router } from "./routes";
 
 function App() {
@@ -28,9 +29,9 @@ function App() {
 */
   return (
     <main className={`${theme} text-foreground bg-background`}>
-      <I18nProvider locale={language}>
+      <I18nextProvider i18n={i18n} defaultNS={"translation"}>
         <RouterProvider router={router} />
-      </I18nProvider>
+      </I18nextProvider>
     </main>
   );
 }

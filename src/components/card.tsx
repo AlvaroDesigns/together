@@ -1,4 +1,4 @@
-import { TrashIcon } from "@heroicons/react/24/outline";
+import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import {
   Button,
   Card,
@@ -48,7 +48,7 @@ export default function CardVertical({
           </div>
           <Popover placement="bottom" showArrow={true} shadow="md">
             <PopoverTrigger>
-              <TrashIcon className="ml-2 mr-1 text-white/90 size-[22px]" />
+              <EllipsisVerticalIcon className="ml-2 mr-1 text-white/90 size-[22px]" />
             </PopoverTrigger>
             <PopoverContent>
               <div className="gap-4 px-1 py-2">

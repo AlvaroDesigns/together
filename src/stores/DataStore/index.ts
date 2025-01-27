@@ -63,13 +63,14 @@ export const useDataStore = create<DataState>()(
         editId: null,
         isDelete: false,
         isSection: false,
+        isEdits: false,
         details: detailsData,
         setter: (value: Partial<DataState>) =>
           set(
             (state) => ({
               editId: value.editId,
-              isDelete: state.isDelete || value.isDelete,
-              isSection: value.isSection,
+              isDelete: state.isDelete ?? value.isDelete,
+              isEdits: value.isEdits ?? state.isEdits,
               home: { ...state.home, ...value.home },
               itinerary: { ...state.itinerary, ...value.itinerary },
               details: { ...state.details, ...value.details },
