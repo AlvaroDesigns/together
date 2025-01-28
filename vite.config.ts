@@ -8,8 +8,9 @@ export default defineConfig({
   plugins: [react()],
   base: "/",
   server: {
-    port: 3000,
+    port: 5005,
     host: true,
+    open: true,
   },
   optimizeDeps: {
     include: ["mapbox-gl"],

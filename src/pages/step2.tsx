@@ -19,7 +19,8 @@ import Services from "@/services";
 import { useDataStore } from "@/stores";
 import { DetailsTypes, ItineraryTypes } from "@/stores/DataStore/index.types";
 import { formatDayForDays } from "@/utils";
-import { Button as ButtonUi, useDisclosure } from "@heroui/react";
+import { ArrowsUpDownIcon } from "@heroicons/react/24/outline";
+import { Button as ButtonUi, Link, useDisclosure } from "@heroui/react";
 import { useTheme } from "@heroui/use-theme";
 import axios from "axios";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -35,23 +36,20 @@ const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
   const { setter, itinerary } = useDataStore((state) => state);
   const items = useDataStore((state) => state.itinerary?.items);
 
-  const { fields, remove } = useFieldArray({ control, name: "items" });
+  const { fields, remove, swap } = useFieldArray({
+    control,
+    name: "items",
+  });
 
   const watchFieldArray: DetailsTypes[] = watch("items");
   const controlledFields: DetailsTypes[] = useMemo(
     () =>
-      fields
-        ?.map((field, index) => {
-          return {
-            ...field,
-            ...(watchFieldArray[index] as DetailsTypes),
-          };
-        })
-        .sort(
-          (a, b) =>
-            new Date(a.startDate ?? 0).getTime() -
-            new Date(b.startDate ?? 0).getTime()
-        ),
+      fields?.map((field, index) => {
+        return {
+          ...field,
+          ...watchFieldArray[index],
+        };
+      }),
     [fields, watchFieldArray]
   );
 
@@ -73,6 +71,13 @@ const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
     },
     [controlledFields]
   );
+
+  const invertList = () => {
+    const length = fields.length;
+    for (let i = 0; i < Math.floor(length / 2); i++) {
+      swap(i, length - i - 1);
+    }
+  };
 
   const switchCard = (data: any, index: number | undefined) => {
     const {
@@ -158,14 +163,29 @@ const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
     <>
       {controlledFields.map((item, index: number) => (
         <div className="mb-4" key={`${item.id}-${item.type}`}>
-          <p
-            className={`${subtitle({
-              weight: "bold",
-              size: "sm",
-            })} flex items-center py-2`}
-          >
-            DÍA {formatDayForDays(itinerary?.startDate, item.startDate)}
-          </p>
+          <div className="flex items-center mb-1">
+            <p
+              className={`${subtitle({
+                weight: "bold",
+                size: "sm",
+              })} flex items-center py-2`}
+            >
+              DÍA {formatDayForDays(itinerary?.startDate, item.startDate)}
+            </p>
+            {index === 0 && (
+              <Link
+                isExternal
+                showAnchorIcon
+                className="text-default-600 hover:text-default-600"
+                color="foreground"
+                onPress={invertList}
+                anchorIcon={
+                  <ArrowsUpDownIcon className="ml-2 mr-1 dark:text-gray-400 size-[22px]" />
+                }
+              />
+            )}
+          </div>
+
           {switchCard(item, index)}
         </div>
       ))}
@@ -213,7 +233,17 @@ export default function Step2() {
           };
 
           /* Set */
-          setter({ itinerary: { ...data, weather } });
+          setter({
+            itinerary: {
+              ...data,
+              weather,
+              items: data?.items.sort(
+                (a: { startDate: any }, b: { startDate: any }) =>
+                  new Date(a.startDate ?? 0).getTime() -
+                  new Date(b.startDate ?? 0).getTime()
+              ),
+            },
+          });
           setData({ ...data, weather });
         })
       )
