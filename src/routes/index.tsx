@@ -12,6 +12,7 @@ import { AUHT_NAME, ROUTES } from "@/constants";
 import {
   Availability,
   CheckOut,
+  Cookies,
   Home,
   HotelPage,
   Login,
@@ -105,6 +106,7 @@ const step1Route = createRoute({
   getParentRoute: () => rootRoute,
   path: ROUTES.HOME_B2B.slice(1),
   component: Step1,
+  loader: () => import("@/pages/step1"),
 });
 
 const step2Route = createRoute({
@@ -146,6 +148,12 @@ const availabilityPublicRoute = createRoute({
   component: Availability,
 });
 
+const cookiesRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: ROUTES.COOKIES.slice(1),
+  component: Cookies,
+});
+
 const routeTree = rootRoute.addChildren([
   indexRoute.addChildren([
     loginRoute,
@@ -155,6 +163,8 @@ const routeTree = rootRoute.addChildren([
     availabilityRoute,
     hotelPageRoute,
     checkOutRoute,
+
+    cookiesRoute,
   ]),
   step2SharedRoute,
   availabilityPublicRoute,

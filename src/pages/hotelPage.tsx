@@ -27,7 +27,7 @@ export default function HotelPage() {
   useEffect(() => {
     setTimeout(() => {
       toast.info(`Hay 2 usuarios mirando ahora mismo.`, {
-        duration: 5000,
+        duration: 4000,
       });
     });
   }, []);

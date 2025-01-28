@@ -8,7 +8,6 @@ import { router } from "./routes";
 
 function App() {
   const { theme } = useTheme();
-  const { language } = navigator;
 
   /*
   if (!isMobile) {

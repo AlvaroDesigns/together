@@ -44,6 +44,9 @@ const LITERALS = {
   FRIENDS: "Invita a tus amigos",
   SECURE: "Seguridad",
   FAQS: "Faqs",
+  PASSWORDS_MUST_MATCH: "Las contraseñas deben coincidir",
+  REQUEST_OK: "Solicitud enviada correctamente",
+  REQUEST_KO: "Error al enviar la solicitud",
 };
 
 const SUBMIT = {

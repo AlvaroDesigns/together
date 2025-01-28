@@ -7,17 +7,14 @@ export const siteConfig = {
     {
       label: "Terminos y condiciones",
       href: "/",
-      active: true,
     },
     {
       label: "Privacidad",
       href: "/",
-      active: true,
     },
     {
       label: "Politica de Cookies",
-      href: "/register",
-      active: true,
+      href: "/cookies",
     },
   ],
   navMenuItems: [

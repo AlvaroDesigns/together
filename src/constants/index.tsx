@@ -15,6 +15,8 @@ export const FORMAT_DATE_DDMMYYYY: string = "dd/MM/yyyy";
 export const FORMAT_DATE_YYYYMMDD: string = "yyyy-MM-dd";
 
 export const TIMEOUT_LARGE: number = 5000;
+export const TIMEOUT_MEDIUM: number = 3000;
+export const TIMEOUT_SHORT: number = 1000;
 
 /* Regex */
 export const REGEX: Record<string, RegExp> = {
@@ -43,6 +45,9 @@ export const ROUTES: Record<string, string> = {
   REGISTER: "/registrame",
   ITINERARY: "/itinerary",
   HOTELS: "/hotels",
+  CONDITIONS: "/conditions",
+  PRIVACY: "/privacy",
+  COOKIES: "/cookies",
 };
 
 export const ENDPOINT: Record<string, string> = {
@@ -56,11 +61,7 @@ export const ENDPOINT: Record<string, string> = {
   OPERATIVE: "v1/operative/weather",
   IMAGE: "v1/operative/image",
   EMAIL: "v1/operative/email",
-};
-
-/* GTM */
-export const GTM_EVENT: Record<string, string> = {
-  LOAD: "page_view",
-  BACK: "funnel_orf_atras",
-  NEXT: "funnel_orf_siguiente",
+  ACCOUNT: `v1/user/#id#/details`,
+  SECURE: `v1/user/#id#/password`,
+  LANGUAGE: `v1/user/#id#/language`,
 };

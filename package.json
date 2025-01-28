@@ -1,7 +1,7 @@
 {
   "name": "together",
   "private": true,
-  "version": "3.0.0",
+  "version": "3.0.1",
   "type": "module",
   "homepage": "https://github.com/AlvaroDesigns/together",
   "scripts": {
@@ -30,6 +30,7 @@
     "firebase": "^11.0.1",
     "html2canvas": "^1.4.1",
     "i18next": "^24.2.2",
+    "js-cookie": "^3.0.5",
     "jspdf": "^2.5.2",
     "mapbox-gl": "^2.15.0",
     "react": "^18.3.1",
@@ -50,6 +51,7 @@
     "@eslint/js": "^9.13.0",
     "@prisma/client": "^5.1.1",
     "@react-aria/i18n": "^3.12.4",
+    "@types/js-cookie": "^3.0.6",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.3",

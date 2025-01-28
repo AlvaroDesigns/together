@@ -76,7 +76,7 @@ const Services = (headers?: object) => {
           return response;
         });
     },
-    put: async (
+    patch: async (
       url: string,
       payload?: object,
       id?: string
@@ -84,7 +84,7 @@ const Services = (headers?: object) => {
       const signal = createAbortController(id);
 
       return await instance
-        .put(url, JSON.stringify(payload), { signal })
+        .patch(url, JSON.stringify(payload), { signal })
         .catch(({ response } = {}) => {
           if (response) {
             const { message } = response.data;

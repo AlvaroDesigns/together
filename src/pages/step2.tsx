@@ -40,15 +40,21 @@ const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
   const watchFieldArray: DetailsTypes[] = watch("items");
   const controlledFields: DetailsTypes[] = useMemo(
     () =>
-      fields?.map((field, index) => {
-        return {
-          ...field,
-          ...(watchFieldArray[index] as DetailsTypes),
-        };
-      }),
+      fields
+        ?.map((field, index) => {
+          return {
+            ...field,
+            ...(watchFieldArray[index] as DetailsTypes),
+          };
+        })
+        .sort(
+          (a, b) =>
+            new Date(a.startDate ?? 0).getTime() -
+            new Date(b.startDate ?? 0).getTime()
+        ),
     [fields, watchFieldArray]
   );
-  console.log(controlledFields);
+
   const onEdit = useCallback(
     (id: number) => {
       if (Array.isArray(items) && items.length === 0) {
@@ -59,6 +65,13 @@ const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
       setTimeout(() => onOpen(), 100);
     },
     [items, onOpen, setter]
+  );
+
+  const handleRemove = useCallback(
+    (index: number | undefined) => {
+      remove(index);
+    },
+    [controlledFields]
   );
 
   const switchCard = (data: any, index: number | undefined) => {
@@ -79,11 +92,6 @@ const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
       destinationLabel,
       numberFlight,
     } = data;
-
-    const handleRemove = (index: number | undefined) => {
-      // remove(index);
-      console.log("Remove", controlledFields);
-    };
 
     const CARDS = {
       TRIP: (
@@ -108,7 +116,7 @@ const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
           endDate={endDate}
           descriptions={description}
           onPressEdit={() => onEdit(id)}
-          onPressDelete={() => remove(index)}
+          onPressDelete={() => handleRemove(index)}
         />
       ),
       HOTEL: (
@@ -123,7 +131,7 @@ const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
           imageUrl={imageUrl}
           descriptions={description}
           onPressEdit={() => onEdit(id)}
-          onPressDelete={() => remove(index)}
+          onPressDelete={() => handleRemove(index)}
         />
       ),
       FLIGHT: (
@@ -138,7 +146,7 @@ const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
           descriptions={description}
           arrivalTime={arrivalTime}
           onPressEdit={() => onEdit(id)}
-          onPressDelete={() => remove(index)}
+          onPressDelete={() => handleRemove(index)}
         />
       ),
     };
@@ -148,25 +156,19 @@ const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
 
   return (
     <>
-      {controlledFields
-        ?.toSorted(
-          (a, b) =>
-            new Date(a.startDate ?? 0).getTime() -
-            new Date(b.startDate ?? 0).getTime()
-        )
-        .map((item, index: number) => (
-          <div className="mb-4" key={`${item.id}-${item.type}`}>
-            <p
-              className={`${subtitle({
-                weight: "bold",
-                size: "sm",
-              })} flex items-center py-2`}
-            >
-              DÍA {formatDayForDays(itinerary?.startDate, item.startDate)}
-            </p>
-            {switchCard(item, index)}
-          </div>
-        ))}
+      {controlledFields.map((item, index: number) => (
+        <div className="mb-4" key={`${item.id}-${item.type}`}>
+          <p
+            className={`${subtitle({
+              weight: "bold",
+              size: "sm",
+            })} flex items-center py-2`}
+          >
+            DÍA {formatDayForDays(itinerary?.startDate, item.startDate)}
+          </p>
+          {switchCard(item, index)}
+        </div>
+      ))}
     </>
   );
 };

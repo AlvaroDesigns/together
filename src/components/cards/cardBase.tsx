@@ -39,13 +39,13 @@ export default function CardBase({
     >
       <CardHeader className="z-10 flex-col items-start">
         <div className="flex items-center justify-between w-full mb-3">
-          <span
+          <h2
             className={`${subtitle({
               size: "sm",
             })} flex items-center justify-between`}
           >
             {capitalCase(format(new Date(header), "ddd, D MMM"))}
-          </span>
+          </h2>
           {!hideEdit && (
             <Link
               isExternal

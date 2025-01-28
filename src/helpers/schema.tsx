@@ -54,7 +54,7 @@ export const createItinerary = yup.object().shape({
     .required("Debe seleccionar un rango de fechas"),
 });
 
-export const profileSchmea = (ty: string) =>
+export const profileSchema = (ty: string) =>
   yup.object().shape({
     name:
       ty === VARIANT_TYPE_PROFILE.ACCOUNT
@@ -89,6 +89,10 @@ export const profileSchmea = (ty: string) =>
         ? yup
             .string()
             .min(5, LITERALS.NUMBER_VALUE.replace("[number]", "5"))
+            .oneOf(
+              [yup.ref("password"), undefined],
+              LITERALS.PASSWORDS_MUST_MATCH
+            )
             .required(LITERALS.REQUEST_LABEL)
         : yup.string().nullable().optional(),
   });
