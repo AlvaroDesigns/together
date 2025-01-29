@@ -59,7 +59,7 @@ const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
         return console.log("No data");
       }
 
-      setter({ editId: id });
+      setter({ editId: id, isEdits: true });
       setTimeout(() => onOpen(), 100);
     },
     [items, onOpen, setter]

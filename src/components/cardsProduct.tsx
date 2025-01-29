@@ -15,9 +15,14 @@ interface ItineraryItem {
 interface CardsProps {
   itinerary: ItineraryItem[] | undefined;
   loading: boolean;
+  isDelete?: boolean;
 }
 
-export const Cards: React.FC<CardsProps> = ({ itinerary, loading = true }) => {
+export const Cards: React.FC<CardsProps> = ({
+  itinerary,
+  loading = true,
+  isDelete,
+}) => {
   const { resetItinerary } = useDataStore((state) => state);
   const { user } = useUserStore((state) => state);
   const router = useRouter();
@@ -104,6 +109,7 @@ export const Cards: React.FC<CardsProps> = ({ itinerary, loading = true }) => {
     <>
       {itinerary?.map((item: ItineraryItem) => (
         <Card
+          isDelete={isDelete}
           key={item?.id}
           title={item?.title}
           days={item.days}

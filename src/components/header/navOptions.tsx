@@ -220,24 +220,51 @@ export default function NavOptions({
             <Accordion selectionMode="multiple">
               <AccordionItem
                 key="1"
-                aria-label="Accordion 1"
-                title="Quienes somos"
+                aria-label="Accordion-1"
+                title="Itinerario de viaje"
               >
-                Pendiente de texto
+                <div className="px-5">
+                  <h4>
+                    En la web, está disponible una la opción de invertir la
+                    lista de opciones. De esta manera puede ver rapidamente la
+                    parte final del viaje.
+                  </h4>
+                  <ul className="flex flex-col gap-2 my-3">
+                    <li>1. Accede al itinerario de viaje.</li>
+                    <li>
+                      2. Haga clic en el botón “Vista invertida” que debería
+                      aparecer en la esquina superior derecha.
+                    </li>
+                  </ul>
+                </div>
               </AccordionItem>
               <AccordionItem
                 key="2"
-                aria-label="Accordion 2"
-                title="Como funciona"
+                aria-label="Accordion-2"
+                title="Agregue detalles de vuelo, hotel y auto de alquiler"
               >
-                Pendiente de texto
+                <div className="px-5">
+                  <h4>
+                    Puede reenviar todos los correos electrónicos de reserva a
+                    una dirección de correo electrónico única. Se agregarán de
+                    inmediato los detalles de su vuelo, hotel o vehículo de
+                    alquiler a su plan de viaje.
+                  </h4>
+                </div>
               </AccordionItem>
               <AccordionItem
                 key="3"
-                aria-label="Accordion 3"
-                title="Dudas frecuentes"
+                aria-label="Accordion-3"
+                title="Añadir un gasto"
               >
-                Pendiente de texto
+                <div className="px-5">
+                  <h4>
+                    Puedes registrar los gastos de una factura de un lugar de tu
+                    plan de viaje, de una actividad o de una reserva para llevar
+                    un registro de tus gastos. Consulta el total de todos tus
+                    gastos de viaje y si has utilizado todo tu presupuesto.
+                  </h4>
+                </div>
               </AccordionItem>
             </Accordion>
           )}

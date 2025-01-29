@@ -27,7 +27,7 @@ import { removeAuth } from "@/utils";
 import { useRouter } from "@tanstack/react-router";
 import { useState } from "react";
 import { version } from "../../../package.json";
-import NavOptions from "./options";
+import NavOptions from "./navOptions";
 
 const ICONS = {
   account: <UserIcon className="m-1 size-6" />,

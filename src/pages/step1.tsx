@@ -104,6 +104,7 @@ export default function Step1() {
           </div>
           <div className="flex flex-row gap-4 mt-4 overflow-x-auto">
             <Cards
+              isDelete
               itinerary={items
                 ?.map((item, index) => ({
                   ...item,
