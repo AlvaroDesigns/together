@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import {
-  BudgetItemsType,
+  BudgetTypes,
   DataState,
   DetailsTypes,
   HomeTypes,
@@ -20,6 +20,11 @@ const weatherData = {
   temperatureMin: null,
 };
 
+const budgetData: BudgetTypes = {
+  expensive: null,
+  types: [],
+};
+
 const itineraryData: ItineraryTypes = {
   date: "",
   days: 0,
@@ -28,9 +33,10 @@ const itineraryData: ItineraryTypes = {
   image: "",
   items: null,
   startDate: "",
-  title: "",
   weather: weatherData,
+  budget: [budgetData],
   load: true,
+  title: "",
 };
 
 export const detailsData: DetailsTypes = {
@@ -61,11 +67,6 @@ export const insuredData = {
   postCode: "",
 };
 
-const budgetData = {
-  price: 0,
-  items: [] as BudgetItemsType[],
-};
-
 export const useDataStore = create<DataState>()(
   persist(
     devtools(
@@ -77,7 +78,7 @@ export const useDataStore = create<DataState>()(
         isSection: false,
         isEdits: false,
         details: detailsData,
-        budget: budgetData,
+
         setter: (value: Partial<DataState>) =>
           set(
             (state) => ({
@@ -87,7 +88,6 @@ export const useDataStore = create<DataState>()(
               home: { ...state.home, ...value.home },
               itinerary: { ...state.itinerary, ...value.itinerary },
               details: { ...state.details, ...value.details },
-              budget: { ...value.budget, ...state.budget },
             }),
             false,
             `Set Itinerary`
@@ -97,7 +97,6 @@ export const useDataStore = create<DataState>()(
             home: homeData,
             itinerary: itineraryData,
             details: detailsData,
-            budget: budgetData,
           }),
         resetItinerary: (value: Partial<DataState>) =>
           set(

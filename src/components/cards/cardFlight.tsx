@@ -41,6 +41,7 @@ export default function CardFlight({
             <Link
               isBlock
               showAnchorIcon
+              underline="none"
               className="p-0"
               target="_blank"
               href={`https://www.google.com/search?q=${numberFlight?.substring(

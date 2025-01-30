@@ -199,7 +199,7 @@ export default function Step2() {
 
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const { setter, itinerary } = useDataStore((state) => state);
-  const items = useDataStore((state) => state.itinerary?.items);
+  const { items, budget } = useDataStore((state) => state.itinerary);
 
   const [isLoadingPage, setIsLoadingPage] = useState(true);
   const [data, setData] = useState<ItineraryTypes | null>(null);
@@ -319,7 +319,7 @@ export default function Step2() {
         />
       </section>
       <section className="relative flex flex-col mx-4 mb-8">
-        <CardBudget options={items || []} />
+        <CardBudget options={items || []} data={budget} />
       </section>
     </RootLayout>
   );

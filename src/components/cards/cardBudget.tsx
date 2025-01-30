@@ -30,11 +30,17 @@ interface Option {
   type: keyof typeof TRIP_LITERAL;
 }
 
-export default function CardBudget({ options = [] }: { options: Option[] }) {
+export default function CardBudget({
+  options = [],
+  data,
+}: {
+  options: Option[];
+  data: unknown;
+}) {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [budgets, setBudgets] = useState<
     Array<{ expensive: number; types: string[] }>
-  >([{ expensive: 35, types: ["Vuelo", "IB1679"] }]);
+  >((data as Array<{ expensive: number; types: string[] }>) || []);
 
   const { control, handleSubmit } = useForm({
     values: {},

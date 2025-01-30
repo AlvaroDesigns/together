@@ -1,5 +1,3 @@
-import { VariantTypeSection } from "@/types";
-
 interface HomeItineraryTypes {
   id: number;
   title: string | undefined;
@@ -27,10 +25,11 @@ export interface ItineraryTypes {
   endDate: string | undefined;
   id: number | undefined;
   image: string | undefined;
-  items: HomeItineraryTypes[] | [] | null;
+  items: DetailsTypes[] | [] | null;
   startDate: string | undefined;
   title: string | undefined;
   weather: WeatherType | null;
+  budget: BudgetTypes[] | [] | null;
   load: boolean;
 }
 
@@ -63,15 +62,9 @@ export interface InsuredDataState {
   postCode: string;
 }
 
-export interface BudgetItemsType {
-  type: VariantTypeSection;
-  label: string;
-  price: number;
-}
-
-export interface BudgetType {
-  price: number;
-  items: BudgetItemsType[];
+export interface BudgetTypes {
+  expensive: number | null;
+  types: string[];
 }
 
 export interface DataState {
@@ -80,7 +73,6 @@ export interface DataState {
   editId: number | null;
   isDelete: boolean;
   isEdits: boolean;
-  budget: BudgetType;
   details: DetailsTypes | undefined;
   setter: (value: Partial<DataState>) => void;
   reset(): void;
