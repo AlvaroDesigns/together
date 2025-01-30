@@ -1,7 +1,7 @@
 import { Button, Footer } from "@/components";
 import { GoogleLogo } from "@/components/icons";
 import { AUHT_NAME, ENDPOINT, ROUTES } from "@/constants";
-import { login } from "@/helpers/schema";
+import { loginSchema } from "@/helpers/schema";
 import { useForm, useLoading } from "@/hooks";
 import { auth, provider } from "@/lib/firebaseConfig";
 import Services from "@/services";
@@ -20,6 +20,7 @@ import {
 import { useRouter } from "@tanstack/react-router";
 import { AxiosResponse } from "axios";
 import { signInWithPopup } from "firebase/auth";
+import Cookies from "js-cookie";
 import { useCallback, useState } from "react";
 import { Controller } from "react-hook-form";
 
@@ -32,7 +33,7 @@ export default function Login() {
 
   const { control, errors, handleSubmit } = useForm({
     values: user,
-    schema: login,
+    schema: loginSchema,
   });
 
   const onSubmit = useCallback(
@@ -61,9 +62,11 @@ export default function Login() {
               email: value.email,
               avatar: value.avatar,
               remember: value.remember,
+              logger: true,
             },
           });
 
+          Cookies.set(AUHT_NAME, data.access_token, { expires: 7 });
           setAuth(AUHT_NAME, data.access_token);
           router.navigate({ to: ROUTES.HOME_B2B });
         })
@@ -83,6 +86,7 @@ export default function Login() {
             email: result.user.email,
             avatar: result.user.photoURL,
             remember: true,
+            logger: false,
           },
         });
         router.navigate({ to: ROUTES.HOME_B2B });

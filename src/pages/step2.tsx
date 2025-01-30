@@ -10,6 +10,7 @@ import {
   Hero,
   RootLayout,
 } from "@/components";
+import { CardBudget } from "@/components/cards";
 
 import { subtitle } from "@/components/primitives";
 import { ENDPOINT } from "@/constants";
@@ -290,7 +291,7 @@ export default function Step2() {
           />
         </section>
       )}
-      <section className="relative flex flex-col mx-4 mb-3">
+      <section className="relative flex flex-col mx-4 mb-2">
         {!isLoadingPage && data?.items ? (
           data?.items?.length > 0 ? (
             <Repeating control={control} watch={watch} onOpen={onOpen} />
@@ -316,6 +317,9 @@ export default function Step2() {
           onClose={onClose}
           onOpenChange={onOpenChange}
         />
+      </section>
+      <section className="relative flex flex-col mx-4 mb-8">
+        <CardBudget options={items || []} />
       </section>
     </RootLayout>
   );

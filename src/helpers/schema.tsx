@@ -3,7 +3,7 @@ import { LITERALS } from "@/literals/common";
 import { VARIANT_TYPE_PROFILE, VARIANT_TYPE_SECTION } from "@/types";
 import * as yup from "yup";
 
-export const register = yup.object().shape({
+export const registerSchema = yup.object().shape({
   name: yup
     .string()
     .min(3, LITERALS.NUMBER_VALUE.replace("[number]", "3"))
@@ -26,11 +26,9 @@ export const register = yup.object().shape({
     .matches(REGEX.PASSWORD, LITERALS.ERROR_LABEL),
 });
 
-export const login = yup.object().shape({
+export const loginSchema = yup.object().shape({
   email: yup.string().optional(),
-
   password: yup.string().optional(),
-
   remember: yup.boolean().optional(),
 });
 
@@ -159,4 +157,12 @@ export const sectionSchema = yup.object().shape({
           .required(LITERALS.REQUEST_LABEL)
       : schema.nullable().optional();
   }),
+});
+
+export const budgetSchema = yup.object().shape({
+  expensive: yup.string().required(LITERALS.REQUEST_LABEL),
+  types: yup
+    .string()
+    .min(3, LITERALS.NUMBER_VALUE.replace("[number]", "3"))
+    .required(LITERALS.REQUEST_LABEL),
 });

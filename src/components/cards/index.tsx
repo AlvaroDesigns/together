@@ -1,3 +1,4 @@
+import CardBudget from "./cardBudget";
 import CardFlight from "./cardFlight";
 import CardHotel from "./cardHotel";
 import CardHotelList from "./cardHotelList";
@@ -9,6 +10,7 @@ import CardTrip from "./cardTrip";
 import CardWeather from "./cardWeather";
 
 export {
+  CardBudget,
   CardFlight,
   CardHotel,
   CardHotelList,

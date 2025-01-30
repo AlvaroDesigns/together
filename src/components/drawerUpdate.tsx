@@ -30,7 +30,6 @@ export const DrawerUpdate = ({
 
   const { control, reset, handleSubmit, watch } = useForm({
     values: { type: VARIANT_TYPE_SECTION.FLIGHT, ...product },
-
     schema: sectionSchema,
   });
 

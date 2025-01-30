@@ -2,7 +2,7 @@ import { Button, Footer, Password } from "@/components";
 import { GoogleLogo } from "@/components/icons";
 import { subtitle } from "@/components/primitives";
 import { ENDPOINT, MAIL, ROUTES } from "@/constants";
-import { login } from "@/helpers/schema";
+import { registerSchema } from "@/helpers/schema";
 import { useForm, useLoading } from "@/hooks";
 import { auth, provider } from "@/lib/firebaseConfig";
 import Services from "@/services";
@@ -24,7 +24,7 @@ export default function Login() {
 
   const { control, errors, handleSubmit } = useForm({
     values: undefined,
-    schema: login,
+    schema: registerSchema,
   });
 
   const onSubmit = useCallback(

@@ -1,10 +1,17 @@
 import { ColorType } from "@/types";
 
+export const TRIP_LITERAL = {
+  FLIGHT: "Vuelo",
+  HOTEL: "Hotel",
+  TRANSFER: "Transfer",
+  TRIP: "Actividad",
+};
+
 export const TRIP = [
-  { key: "FLIGHT", label: "Vuelo" },
-  { key: "HOTEL", label: "Hotel" },
-  { key: "TRANSFER", label: "Transfer" },
-  { key: "TRIP", label: "Actividad" },
+  { key: "FLIGHT", label: TRIP_LITERAL.FLIGHT },
+  { key: "HOTEL", label: TRIP_LITERAL.HOTEL },
+  { key: "TRANSFER", label: TRIP_LITERAL.TRANSFER },
+  { key: "TRIP", label: TRIP_LITERAL.TRIP },
 ];
 
 export const TRANSFER_DATA = [
