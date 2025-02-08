@@ -146,7 +146,7 @@ export default function DrawerCreate() {
   });
 
   const onSubmit = useCallback(
-    async (value: any) => {
+    async (value: { title: string; dates: { start: Date; end: Date } }) => {
       if (isStatus) {
         return onClose();
       }
@@ -166,10 +166,13 @@ export default function DrawerCreate() {
           Services()
             .post(`${ENDPOINT.ITINERARY}/${userId}`, {
               title: value.title,
-              days: betweenDates(value.dates.start, value.dates.end),
+              days: betweenDates(
+                value.dates.start.toISOString(),
+                value.dates.end.toISOString()
+              ),
               startDate: addHour(value?.dates?.start, 1),
               endDate: addHour(value?.dates?.end, 1),
-              image: res.data,
+              image: res.data?.src,
               date: new Date(),
             })
             .then((res: AxiosResponse) => {
@@ -185,7 +188,7 @@ export default function DrawerCreate() {
             .finally(() => stopLoading());
         });
     },
-    [isStatus]
+    [isStatus, userId]
   );
 
   return (
