@@ -11,7 +11,7 @@ import { Welcome } from "@/templates/welcome";
 import { RegisterTypes } from "@/types";
 import { Button as ButtonUI, Divider, Image, Input, Link } from "@heroui/react";
 import { useRouter } from "@tanstack/react-router";
-import axios from "axios";
+import { AxiosResponse } from "axios";
 import { signInWithPopup } from "firebase/auth";
 import { useCallback } from "react";
 import { Controller } from "react-hook-form";
@@ -38,33 +38,32 @@ export default function Login() {
       startLoading();
 
       /* Call API */
-      axios
-        .all([
-          Services().post(ENDPOINT.EMAIL, {
-            from: MAIL,
-            to: value?.email,
-            subject: "Bienvenido a Together Labs",
-            html: Welcome({ name: value?.name }),
-          }),
-          Services().post(ENDPOINT.REGISTER, {
-            name: value?.name,
-            email: value?.email,
-            phone: value?.phone,
-            password: value?.password,
-          }),
-        ])
-        .then(
-          axios.spread((response1, response2) => {
-            console.log("Response 1:", response1.data);
-            console.log("Response 2:", response2.data);
+      Services()
+        .post(ENDPOINT.REGISTER, {
+          name: value?.name,
+          email: value?.email,
+          phone: value?.phone,
+          password: value?.password,
+        })
+        .then((res: AxiosResponse) => {
+          const { status } = res || {};
 
-            if (response2.data.createdAt) {
+          if (status !== 201) return;
+
+          /* Mail */
+          Services()
+            .post(ENDPOINT.EMAIL, {
+              from: MAIL,
+              to: value?.email,
+              subject: "Bienvenido a Together Labs",
+              html: Welcome({ name: value?.name }),
+            })
+            .then((res) => {
+              const { status } = res || {};
+              if (status !== 201) return;
+
               router.navigate({ to: ROUTES.LOGIN });
-            }
-          })
-        )
-        .catch((error) => {
-          console.error("Error occurred:", error.message);
+            });
         })
         .finally(() => stopLoading());
     },
