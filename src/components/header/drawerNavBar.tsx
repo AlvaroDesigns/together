@@ -4,6 +4,7 @@ import {
   ArrowLeftStartOnRectangleIcon,
   Bars3BottomLeftIcon,
   ChevronRightIcon,
+  LockClosedIcon,
   NewspaperIcon,
   ShieldCheckIcon,
   UserIcon,
@@ -32,7 +33,7 @@ import NavOptions from "./navOptions";
 const ICONS = {
   account: <UserIcon className="m-1 size-6" />,
   friends: <ShieldCheckIcon className="m-1 size-6" />,
-  secure: <NewspaperIcon className="m-1 size-6" />,
+  secure: <LockClosedIcon className="m-1 size-6" />,
   faqs: <NewspaperIcon className="m-1 size-6" />,
   delete: <ArrowLeftStartOnRectangleIcon className="m-1 size-6" />,
 };
@@ -47,6 +48,8 @@ export default function DrawerNavBar({
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [name, setName] = useState<string | null>(null);
   const { reset } = useUserStore((state) => state);
+
+  const OPTIONS = PROFILE_DATA();
 
   const handelLogOut = () => {
     reset();
@@ -127,13 +130,12 @@ export default function DrawerNavBar({
                       className="dark:text-gray-300"
                     >
                       <>
-                        {PROFILE_DATA.map((item) => (
+                        {OPTIONS.map((item) => (
                           <ListboxItem
                             key={item.key}
                             textValue={item.key}
                             className="flex items-center pb-3"
                             showDivider
-                            color={item.color}
                             onPress={() => handleOpenOptions(item.key)}
                             startContent={ICONS[item.key as keyof object]}
                             endContent={

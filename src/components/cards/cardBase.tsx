@@ -44,7 +44,11 @@ export default function CardBase({
               size: "sm",
             })} flex items-center justify-between`}
           >
-            {capitalCase(format(new Date(header), "ddd, D MMM"))}
+            {header instanceof Date ? (
+              <strong>{capitalCase(header.toString())}</strong>
+            ) : (
+              capitalCase(format(new Date(header), "ddd, D MMM"))
+            )}
           </h2>
           {!hideEdit && (
             <Link
@@ -82,7 +86,6 @@ export default function CardBase({
             <Divider />
             <Accordion showDivider={false} isCompact={true} className="p-0 m-0">
               <AccordionItem
-                key={key}
                 aria-label="Ver más información"
                 title="Ver más información"
                 classNames={{

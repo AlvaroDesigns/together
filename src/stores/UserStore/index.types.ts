@@ -3,6 +3,7 @@ export interface UserTypes {
   email: string | undefined;
   avatar?: string | null;
   userId?: string | undefined;
+  phone: string | null;
   remember: boolean;
   logger: boolean;
 }

@@ -9,6 +9,8 @@ import { parseDate } from "@internationalized/date";
 import { Counter } from "../atomos/counter";
 
 export default function Searcher() {
+  const COUNTERS = COUNTER_DATA();
+
   return (
     <Form
       className="flex flex-col gap-4 mx-4"
@@ -49,7 +51,7 @@ export default function Searcher() {
         }}
         label="Cuando"
       />
-      {COUNTER_DATA.map((co) => (
+      {COUNTERS.map((co) => (
         <Counter
           label={co.label}
           key={co.key}

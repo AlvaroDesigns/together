@@ -14,15 +14,15 @@ import {
   CardTransfer,
   CardTrip,
   CardWeather,
-} from "./cards";
+} from "./Cards";
 import { Cards } from "./cardsProduct";
 import DrawerCreateItinerary from "./drawerCreate";
 import { default as DrawerCustom, default as DrawerFrom } from "./drawerCustom";
 import DrawerUpdate from "./drawerUpdate";
 import Footer from "./footer";
-import Searcher from "./form/searcher";
-import SectionForm from "./form/sectionForm";
-import Header from "./header";
+import Searcher from "./Form/searcher";
+import SectionForm from "./Form/sectionForm";
+import Header from "./Header";
 import Hero from "./hero";
 import RootLayout from "./layout";
 import { Maps } from "./maps";

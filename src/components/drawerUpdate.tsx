@@ -9,7 +9,7 @@ import { AxiosResponse } from "axios";
 import { useCallback, useEffect } from "react";
 import Button from "./button";
 import DrawerCustom from "./drawerCustom";
-import SectionForm from "./form/sectionForm";
+import SectionForm from "./Form/sectionForm";
 
 interface DrawerUpdateProps {
   isOpen: boolean;
@@ -28,7 +28,7 @@ export const DrawerUpdate = ({
   const { items } = itinerary || {};
   const product = items?.find((item: { id: number }) => item.id === editId);
 
-  const { control, reset, handleSubmit, watch } = useForm({
+  const { control, reset, handleSubmit, watch, errors } = useForm({
     values: { type: VARIANT_TYPE_SECTION.FLIGHT, ...product },
     schema: sectionSchema,
   });
@@ -61,7 +61,7 @@ export const DrawerUpdate = ({
       .post(`${ENDPOINT.DETAILS}/${itinerary?.id}`, {
         type: value.type,
         days: 1,
-        startDate: value.startDate,
+        startDate: value.startDate || itinerary?.startDate,
         endDate: data.endDate || value?.endDate,
         departure: data?.depart?.iata || value.departure,
         departureLabel: data?.depart?.cityName,
@@ -92,26 +92,23 @@ export const DrawerUpdate = ({
       });
   };
 
-  const onSubmit = useCallback(
-    async (value: any) => {
-      startLoading();
+  const onSubmit = async (value: any) => {
+    startLoading();
 
-      if (TYPE === VARIANT_TYPE_SECTION.FLIGHT) {
-        const date = formatDay(value.startDate);
+    if (TYPE === VARIANT_TYPE_SECTION.FLIGHT) {
+      const date = formatDay(value.startDate);
 
-        const res = await Services().get(
-          `${ENDPOINT.FLIGHTS}?flightNumber=${value?.numberFlight}&date=${date}`
-        );
-        const dt = res?.data || {};
-        /* Call API */
-        return ServiceDetails(value, { items, ...dt });
-      }
-
+      const res = await Services().get(
+        `${ENDPOINT.FLIGHTS}?flightNumber=${value?.numberFlight}&date=${date}`
+      );
+      const dt = res?.data || {};
       /* Call API */
-      return ServiceDetails(value, items);
-    },
-    [TYPE]
-  );
+      return ServiceDetails(value, { items, ...dt });
+    }
+
+    /* Call API */
+    return ServiceDetails(value, items);
+  };
 
   return (
     <DrawerCustom

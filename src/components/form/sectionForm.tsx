@@ -9,7 +9,7 @@ import {
 } from "@heroui/react";
 
 import { Calendar, Label, Stars } from "@/components";
-import { TRANSFER_DATA, TRIP } from "@/data";
+import { TRANSFER_DATA, TRIP_DATA } from "@/data";
 import { useForm } from "@/hooks";
 import { useDataStore } from "@/stores";
 import { VARIANT_TYPE_SECTION, VariantTypeSection } from "@/types";
@@ -27,6 +27,9 @@ export default function SectionForm({
   type = VARIANT_TYPE_SECTION.FLIGHT,
 }: SectionFormProps) {
   const { itinerary } = useDataStore((state) => state);
+
+  const TRIP = TRIP_DATA();
+  const TRANSFER = TRANSFER_DATA();
 
   const handleChange = (item: any) => {
     if (type) {
@@ -116,7 +119,7 @@ export default function SectionForm({
                 <Select
                   {...field}
                   className="max-w-xs"
-                  items={TRANSFER_DATA}
+                  items={TRANSFER}
                   label="Tipo"
                   selectedKeys={[field.value]}
                   placeholder="Selecciona un transporte"
@@ -359,6 +362,33 @@ export default function SectionForm({
               )}
             />
           </div>
+          <Divider className="mt-5 mb-3" />
+          <div className="flex flex-col mx-4">
+            <Label>Descripcion</Label>
+            <Controller
+              name="description"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Textarea
+                  {...field}
+                  variant="bordered"
+                  type="text"
+                  fullWidth={true}
+                  isInvalid={Boolean(fieldState.error?.message)}
+                  color={fieldState.error?.message ? "danger" : "default"}
+                  errorMessage={fieldState.error?.message}
+                  value={field.value}
+                  className="max-w-xs"
+                  classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
+                  placeholder="Introduce tu descripcion"
+                />
+              )}
+            />
+          </div>
+        </>
+      )}
+      {type === VARIANT_TYPE_SECTION.OTHER && (
+        <>
           <Divider className="mt-5 mb-3" />
           <div className="flex flex-col mx-4">
             <Label>Descripcion</Label>

@@ -10,7 +10,7 @@ import {
   Hero,
   RootLayout,
 } from "@/components";
-import { CardBudget } from "@/components/cards";
+import { CardBudget, CardOther } from "@/components/Cards";
 
 import { subtitle } from "@/components/primitives";
 import { ENDPOINT } from "@/constants";
@@ -151,6 +151,14 @@ const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
           numberFlight={numberFlight}
           descriptions={description}
           arrivalTime={arrivalTime}
+          onPressEdit={() => onEdit(id)}
+          onPressDelete={() => handleRemove(index)}
+        />
+      ),
+      OTHER: (
+        <CardOther
+          key={`other-${id}`}
+          descriptions={description}
           onPressEdit={() => onEdit(id)}
           onPressDelete={() => handleRemove(index)}
         />
@@ -296,13 +304,15 @@ export default function Step2() {
           data?.items?.length > 0 ? (
             <Repeating control={control} watch={watch} onOpen={onOpen} />
           ) : (
-            <div className="my-8">
+            <div className="my-2">
               <CardOut />
             </div>
           )
         ) : (
           <CardSkeleton count={5} />
         )}
+      </section>
+      <section className="relative flex mx-4">
         <ButtonUi
           radius="full"
           color="primary"

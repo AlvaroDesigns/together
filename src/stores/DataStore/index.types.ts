@@ -20,10 +20,10 @@ export interface WeatherType {
 }
 
 export interface ItineraryTypes {
+  id?: number | undefined;
   date: string | Date | undefined;
   days: number;
   endDate: string | undefined;
-  id: number | undefined;
   image: string | undefined;
   items: DetailsTypes[] | [] | null;
   startDate: string | undefined;

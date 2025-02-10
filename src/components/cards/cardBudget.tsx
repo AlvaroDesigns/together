@@ -2,8 +2,9 @@ import { TRIP_LITERAL } from "@/data";
 import { countries } from "@/data/currency";
 import { budgetSchema } from "@/helpers/schema";
 import { useForm } from "@/hooks";
+import { VARIANT_TYPE_SECTION } from "@/types";
 import { capitalCase } from "@/utils";
-import { PlusIcon } from "@heroicons/react/24/outline";
+import { InformationCircleIcon, PlusIcon } from "@heroicons/react/24/outline";
 import {
   Accordion,
   AccordionItem,
@@ -15,6 +16,7 @@ import {
   Link,
   Select,
   SelectItem,
+  Tooltip,
   useDisclosure,
 } from "@heroui/react";
 import { useCallback, useState } from "react";
@@ -48,16 +50,22 @@ export default function CardBudget({
   });
 
   const formatter = (data: any[]) => {
-    return data?.map((ex) => {
-      const type = TRIP_LITERAL[ex.type as keyof typeof TRIP_LITERAL];
+    return data
+      ?.filter((op) => op.type !== VARIANT_TYPE_SECTION.OTHER)
+      .map((ex) => {
+        const type = TRIP_LITERAL[ex.type as keyof typeof TRIP_LITERAL];
 
-      return {
-        label: `${type} - ${ex.type === "FLIGHT" ? ex.numberFlight : ex.name}`,
-        key: `${type} - ${ex.type === "FLIGHT" ? ex.numberFlight : ex.name}`,
-        id: `${ex.name}-${ex.startDate}`,
-      };
-    });
+        return {
+          label: `${type} - ${
+            ex.type === VARIANT_TYPE_SECTION.FLIGHT ? ex.numberFlight : ex.name
+          }`,
+          key: `${type} - ${ex.type === "FLIGHT" ? ex.numberFlight : ex.name}`,
+          id: `${ex.name}-${ex.startDate}`,
+        };
+      });
   };
+
+  const newData = formatter(options);
 
   const onSubmit = useCallback(
     (data: any) => {
@@ -89,20 +97,36 @@ export default function CardBudget({
           <h2
             className={`${subtitle({
               size: "sm",
-            })} flex items-center justify-between`}
+            })} flex items-center gap-2`}
           >
             {capitalCase("Presupuesto")}
+
+            <div className="relative flex items-center">
+              <Tooltip
+                content={
+                  <div className="px-1 py-2">
+                    <div className="text-tiny">
+                      Añade los gastos que has tenido durante tu viaje.
+                    </div>
+                  </div>
+                }
+              >
+                <InformationCircleIcon className="size-5" />
+              </Tooltip>
+            </div>
           </h2>
-          <Link
-            isExternal
-            showAnchorIcon
-            onPress={onOpen}
-            className="text-default-600 hover:text-default-600"
-            color="foreground"
-            anchorIcon={
-              <PlusIcon className="ml-2 mr-1 dark:text-gray-400 size-[22px]" />
-            }
-          />
+          {newData.length > 0 && (
+            <Link
+              isExternal
+              showAnchorIcon
+              onPress={onOpen}
+              className="text-default-600 hover:text-default-600"
+              color="foreground"
+              anchorIcon={
+                <PlusIcon className="ml-2 mr-1 dark:text-gray-400 size-[22px]" />
+              }
+            />
+          )}
         </CardHeader>
         <CardBody className="flex flex-col items-center justify-between pt-0">
           <div className="flex flex-row items-center w-full h-16 p-4 rounded-lg border-1 dark:border-default-400/50 order-b">
@@ -141,7 +165,7 @@ export default function CardBudget({
                         {budget.types.at(0)}
                       </p>
                     </div>
-                    <div>{budget.expensive} €</div>
+                    <p>{budget?.expensive ? `${budget.expensive} €` : ""}</p>
                   </li>
                 ))}
               </ul>
@@ -169,7 +193,6 @@ export default function CardBudget({
                     {...field}
                     variant="bordered"
                     type="number"
-                    name="username"
                     isInvalid={Boolean(fieldState.error?.message)}
                     color={fieldState.error?.message ? "danger" : "default"}
                     errorMessage={fieldState.error?.message}
@@ -205,10 +228,9 @@ export default function CardBudget({
                 render={({ field, fieldState }) => (
                   <Select
                     {...field}
-                    name="email"
                     fullWidth
                     variant="bordered"
-                    items={formatter(options)}
+                    items={newData}
                     label="Selecciona"
                     placeholder="Ej: Avión"
                     isInvalid={Boolean(fieldState.error?.message)}

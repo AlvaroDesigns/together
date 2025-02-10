@@ -8,7 +8,7 @@ import {
 } from "@heroui/react";
 
 import { Button, DrawerCustom, RootLayout, Searcher } from "@/components";
-import { CardHotelList, CardSkeleton } from "@/components/cards";
+import { CardHotelList, CardSkeleton } from "@/components/Cards";
 import { AUHT_NAME, ROUTES } from "@/constants";
 import { HOTELS } from "@/data";
 

@@ -1,60 +1,75 @@
-import { ColorType } from "@/types";
-
+// TODO: REMOVE
 export const TRIP_LITERAL = {
   FLIGHT: "Vuelo",
   HOTEL: "Hotel",
   TRANSFER: "Transfer",
   TRIP: "Actividad",
+  OTHER: "Información importante",
 };
 
-export const TRIP = [
-  { key: "FLIGHT", label: TRIP_LITERAL.FLIGHT },
-  { key: "HOTEL", label: TRIP_LITERAL.HOTEL },
-  { key: "TRANSFER", label: TRIP_LITERAL.TRANSFER },
-  { key: "TRIP", label: TRIP_LITERAL.TRIP },
-];
+import { useTranslation } from "react-i18next";
 
-export const TRANSFER_DATA = [
-  { key: "tren", label: "Tren" },
-  { key: "autobus", label: "Autobus" },
-  { key: "barco", label: "Barco" },
-  { key: "bicileta", label: "Bicicleta" },
-  { key: "patinete", label: "Patinete" },
-  { key: "metro", label: "Metro" },
-  { key: "tranvia", label: "Tranvia" },
-  { key: "uber", label: "Uber" },
-  { key: "cabify", label: "Cabify" },
-  { key: "bold", label: "Bold" },
-  { key: "grab", label: "Grab" },
-  { key: "taxi", label: "Taxi" },
-  { key: "otros", label: "Otros" },
-];
+export const TRIP_DATA = () => {
+  const { t } = useTranslation();
 
-export const PROFILE_DATA: { title: string; key: string; color?: ColorType }[] =
-  [
+  return [
+    { key: "FLIGHT", label: t("TRIP.FLIGHT") },
+    { key: "HOTEL", label: t("TRIP.HOTEL") },
+    { key: "TRANSFER", label: t("TRIP.TRANSFER") },
+    { key: "TRIP", label: t("TRIP.TRIP") },
+    { key: "OTHER", label: t("TRIP.OTHER") },
+  ];
+};
+
+export const TRANSFER_DATA = () => {
+  const { t } = useTranslation();
+  return [
+    { key: "tren", label: t("TRANSPORT.TRAIN") },
+    { key: "autobus", label: t("TRANSPORT.BUS") },
+    { key: "barco", label: t("TRANSPORT.BOAT") },
+    { key: "bicileta", label: t("TRANSPORT.BIKE") },
+    { key: "patinete", label: t("TRANSPORT.SCOOTER") },
+    { key: "metro", label: t("TRANSPORT.METRO") },
+    { key: "tranvia", label: t("TRANSPORT.TRAM") },
+    { key: "uber", label: t("TRANSPORT.UBER") },
+    { key: "cabify", label: t("TRANSPORT.CABIFY") },
+    { key: "bold", label: t("TRANSPORT.BOLD") },
+    { key: "grab", label: t("TRANSPORT.GRAB") },
+    { key: "taxi", label: t("TRANSPORT.TAXI") },
+    { key: "otros", label: t("TRANSPORT.OTHERS") },
+  ];
+};
+
+export const PROFILE_DATA = () => {
+  const { t } = useTranslation();
+
+  return [
     {
-      title: "Mi cuenta",
+      title: t("ACCOUNT"),
       key: "account",
     },
     {
-      title: "Invitar amigos",
+      title: t("FRIENDS"),
       key: "friends",
     },
     {
-      title: "Seguridad",
+      title: t("SECURE"),
       key: "secure",
     },
     {
-      title: "Faqs",
+      title: t("FAQS"),
       key: "faqs",
     },
   ];
+};
 
-export const COUNTER_DATA = [
-  { key: "room", label: "Habitación", defaultValue: 1, min: 1 },
-  { key: "adults", label: "Adultos", defaultValue: 2, min: 1 },
-  { key: "children", label: "Niños", defaultValue: 0 },
-];
+export const COUNTER_DATA = () => {
+  return [
+    { key: "room", label: "Habitación", defaultValue: 1, min: 1 },
+    { key: "adults", label: "Adultos", defaultValue: 2, min: 1 },
+    { key: "children", label: "Niños", defaultValue: 0 },
+  ];
+};
 
 /* TODO: REMOVE */
 export const HOTELS = [

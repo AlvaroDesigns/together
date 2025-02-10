@@ -97,10 +97,13 @@ export const profileSchema = (ty: string) =>
 
 export const sectionSchema = yup.object().shape({
   type: yup.string(),
-  startDate: yup
-    .date()
-    .typeError("La fecha de inicio no es válida")
-    .required("Debe seleccionar una fecha de inicio"),
+  startDate: yup.date().when("type", (type, schema) => {
+    return type[0] === VARIANT_TYPE_SECTION.OTHER
+      ? schema.optional()
+      : schema
+          .typeError("La fecha de inicio no es válida")
+          .required("Debe seleccionar una fecha de inicio");
+  }),
   endDate: yup
     .date()
     .required("Debe seleccionar una fecha de inicio")
@@ -141,7 +144,8 @@ export const sectionSchema = yup.object().shape({
     .string()
     .transform((value) => (Array.isArray(value) ? value.join(" ") : value))
     .when("type", (type, schema) => {
-      return type[0] === VARIANT_TYPE_SECTION.TRIP
+      return type[0] === VARIANT_TYPE_SECTION.TRIP ||
+        type[0] === VARIANT_TYPE_SECTION.OTHER
         ? schema
             .min(3, LITERALS.NUMBER_VALUE.replace("[number]", "3"))
             .max(500, LITERALS.NUMBER_VALUE.replace("[number]", "500"))

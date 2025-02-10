@@ -9,7 +9,20 @@ module.exports = {
     "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        teal: {
+          DEFAULT: "#009688",
+          hover: "#00796b",
+        },
+      },
+    },
+  },
+  variants: {
+    extend: {
+      backgroundColor: ["hover"],
+      textColor: ["hover"],
+    },
   },
   darkMode: "class",
   plugins: [
@@ -19,15 +32,22 @@ module.exports = {
         light: {
           colors: {
             primary: "#009688",
+            "primary-hover": "#1d4ed8", // Azul más oscuro al hacer hover
+            focus: "#009688",
+            hover: "#009688",
           },
+          focus: "#009688",
+          hover: "#009688",
         },
         dark: {
           colors: {
             primary: {
               DEFAULT: "#009688",
+              focus: "#009688",
+              hover: "#009688",
             },
-            focus: "red",
-            hover: "red",
+            focus: "#009688",
+            hover: "#009688",
           },
         },
       },

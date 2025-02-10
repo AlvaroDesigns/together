@@ -17,6 +17,7 @@ import { useUserStore } from "@/stores";
 import { Account } from "@/templates/account";
 import { VARIANT_TYPE_PROFILE } from "@/types";
 import { Controller } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { toast, Toaster } from "sonner";
 import ShareButton from "../atomos/share";
 import { subtitle } from "../primitives";
@@ -31,7 +32,7 @@ export default function NavOptions({
   onOpenChange: (isOpen: boolean) => void;
 }) {
   const { user } = useUserStore((state) => state);
-
+  const { t } = useTranslation();
   const { userId, name: userName, email } = user;
 
   const { control, handleSubmit } = useForm({
@@ -70,7 +71,7 @@ export default function NavOptions({
   return (
     <DrawerCustom
       size="full"
-      header={LITERALS[name as keyof object]}
+      header={t(name as string)}
       body={
         <div className="flex flex-col items-center justify-center dark:text-gray-300">
           {name === VARIANT_TYPE_PROFILE.FRIENDS && (
@@ -147,7 +148,7 @@ export default function NavOptions({
                     isRequired
                     variant="bordered"
                     type="number"
-                    label="Correo"
+                    label="Teléfono"
                     classNames={{
                       inputWrapper: "!min-h-[60px] h-10",
                     }}
@@ -157,7 +158,7 @@ export default function NavOptions({
                     color={fieldState.error?.message ? "danger" : "default"}
                     errorMessage={fieldState.error?.message}
                     value={field.value}
-                    placeholder="666 666 666"
+                    placeholder="616616616"
                   />
                 )}
               />

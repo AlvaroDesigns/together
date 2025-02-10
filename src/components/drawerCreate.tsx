@@ -79,9 +79,10 @@ export function DrawerItFrom({ control }: DrawerItFromProps) {
               name: string;
               stateName?: string;
               countryName: string;
+              latitude: number;
             }) => (
               <AutocompleteItem
-                key={item?.key}
+                key={`${item?.key}-${item?.countryName}-${item.latitude}`}
                 textValue={`${item?.key}-${item?.countryName}`}
                 className="capitalize"
               >

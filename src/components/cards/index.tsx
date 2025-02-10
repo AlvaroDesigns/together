@@ -3,6 +3,7 @@ import CardFlight from "./cardFlight";
 import CardHotel from "./cardHotel";
 import CardHotelList from "./cardHotelList";
 import CardHotelPromo from "./cardHotelPromo";
+import CardOther from "./cardOther";
 import CardOut from "./cardOut";
 import CardSkeleton from "./cardSkeleton";
 import CardTransfer from "./cardTransfer";
@@ -15,6 +16,7 @@ export {
   CardHotel,
   CardHotelList,
   CardHotelPromo,
+  CardOther,
   CardOut,
   CardSkeleton,
   CardTransfer,

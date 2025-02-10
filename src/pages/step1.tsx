@@ -9,7 +9,7 @@ import {
   RootLayout,
   Searcher,
 } from "@/components";
-import { CardHotelPromo } from "@/components/cards";
+import { CardHotelPromo } from "@/components/Cards";
 import { subtitle, title } from "@/components/primitives";
 import { ENDPOINT, ON_BOARDNG, ROUTES } from "@/constants";
 import Services from "@/services";
@@ -83,6 +83,7 @@ export default function Step1() {
             name: data?.name,
             userId: data?.id,
             avatar: data?.avatar,
+            phone: data?.phone,
             logger: true,
           },
         });

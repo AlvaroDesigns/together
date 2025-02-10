@@ -19,7 +19,7 @@ export default function CardHotelPromo({
       isDisabled={!isOpen}
     >
       <CardBody className="flex flex-row items-center pt-0 mt-3 mb-1">
-        <div>
+        <div className="w-full">
           <div className="flex items-center justify-between">
             <span
               className={title({
@@ -40,7 +40,7 @@ export default function CardHotelPromo({
               <XMarkIcon className="mb-4 ml-4 dark:text-gray-400 size-5" />
             </Button>
           </div>
-          <div className="flex items-center mt-2 mb-2">
+          <div className="flex items-center justify-between mt-2 mb-2">
             <div>
               <p
                 className={`${subtitle({

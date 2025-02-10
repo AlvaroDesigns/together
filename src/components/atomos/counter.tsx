@@ -16,9 +16,9 @@ export const Counter = ({
   const [count, setCount] = useState(defaultValue);
 
   return (
-    <div className="flex flex-row items-center w-full gap-2">
-      <div className="text-gray-600 min-w-52 dark:text-gray-300">{label}</div>
-      <div className="flex flex-row items-center w-full gap-2">
+    <div className="flex flex-row items-center justify-between w-full gap-2">
+      <div className="text-gray-600 dark:text-gray-300">{label}</div>
+      <div className="flex flex-row items-center gap-2">
         <Button
           isIconOnly
           aria-label="min"
@@ -27,7 +27,16 @@ export const Counter = ({
         >
           <MinusIcon className="m-1 size-6" />
         </Button>
-        <Input isReadOnly type="number" className="w-9" value={String(count)} />
+        <Input
+          isReadOnly
+          type="number"
+          className="w-9"
+          classNames={{
+            input: "text-center text-right",
+            inputWrapper: "p-0",
+          }}
+          value={String(count)}
+        />
         <Button
           isIconOnly
           aria-label="max"
