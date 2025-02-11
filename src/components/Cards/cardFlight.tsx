@@ -39,7 +39,6 @@ export default function CardFlight({
           />
           <div className="flex flex-col ml-3">
             <Link
-              isBlock
               showAnchorIcon
               underline="none"
               className="p-0"

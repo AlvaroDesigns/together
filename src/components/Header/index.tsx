@@ -42,13 +42,7 @@ export default function Header() {
             Acceso
           </Button>
         ) : (
-          <DrawerNavBar
-            user={{
-              name: user?.name || "Nombre",
-              email: user?.email || "Email",
-              avatar: user?.avatar ?? undefined,
-            }}
-          />
+          <DrawerNavBar />
         )}
       </NavbarContent>
     </Navbar>

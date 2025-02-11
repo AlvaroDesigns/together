@@ -22,24 +22,27 @@ import { toast, Toaster } from "sonner";
 import ShareButton from "../atomos/share";
 import { subtitle } from "../primitives";
 
+interface NavOptionsProps {
+  user: any;
+  isOpen: boolean;
+  name: string | null;
+  onOpenChange: (isOpen: boolean) => void;
+}
+
 export default function NavOptions({
   isOpen,
   name,
   onOpenChange,
-}: {
-  isOpen: boolean;
-  name: string | null;
-  onOpenChange: (isOpen: boolean) => void;
-}) {
+}: NavOptionsProps) {
   const { user } = useUserStore((state) => state);
   const { t } = useTranslation();
   const { userId, name: userName, email } = user;
 
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, getValues } = useForm({
     values: user,
     schema: profileSchema(name as string),
   });
-
+  console.log("NavOptions", user, getValues());
   const onSubmit = (value: any) => {
     if ((name as keyof object) === VARIANT_TYPE_PROFILE.FRIENDS) {
       ShareButton({

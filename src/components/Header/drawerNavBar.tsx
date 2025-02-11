@@ -38,16 +38,12 @@ const ICONS = {
   delete: <ArrowLeftStartOnRectangleIcon className="m-1 size-6" />,
 };
 
-export default function DrawerNavBar({
-  user,
-}: {
-  user: { name: string; email: string; avatar?: string };
-}) {
+export default function DrawerNavBar() {
   const router = useRouter();
   const [onClose, setOnClose] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [name, setName] = useState<string | null>(null);
-  const { reset } = useUserStore((state) => state);
+  const { reset, user } = useUserStore((state) => state);
 
   const OPTIONS = PROFILE_DATA();
 

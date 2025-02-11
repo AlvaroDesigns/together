@@ -18,12 +18,6 @@ module.exports = {
       },
     },
   },
-  variants: {
-    extend: {
-      backgroundColor: ["hover"],
-      textColor: ["hover"],
-    },
-  },
   darkMode: "class",
   plugins: [
     heroui({
@@ -36,8 +30,6 @@ module.exports = {
             focus: "#009688",
             hover: "#009688",
           },
-          focus: "#009688",
-          hover: "#009688",
         },
         dark: {
           colors: {

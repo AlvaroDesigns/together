@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { createJSONStorage, devtools, persist } from "zustand/middleware";
+import { devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import { UserState, UserTypes } from "./index.types";
 
@@ -10,6 +10,7 @@ const userData: UserTypes = {
   userId: undefined,
   remember: false,
   logger: false,
+  phone: null,
 };
 
 export const useUserStore = create<UserState>()(
@@ -29,6 +30,6 @@ export const useUserStore = create<UserState>()(
         reset: () => set(() => ({ user: userData }), false, "Reset User Data"),
       }))
     ),
-    { name: "together-user", storage: createJSONStorage(() => sessionStorage) }
+    { name: "together-user" }
   )
 );
