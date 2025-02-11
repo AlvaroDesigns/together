@@ -56,6 +56,7 @@ export default function Step1() {
 
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const [isSearcherHotel, setSearcherHotel] = useState<boolean>(false);
   const onBoarding = getAuth(ON_BOARDNG);
 
@@ -118,7 +119,9 @@ export default function Step1() {
         </div>
         {!isLoading && (
           <div className="mt-6">
-            <CardHotelPromo onPressSubmit={() => setSearcherHotel(true)} />
+            <CardHotelPromo
+              onPressSubmit={() => setSearcherHotel(!isSearcherHotel)}
+            />
             <DrawerCustom
               backdrop="blur"
               placement="bottom"

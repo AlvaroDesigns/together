@@ -38,11 +38,11 @@ export default function NavOptions({
   const { t } = useTranslation();
   const { userId, name: userName, email } = user;
 
-  const { control, handleSubmit, getValues } = useForm({
+  const { control, handleSubmit } = useForm({
     values: user,
     schema: profileSchema(name as string),
   });
-  console.log("NavOptions", user, getValues());
+
   const onSubmit = (value: any) => {
     if ((name as keyof object) === VARIANT_TYPE_PROFILE.FRIENDS) {
       ShareButton({
@@ -84,7 +84,7 @@ export default function NavOptions({
                 fallbackSrc="https://via.placeholder.com/300x200"
                 className="w-full aspect-square"
                 height="auto"
-                width="100%"
+                width="80%"
                 src="../../share.png"
               />
               <p className="px-6 mt-6">

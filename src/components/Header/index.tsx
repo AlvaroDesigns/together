@@ -1,4 +1,3 @@
-import { useUserStore } from "@/stores";
 import {
   Button,
   Image,
@@ -14,7 +13,7 @@ import DrawerNavBar from "./drawerNavBar";
 
 export default function Header() {
   const auth = getAuth(AUHT_NAME);
-  const { user } = useUserStore((state) => state);
+
   const router = useRouter();
 
   return (

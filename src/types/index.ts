@@ -47,23 +47,18 @@ export const VARIANT_TYPE_PROFILE: Record<string, VariantProfileType> = {
 };
 
 export type VariantTypeSectionIcon = "ACCOUNT" | "FRIENDS" | "SECURE" | "FAQS";
+export type VariantTypeRoles = "ADMIN" | "USER" | "VIEWER";
 
 export const ROLES = {
   ADMIN: "admin",
   USER: "user",
-  GUEST: "guest",
-  MODERATOR: "moderator",
-  EDITOR: "editor",
   VIEWER: "viewer",
 };
 
 export const users = [
-  { id: 1, name: "AdminUser", role: ROLES.ADMIN },
-  { id: 2, name: "RegularUser", role: ROLES.USER },
-  { id: 3, name: "GuestUser", role: ROLES.GUEST },
-  { id: 4, name: "ModeratorUser", role: ROLES.MODERATOR },
-  { id: 5, name: "EditorUser", role: ROLES.EDITOR },
-  { id: 6, name: "ViewerUser", role: ROLES.VIEWER },
+  { id: 1, name: "ADMIN", role: ROLES.ADMIN },
+  { id: 2, name: "STANDARD", role: ROLES.USER },
+  { id: 3, name: "VIEW", role: ROLES.VIEWER },
 ];
 
 interface UserBasicTypes {
@@ -74,6 +69,8 @@ interface UserBasicTypes {
 
 export interface RegisterTypes extends UserBasicTypes {
   phone: string;
+  remember?: boolean | undefined;
+  avatar?: string;
 }
 export interface LoginTypes extends UserBasicTypes {
   remember: boolean;

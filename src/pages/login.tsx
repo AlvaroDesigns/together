@@ -6,7 +6,7 @@ import { useForm, useLoading } from "@/hooks";
 import { auth, provider } from "@/lib/firebaseConfig";
 import Services from "@/services";
 import { useUserStore } from "@/stores";
-import { LoginTypes } from "@/types";
+import { RegisterTypes } from "@/types";
 import { setAuth } from "@/utils";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import {
@@ -36,44 +36,43 @@ export default function Login() {
     schema: loginSchema,
   });
 
-  const onSubmit = useCallback(
-    async (value: LoginTypes) => {
-      const error = Object.entries(errors).length !== 0;
+  const onSubmit = useCallback(async (value: RegisterTypes) => {
+    const error = Object.entries(errors).length !== 0;
 
-      /* Exit */
-      if (error) return;
+    /* Exit */
+    if (error) return;
 
-      /* Start Loading */
-      startLoading();
+    /* Start Loading */
+    startLoading();
 
-      /* Call API */
-      Services()
-        .post(ENDPOINT.AUTH, {
-          email: value.email,
-          password: value.password,
-        })
-        .then((res: AxiosResponse) => {
-          const { data } = res || {};
+    /* Call API */
+    Services()
+      .post(ENDPOINT.AUTH, {
+        email: value.email,
+        password: value.password,
+      })
+      .then((res: AxiosResponse) => {
+        const { data } = res || {};
 
-          /* Set */
-          setter({
-            user: {
-              name: value.name,
-              email: value.email,
-              avatar: value.avatar,
-              remember: value.remember,
-              logger: true,
-            },
-          });
+        /* Set */
+        setter({
+          user: {
+            ...value,
+            name: value.name,
+            email: value.email,
+            avatar: value.avatar,
+            remember: value.remember ?? false,
+            logger: true,
+            phone: value.phone,
+          },
+        });
 
-          Cookies.set(AUHT_NAME, data.access_token, { expires: 7 });
-          setAuth(AUHT_NAME, data.access_token);
-          router.navigate({ to: ROUTES.HOME_B2B });
-        })
-        .finally(() => stopLoading());
-    },
-    [errors, setter]
-  );
+        Cookies.set(AUHT_NAME, data.access_token, { expires: 7 });
+        setAuth(AUHT_NAME, data.access_token);
+        router.navigate({ to: ROUTES.HOME_B2B });
+      })
+      .finally(() => stopLoading());
+  }, []);
 
   const signInGoogle = async () => {
     try {

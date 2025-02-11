@@ -108,8 +108,8 @@ export default function DrawerNavBar() {
                   <Avatar
                     showFallback
                     className="w-32 h-32 text-6xl"
-                    name={user.name.charAt(0)}
-                    src={user.avatar}
+                    name={(user?.name ?? "").charAt(0)}
+                    src={user?.avatar ?? undefined}
                   />
                   <div className="flex flex-col items-center mt-4 dark:text-gray-300 default whitespace-nowrap">
                     <span className="text-xl font-semibold">
