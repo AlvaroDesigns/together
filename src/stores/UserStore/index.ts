@@ -1,5 +1,6 @@
+import { ROLES } from "@/types";
 import { create } from "zustand";
-import { devtools, persist } from "zustand/middleware";
+import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import { UserState, UserTypes } from "./index.types";
 
@@ -11,6 +12,7 @@ const userData: UserTypes = {
   remember: false,
   logger: false,
   phone: null,
+  role: ROLES.USER,
 };
 
 export const useUserStore = create<UserState>()(
@@ -30,6 +32,9 @@ export const useUserStore = create<UserState>()(
         reset: () => set(() => ({ user: userData }), false, "Reset User Data"),
       }))
     ),
-    { name: "together-user" }
+    {
+      name: "user-storage", // name of the item in the storage (must be unique)
+      storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
+    }
   )
 );

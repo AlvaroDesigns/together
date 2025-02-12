@@ -14,9 +14,11 @@ import {
   Form,
   Input,
   Link,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
   Select,
   SelectItem,
-  Tooltip,
   useDisclosure,
 } from "@heroui/react";
 import { useCallback, useState } from "react";
@@ -32,13 +34,12 @@ interface Option {
   type: keyof typeof TRIP_LITERAL;
 }
 
-export default function CardBudget({
-  options = [],
-  data,
-}: {
+interface CardBudgetProps {
   options: Option[];
   data: unknown;
-}) {
+}
+
+export default function CardBudget({ options = [], data }: CardBudgetProps) {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [budgets, setBudgets] = useState<
     Array<{ expensive: number; types: string[] }>
@@ -102,17 +103,20 @@ export default function CardBudget({
             {capitalCase("Presupuesto")}
 
             <div className="relative flex items-center">
-              <Tooltip
-                content={
+              <Popover placement="bottom" shadow="md">
+                <PopoverTrigger>
+                  <div className="flex w-3/5 h-full">
+                    <InformationCircleIcon className="size-8" />
+                  </div>
+                </PopoverTrigger>
+                <PopoverContent>
                   <div className="px-1 py-2">
                     <div className="text-tiny">
                       Añade los gastos que has tenido durante tu viaje.
                     </div>
                   </div>
-                }
-              >
-                <InformationCircleIcon className="size-5" />
-              </Tooltip>
+                </PopoverContent>
+              </Popover>
             </div>
           </h2>
           {newData.length > 0 && (

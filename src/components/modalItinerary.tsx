@@ -8,13 +8,15 @@ import {
   ModalHeader,
 } from "@heroui/react";
 
+interface ModalItineraryProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
 export default function ModalItinerary({
   isOpen,
   onClose,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-}) {
+}: ModalItineraryProps) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} placement="bottom-center">
       <ModalContent>

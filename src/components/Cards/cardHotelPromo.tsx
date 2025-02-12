@@ -1,22 +1,23 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Button, Card, CardBody, Image } from "@heroui/react";
-import { useState } from "react";
 import { subtitle, title } from "../primitives";
+
+interface CardHotelPromoProps {
+  onPressClose?: () => void;
+  onPressSubmit?: () => void;
+  isClose?: boolean;
+}
 
 export default function CardHotelPromo({
   onPressClose,
   onPressSubmit,
-}: {
-  onPressClose?: () => void;
-  onPressSubmit?: () => void;
-}) {
-  const [isOpen, setIsOpen] = useState(true);
-
+  isClose,
+}: CardHotelPromoProps) {
   return (
     <Card
       isFooterBlurred
       className="w-full col-span-12 sm:col-span-7"
-      isDisabled={!isOpen}
+      isDisabled={!isClose}
     >
       <CardBody className="flex flex-row items-center pt-0 mt-3 mb-1">
         <div className="w-full">
@@ -31,11 +32,10 @@ export default function CardHotelPromo({
             </span>
             <Button
               isIconOnly
-              aria-label="Like"
+              aria-label="Close"
+              isDisabled={!isClose}
               className="bg-[transparent] focus:outline-none hover:border-transparent"
-              onPress={() => {
-                setIsOpen(false);
-              }}
+              onPress={onPressClose}
             >
               <XMarkIcon className="mb-4 ml-4 dark:text-gray-400 size-5" />
             </Button>
@@ -67,6 +67,7 @@ export default function CardHotelPromo({
             size="sm"
             className="p-4 text-white bg-primary text-small"
             onPress={onPressSubmit}
+            isDisabled={!isClose}
           >
             Reservar hoteles
           </Button>

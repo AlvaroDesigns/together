@@ -6,7 +6,7 @@ import { useForm, useLoading } from "@/hooks";
 import { auth, provider } from "@/lib/firebaseConfig";
 import Services from "@/services";
 import { useUserStore } from "@/stores";
-import { RegisterTypes } from "@/types";
+import { RegisterTypes, ROLES } from "@/types";
 import { setAuth } from "@/utils";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import {
@@ -57,13 +57,9 @@ export default function Login() {
         /* Set */
         setter({
           user: {
-            ...value,
-            name: value.name,
-            email: value.email,
-            avatar: value.avatar,
-            remember: value.remember ?? false,
             logger: true,
-            phone: value.phone,
+            email: value.email,
+            role: data?.role ?? ROLES.USER,
           },
         });
 

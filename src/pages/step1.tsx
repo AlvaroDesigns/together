@@ -16,6 +16,8 @@ import Services from "@/services";
 import { useDataStore, useUserStore } from "@/stores";
 import { getAuth } from "@/utils";
 
+import SkeletonHome from "@/components/Skeletons/skeletonHome";
+import { ROLES } from "@/types";
 import { useRouter } from "@tanstack/react-router";
 import { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
@@ -57,7 +59,11 @@ export default function Step1() {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const STATUS_ROLE = user?.role === ROLES.ADMIN;
+
+  const [isSearcherClose, setSearcherClose] = useState<boolean>(STATUS_ROLE);
   const [isSearcherHotel, setSearcherHotel] = useState<boolean>(false);
+
   const onBoarding = getAuth(ON_BOARDNG);
 
   const router = useRouter();
@@ -85,7 +91,6 @@ export default function Step1() {
             userId: data?.id,
             avatar: data?.avatar,
             phone: data?.phone,
-            logger: true,
           },
         });
         setter({ home: { items: data?.itinerary } });
@@ -100,55 +105,59 @@ export default function Step1() {
           Explora el&nbsp; <span className={title()}>maravilloso&nbsp;</span>
           <span className={title({ color: "green" })}>mundo!</span>
         </h1>
-        <div className="mt-6">
-          <div className="flex flex-row whitespace-nowrap">
-            <p className={subtitle()}>Ultimos destinos</p>
-          </div>
-          <div className="flex flex-row gap-4 mt-4 overflow-x-auto">
-            <Cards
-              isDelete
-              itinerary={items
-                ?.map((item, index) => ({
-                  ...item,
-                  id: item.id ?? index,
-                }))
-                .toReversed()}
-              loading={isLoading}
-            />
-          </div>
-        </div>
+        {isLoading && <SkeletonHome />}
         {!isLoading && (
-          <div className="mt-6">
-            <CardHotelPromo
-              onPressSubmit={() => setSearcherHotel(!isSearcherHotel)}
-            />
-            <DrawerCustom
-              backdrop="blur"
-              placement="bottom"
-              radius="lg"
-              size="lg"
-              isOpen={isSearcherHotel}
-              header="Reservar hoteles"
-              onOpenChange={() => setSearcherHotel(false)}
-              body={<Searcher />}
-              footer={
-                <Button
-                  onPress={() => router.navigate({ to: ROUTES.AVAILABILITY })}
-                >
-                  Buscar
-                </Button>
-              }
-            />
-          </div>
+          <>
+            <div className="mt-6">
+              <div className="flex flex-row whitespace-nowrap">
+                <p className={subtitle()}>Ultimos destinos</p>
+              </div>
+              <div className="flex flex-row gap-4 mt-4 overflow-x-auto">
+                <Cards
+                  isDelete
+                  itinerary={items
+                    ?.map((item, index) => ({
+                      ...item,
+                      id: item.id ?? index,
+                    }))
+                    .toReversed()}
+                />
+              </div>
+            </div>
+            <div className="mt-6">
+              <CardHotelPromo
+                isClose={isSearcherClose}
+                onPressClose={() => setSearcherClose(!isSearcherHotel)}
+                onPressSubmit={() => setSearcherHotel(!isSearcherHotel)}
+              />
+              <DrawerCustom
+                backdrop="blur"
+                placement="bottom"
+                radius="lg"
+                size="lg"
+                isOpen={isSearcherHotel}
+                header="Reservar hoteles"
+                onOpenChange={() => setSearcherHotel(false)}
+                body={<Searcher />}
+                footer={
+                  <Button
+                    onPress={() => router.navigate({ to: ROUTES.AVAILABILITY })}
+                  >
+                    Buscar
+                  </Button>
+                }
+              />
+            </div>
+            <div className="mt-6">
+              <div className="flex flex-row whitespace-nowrap">
+                <p className={subtitle()}>Top destinos</p>
+              </div>
+              <div className="flex flex-row gap-4 mt-4 overflow-x-auto">
+                <Cards itinerary={DATA} />
+              </div>
+            </div>
+          </>
         )}
-        <div className="mt-6">
-          <div className="flex flex-row whitespace-nowrap">
-            <p className={subtitle()}>Top destinos</p>
-          </div>
-          <div className="flex flex-row gap-4 mt-4 overflow-x-auto">
-            <Cards itinerary={DATA} loading={isLoading} />
-          </div>
-        </div>
         <DrawerCreateItinerary />
         <OnBoarding
           isOpen={isOpen}

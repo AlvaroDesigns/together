@@ -108,6 +108,9 @@ export const useDataStore = create<DataState>()(
           ),
       }))
     ),
-    { name: "together-data", storage: createJSONStorage(() => sessionStorage) }
+    {
+      name: "data-storage", // name of the item in the storage (must be unique)
+      storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
+    }
   )
 );

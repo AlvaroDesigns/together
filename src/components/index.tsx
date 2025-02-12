@@ -6,15 +6,7 @@ import { Status } from "./atomos/status";
 import Button from "./button";
 import Calendar from "./calendar";
 import Card from "./card";
-import {
-  CardFlight,
-  CardHotel,
-  CardOut,
-  CardSkeleton,
-  CardTransfer,
-  CardTrip,
-  CardWeather,
-} from "./Cards";
+import { CardOut, CardSkeleton, CardWeather } from "./Cards";
 import { Cards } from "./cardsProduct";
 import DrawerCreateItinerary from "./drawerCreate";
 import { default as DrawerCustom, default as DrawerFrom } from "./drawerCustom";
@@ -33,13 +25,9 @@ export {
   Button,
   Calendar,
   Card,
-  CardFlight,
-  CardHotel,
   CardOut,
   Cards,
   CardSkeleton,
-  CardTransfer,
-  CardTrip,
   CardWeather,
   DrawerCreateItinerary,
   DrawerCustom,

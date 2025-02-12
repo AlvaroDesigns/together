@@ -1,16 +1,13 @@
 import {
-  CardFlight,
-  CardHotel,
   CardOut,
   CardSkeleton,
-  CardTransfer,
-  CardTrip,
   CardWeather,
   DrawerUpdate,
   Hero,
   RootLayout,
 } from "@/components";
-import { CardBudget, CardOther } from "@/components/Cards";
+import { CardBudget } from "@/components/Cards";
+import CardItinerary from "@/components/Cards/cardItinerary";
 
 import { subtitle } from "@/components/primitives";
 import { ENDPOINT } from "@/constants";
@@ -19,6 +16,7 @@ import { useForm } from "@/hooks";
 import Services from "@/services";
 import { useDataStore } from "@/stores";
 import { DetailsTypes, ItineraryTypes } from "@/stores/DataStore/index.types";
+import { VariantTypeSection } from "@/types";
 import { formatDayForDays } from "@/utils";
 import { ArrowsUpDownIcon } from "@heroicons/react/24/outline";
 import { Button as ButtonUi, Link, useDisclosure } from "@heroui/react";
@@ -80,94 +78,6 @@ const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
     }
   };
 
-  const switchCard = (data: any, index: number | undefined) => {
-    const {
-      id,
-      startDate,
-      endDate,
-      name,
-      cityName,
-      country,
-      departure,
-      stars,
-      departureLabel,
-      arrivalTime,
-      imageUrl,
-      description,
-      destination,
-      destinationLabel,
-      numberFlight,
-    } = data;
-
-    const CARDS = {
-      TRIP: (
-        <CardTrip
-          key={`trip-${id}`}
-          name={name}
-          startDate={startDate}
-          endDate={endDate}
-          imageUrl={imageUrl}
-          arrivalTime={arrivalTime}
-          descriptions={description}
-          onPressEdit={() => onEdit(id)}
-          onPressDelete={() => handleRemove(index)}
-        />
-      ),
-      TRANSFER: (
-        <CardTransfer
-          key={`transfer-${id}`}
-          name={name}
-          arrivalTime={arrivalTime}
-          startDate={startDate}
-          endDate={endDate}
-          descriptions={description}
-          onPressEdit={() => onEdit(id)}
-          onPressDelete={() => handleRemove(index)}
-        />
-      ),
-      HOTEL: (
-        <CardHotel
-          key={`hotel-${id}`}
-          startDate={startDate}
-          stars={stars}
-          endDate={endDate}
-          name={name}
-          city={cityName}
-          country={country}
-          imageUrl={imageUrl}
-          descriptions={description}
-          onPressEdit={() => onEdit(id)}
-          onPressDelete={() => handleRemove(index)}
-        />
-      ),
-      FLIGHT: (
-        <CardFlight
-          key={`flight-${id}`}
-          startDate={startDate}
-          departure={departure}
-          departureLabel={departureLabel}
-          destination={destination}
-          destinationLabel={destinationLabel}
-          numberFlight={numberFlight}
-          descriptions={description}
-          arrivalTime={arrivalTime}
-          onPressEdit={() => onEdit(id)}
-          onPressDelete={() => handleRemove(index)}
-        />
-      ),
-      OTHER: (
-        <CardOther
-          key={`other-${id}`}
-          descriptions={description}
-          onPressEdit={() => onEdit(id)}
-          onPressDelete={() => handleRemove(index)}
-        />
-      ),
-    };
-
-    return CARDS[data?.type.toUpperCase() as keyof object];
-  };
-
   return (
     <>
       {controlledFields.map((item, index: number) => (
@@ -194,8 +104,13 @@ const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
               />
             )}
           </div>
-
-          {switchCard(item, index)}
+          <CardItinerary
+            key={`card-${index}`}
+            data={item}
+            type={item.type as VariantTypeSection}
+            onPressEdit={() => onEdit(item?.id)}
+            onPressDelete={() => handleRemove(index)}
+          />
         </div>
       ))}
     </>

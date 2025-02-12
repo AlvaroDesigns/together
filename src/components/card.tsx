@@ -9,6 +9,16 @@ import {
   PopoverTrigger,
 } from "@heroui/react";
 
+interface CardVerticalProps {
+  title: string | undefined;
+  subtitle?: string;
+  days?: number;
+  maxHeight?: number;
+  image: string | undefined;
+  isDelete?: boolean;
+  onClick?: () => void;
+}
+
 export default function CardVertical({
   title = "",
   subtitle,
@@ -17,15 +27,7 @@ export default function CardVertical({
   onClick,
   image,
   isDelete = false,
-}: {
-  title: string | undefined;
-  subtitle?: string;
-  days?: number;
-  maxHeight?: number;
-  image: string | undefined;
-  isDelete?: boolean;
-  onClick?: () => void;
-}) {
+}: CardVerticalProps) {
   return (
     <div
       className="max-w-[900px] z-10 min-w-[200px] gap-2 grid"

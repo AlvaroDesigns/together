@@ -1,4 +1,4 @@
-import { CardHeader, Card as CardUI, Image, Skeleton } from "@heroui/react";
+import { CardHeader, Card as CardUI, Image } from "@heroui/react";
 
 import { Card } from "@/components";
 import { ROUTES } from "@/constants";
@@ -14,15 +14,10 @@ interface ItineraryItem {
 
 interface CardsProps {
   itinerary: ItineraryItem[] | undefined;
-  loading: boolean;
   isDelete?: boolean;
 }
 
-export const Cards: React.FC<CardsProps> = ({
-  itinerary,
-  loading = true,
-  isDelete,
-}) => {
+export const Cards: React.FC<CardsProps> = ({ itinerary, isDelete }) => {
   const { resetItinerary } = useDataStore((state) => state);
   const { user } = useUserStore((state) => state);
   const router = useRouter();
@@ -52,33 +47,7 @@ export const Cards: React.FC<CardsProps> = ({
     });
   };
 
-  if (loading || itinerary?.length === undefined) {
-    return Array.from({ length: 3 }).map((_, index) => (
-      <div
-        className="p-3 mb-5 bg-conten1 border dark:border-gray-700 min-h-56 rounded-xl w-[200px] min-w-[200px]"
-        key={`skeleton-${index}`}
-      >
-        <div className="flex flex-col justify-center min-h-10">
-          <Skeleton className="rounded-lg" isLoaded={false}>
-            <div className="rounded-lg h-28 bg-default-300" />
-          </Skeleton>
-        </div>
-        <div className="my-3 space-y-3">
-          <Skeleton className="w-3/5 rounded-lg">
-            <div className="w-3/5 h-3 rounded-lg bg-default-200" />
-          </Skeleton>
-          <Skeleton className="w-4/5 rounded-lg">
-            <div className="w-4/5 h-3 rounded-lg bg-default-200" />
-          </Skeleton>
-          <Skeleton className="w-2/5 rounded-lg">
-            <div className="w-2/5 h-3 rounded-lg bg-default-300" />
-          </Skeleton>
-        </div>
-      </div>
-    ));
-  }
-
-  if (itinerary.length === 0) {
+  if (itinerary?.length === 0) {
     return (
       <>
         <CardUI
@@ -105,18 +74,14 @@ export const Cards: React.FC<CardsProps> = ({
     );
   }
 
-  return (
-    <>
-      {itinerary?.map((item: ItineraryItem) => (
-        <Card
-          isDelete={isDelete}
-          key={item?.id}
-          title={item?.title}
-          days={item.days}
-          image={item.image}
-          onClick={() => item?.title && handelCardOnPress(item)}
-        />
-      ))}
-    </>
-  );
+  return itinerary?.map((item: ItineraryItem) => (
+    <Card
+      isDelete={isDelete}
+      key={item?.id}
+      title={item?.title}
+      days={item.days}
+      image={item.image}
+      onClick={() => item?.title && handelCardOnPress(item)}
+    />
+  ));
 };

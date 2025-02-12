@@ -1,6 +1,15 @@
 import { format } from "@formkit/tempo";
 import { Card, CardBody, Skeleton } from "@heroui/react";
 
+interface HeroProps {
+  startDate: string | Date | undefined;
+  endDate: string | Date | undefined;
+  title: string | undefined;
+  days: number | undefined;
+  image: string | undefined;
+  loading: boolean;
+}
+
 export default function Hero({
   startDate,
   endDate,
@@ -8,14 +17,7 @@ export default function Hero({
   days,
   image,
   loading = false,
-}: {
-  startDate: string | Date | undefined;
-  endDate: string | Date | undefined;
-  title: string | undefined;
-  days: number | undefined;
-  image: string | undefined;
-  loading: boolean;
-}) {
+}: HeroProps) {
   return (
     <section className="relative overflow-hidden flex flex-col justify-start w-full min-h-[220px] max-h-[220px]">
       <div className="absolute inset-0 z-20 opacity-50 bg-gradient-to-b from-black to-transparent" />

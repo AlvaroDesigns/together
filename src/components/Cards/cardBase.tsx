@@ -14,6 +14,15 @@ import {
   Link,
 } from "@heroui/react";
 
+interface CardBaseProps {
+  header: string | Date | null;
+  hideEdit?: boolean;
+  body: React.ReactNode;
+  footer?: string[] | null;
+  onPressEdit?: () => void;
+  onPressDelete?: () => void;
+}
+
 export default function CardBase({
   header = new Date(),
   onPressEdit,
@@ -21,14 +30,7 @@ export default function CardBase({
   hideEdit = false,
   body,
   footer = null,
-}: {
-  header: string | Date;
-  hideEdit?: boolean;
-  body: React.ReactNode;
-  footer?: string[] | null;
-  onPressEdit?: () => void;
-  onPressDelete?: () => void;
-}) {
+}: CardBaseProps) {
   const key = `card-base-${crypto.randomUUID()}`;
 
   return (
@@ -44,10 +46,10 @@ export default function CardBase({
               size: "sm",
             })} flex items-center justify-between`}
           >
-            {header instanceof Date ? (
-              <strong>{capitalCase(header.toString())}</strong>
-            ) : (
+            {header === header?.toString() ? (
               capitalCase(format(new Date(header), "ddd, D MMM"))
+            ) : (
+              <strong>{capitalCase(header?.toString())}</strong>
             )}
           </h2>
           {!hideEdit && (
@@ -80,7 +82,7 @@ export default function CardBase({
       <CardBody className="flex flex-row items-center pt-0 mt-1 mb-1">
         {body}
       </CardBody>
-      {footer && (
+      {footer && footer?.length > 0 && (
         <CardFooter className="pt-0 text-left">
           <div className="w-full ">
             <Divider />
@@ -94,7 +96,7 @@ export default function CardBase({
                   content: "flex flex-col gap-4 mt-2",
                 }}
               >
-                {footer.map((item) => (
+                {footer?.map((item) => (
                   <p>{item}</p>
                 ))}
               </AccordionItem>

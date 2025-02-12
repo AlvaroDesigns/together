@@ -115,7 +115,7 @@ export function DrawerItFrom({ control }: DrawerItFromProps) {
             classNames={{
               calendar:
                 "w-full bg-white shadow-lg border border-default-200/60",
-              calendarContent: "w-[300px] bg-red-500/10",
+              calendarContent: "w-[300px] bg-primary/10",
               popoverContent: "w-full bg-red-500/10",
               separator: "w-6 h-6 text-center text-default-500",
               input:

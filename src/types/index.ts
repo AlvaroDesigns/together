@@ -78,18 +78,21 @@ export interface LoginTypes extends UserBasicTypes {
 }
 
 export interface CardTypes {
-  startDate: string | Date;
+  startDate: string | Date | null;
+  endDate?: string | Date | null;
+  departure: string | undefined;
+  departureLabel?: string | undefined;
+  destination: string | undefined;
+  description?: string[] | null | any;
+  destinationLabel?: string | undefined;
+  numberFlight: string | undefined;
   name: string | undefined;
-  city?: string;
-  stars?: number;
+  cityName?: string;
+  stars?: number | null;
   country?: string;
-  endDate?: string | Date;
   imageUrl?: string | undefined;
   placeUrl?: string | undefined;
-  descriptions?: string[] | null;
   arrivalTime?: string | Date;
-  onPressEdit?: () => void;
-  onPressDelete?: () => void;
 }
 
 export interface CardFlightTypes {

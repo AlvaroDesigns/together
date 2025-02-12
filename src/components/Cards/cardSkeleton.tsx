@@ -4,13 +4,15 @@ type VARIANT_TYPE_SECTION = "vertical" | "horizontal";
 const VARIANT_TYPE_VERTICAL: VARIANT_TYPE_SECTION = "vertical";
 const VARIANT_TYPE_HORIZONTAL: VARIANT_TYPE_SECTION = "horizontal";
 
+interface CardSkeletonProps {
+  count: number;
+  variant?: VARIANT_TYPE_SECTION;
+}
+
 export default function CardSkeleton({
   count = 1,
   variant = VARIANT_TYPE_HORIZONTAL,
-}: {
-  count: number;
-  variant?: VARIANT_TYPE_SECTION;
-}) {
+}: CardSkeletonProps) {
   return Array.from({ length: count }).map((__, index) => {
     if (variant === VARIANT_TYPE_VERTICAL) {
       return (

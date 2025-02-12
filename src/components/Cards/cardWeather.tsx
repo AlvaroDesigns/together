@@ -1,15 +1,13 @@
 import { SunIcon } from "@heroicons/react/24/outline";
 import { Card, CardBody } from "@heroui/react";
 
-export default function CardWeather({
-  humidity,
-  max,
-  min,
-}: {
+interface CardWeatherProps {
   humidity: number;
   max?: number | null;
   min?: number | null;
-}) {
+}
+
+export default function CardWeather({ humidity, max, min }: CardWeatherProps) {
   return (
     <Card isFooterBlurred className="w-full col-span-12 sm:col-span-7">
       <CardBody className="flex flex-row items-center justify-between pt-0 mt-3">
