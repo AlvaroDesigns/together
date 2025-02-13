@@ -12,14 +12,13 @@ import {
 import { CardHotelPromo } from "@/components/Cards";
 import { subtitle, title } from "@/components/primitives";
 import { ENDPOINT, ON_BOARDNG, ROUTES } from "@/constants";
-import Services from "@/services";
 import { useDataStore, useUserStore } from "@/stores";
 import { getAuth } from "@/utils";
 
 import SkeletonHome from "@/components/Skeletons/skeletonHome";
+import { useFetch } from "@/hooks";
 import { ROLES } from "@/types";
 import { useRouter } from "@tanstack/react-router";
-import { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 
 const DATA = [
@@ -57,7 +56,6 @@ export default function Step1() {
   const { setter: setUser, user } = useUserStore((state) => state);
 
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const STATUS_ROLE = user?.role === ROLES.ADMIN;
 
@@ -65,8 +63,9 @@ export default function Step1() {
   const [isSearcherHotel, setSearcherHotel] = useState<boolean>(false);
 
   const onBoarding = getAuth(ON_BOARDNG);
-
   const router = useRouter();
+
+  const { data, isLoading } = useFetch("get", `${ENDPOINT.USER}/${user.email}`);
 
   useEffect(() => {
     /* Start On Boarding */
@@ -74,28 +73,18 @@ export default function Step1() {
       onOpen();
     }
 
-    /* Start Loading */
-    setIsLoading(true);
-
-    /* Call API */
-    Services()
-      .get(`${ENDPOINT.USER}/${user.email}`)
-      .then((res: AxiosResponse) => {
-        const { data } = res || {};
-
-        /* Set */
-        setUser({
-          user: {
-            ...user,
-            name: data?.name,
-            userId: data?.id,
-            avatar: data?.avatar,
-            phone: data?.phone,
-          },
-        });
-        setter({ home: { items: data?.itinerary } });
-      })
-      .finally(() => setTimeout(() => setIsLoading(false), 1000));
+    if (data) {
+      setUser({
+        user: {
+          ...user,
+          name: data?.name,
+          userId: data?.id,
+          avatar: data?.avatar,
+          phone: data?.phone,
+        },
+      });
+      setter({ home: { items: data?.itinerary } });
+    }
   }, []);
 
   return (
