@@ -56,7 +56,6 @@ export default function Step1() {
   const { setter: setUser, user } = useUserStore((state) => state);
 
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
-
   const STATUS_ROLE = user?.role === ROLES.ADMIN;
 
   const [isSearcherClose, setSearcherClose] = useState<boolean>(STATUS_ROLE);
@@ -85,7 +84,7 @@ export default function Step1() {
       });
       setter({ home: { items: data?.itinerary } });
     }
-  }, []);
+  }, [data, isLoading]);
 
   return (
     <RootLayout>

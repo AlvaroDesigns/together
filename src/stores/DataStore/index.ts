@@ -1,6 +1,6 @@
 import { VARIANT_TYPE_SECTION } from "@/types";
 import { create } from "zustand";
-import { createJSONStorage, devtools, persist } from "zustand/middleware";
+import { devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import {
   BudgetTypes,
@@ -110,7 +110,6 @@ export const useDataStore = create<DataState>()(
     ),
     {
       name: "data-storage", // name of the item in the storage (must be unique)
-      storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
     }
   )
 );
