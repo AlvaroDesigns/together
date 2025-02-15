@@ -498,7 +498,7 @@ export default function GeneratePDF() {
       >
         {() => (
           <button className="px-0 py-0 text-white bg-transparent rounded">
-            <DocumentTextIcon className="w-5 h-5 mr-1 mt-1 text-gray-700 size-[22px]" />
+            <DocumentTextIcon className="w-5 h-5 mr-1 mt-1 text-gray-700 dark:text-gray-400 size-[22px]" />
           </button>
         )}
       </PDFDownloadLink>

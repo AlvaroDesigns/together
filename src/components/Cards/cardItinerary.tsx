@@ -1,5 +1,5 @@
 import { subtitle, title } from "@/components/primitives";
-import { CardTypes, VariantTypeSection } from "@/types";
+import { CardTypes, VARIANT_TYPE_SECTION, VariantTypeSection } from "@/types";
 import { elipsis, resolverAirFly } from "@/utils";
 import {
   ArrowDownRightIcon,
@@ -239,10 +239,14 @@ const RenderOther = (data: CardTypes) => {
 
   const preview = description?.slice(0, 15);
 
+  const text = description?.map((item: string) => item);
+  console.log(text, text?.length > 30);
   return (
     <div className="flex flex-col">
-      {isExpanded ? (
-        <p>{description?.map((item: string) => item)}</p>
+      {description[0]?.length > 50 ? (
+        <p>{text}</p>
+      ) : isExpanded ? (
+        <p>{text}</p>
       ) : (
         <p>{preview?.map((item: string) => item.slice(0, 82))}...</p>
       )}
@@ -282,9 +286,13 @@ export default function CardItinerary({
     <CardBase
       onPressEdit={onPressEdit}
       onPressDelete={onPressDelete}
-      header={startDate}
+      header={
+        type !== VARIANT_TYPE_SECTION.OTHER
+          ? startDate
+          : "Información destacada"
+      }
       body={RENDERS[type]}
-      footer={description}
+      footer={type !== VARIANT_TYPE_SECTION.OTHER ? description : null}
     />
   );
 }

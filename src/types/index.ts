@@ -50,14 +50,14 @@ export type VariantTypeSectionIcon = "ACCOUNT" | "FRIENDS" | "SECURE" | "FAQS";
 export type VariantTypeRoles = "ADMIN" | "USER" | "VIEWER";
 
 export const ROLES = {
-  ADMIN: "admin",
-  USER: "user",
-  VIEWER: "viewer",
+  ADMIN: "ADMIN",
+  USER: "USER",
+  VIEWER: "VIEW",
 };
 
 export const users = [
   { id: 1, name: "ADMIN", role: ROLES.ADMIN },
-  { id: 2, name: "STANDARD", role: ROLES.USER },
+  { id: 2, name: "USER", role: ROLES.USER },
   { id: 3, name: "VIEW", role: ROLES.VIEWER },
 ];
 

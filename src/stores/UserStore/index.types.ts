@@ -6,6 +6,7 @@ export interface UserTypes {
   phone?: string | null;
   remember?: boolean;
   logger: boolean;
+  language?: string | null;
   role: string | null;
 }
 

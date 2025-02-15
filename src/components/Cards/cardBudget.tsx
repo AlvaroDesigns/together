@@ -190,6 +190,25 @@ export default function CardBudget({ options = [], data }: CardBudgetProps) {
               validationBehavior="native"
             >
               <Controller
+                name="types"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <Select
+                    {...field}
+                    fullWidth
+                    variant="bordered"
+                    items={newData}
+                    label="Selecciona"
+                    placeholder="Ej: Avión"
+                    isInvalid={Boolean(fieldState.error?.message)}
+                    color={fieldState.error?.message ? "danger" : "default"}
+                    errorMessage={fieldState.error?.message}
+                  >
+                    {(op) => <SelectItem>{op.label}</SelectItem>}
+                  </Select>
+                )}
+              />
+              <Controller
                 name="expensive"
                 control={control}
                 render={({ field, fieldState }) => (
@@ -224,25 +243,6 @@ export default function CardBudget({ options = [], data }: CardBudgetProps) {
                     label="Importe"
                     placeholder="0.00"
                   />
-                )}
-              />
-              <Controller
-                name="types"
-                control={control}
-                render={({ field, fieldState }) => (
-                  <Select
-                    {...field}
-                    fullWidth
-                    variant="bordered"
-                    items={newData}
-                    label="Selecciona"
-                    placeholder="Ej: Avión"
-                    isInvalid={Boolean(fieldState.error?.message)}
-                    color={fieldState.error?.message ? "danger" : "default"}
-                    errorMessage={fieldState.error?.message}
-                  >
-                    {(op) => <SelectItem>{op.label}</SelectItem>}
-                  </Select>
                 )}
               />
             </Form>

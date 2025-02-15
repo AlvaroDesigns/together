@@ -79,6 +79,8 @@ export default function Step1() {
           name: data?.name,
           userId: data?.id,
           avatar: data?.avatar,
+          role: data?.role,
+          language: data?.language,
           phone: data?.phone,
         },
       });

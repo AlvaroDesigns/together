@@ -12,6 +12,7 @@ const userData: UserTypes = {
   remember: false,
   logger: false,
   phone: null,
+  language: null,
   role: ROLES.USER,
 };
 

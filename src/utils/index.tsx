@@ -26,6 +26,15 @@ export const elipsis = (texto: string, maxLength: number) => {
   return texto.length > maxLength ? texto.slice(0, maxLength) + "..." : texto;
 };
 
+export const isDate = (date: Date | string | null) => {
+  if (date === null || date === undefined) {
+    return false;
+  }
+
+  const fecha = new Date(date);
+  return !isNaN(fecha.getTime());
+};
+
 export const convertToISO = (dateObj: {
   year: number;
   month: number;

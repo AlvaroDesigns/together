@@ -1,7 +1,7 @@
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 import { subtitle } from "@/components/primitives";
-import { capitalCase } from "@/utils";
+import { capitalCase, isDate } from "@/utils";
 import { format } from "@formkit/tempo";
 import {
   Accordion,
@@ -46,10 +46,10 @@ export default function CardBase({
               size: "sm",
             })} flex items-center justify-between`}
           >
-            {header === header?.toString() ? (
+            {isDate(header) && header ? (
               capitalCase(format(new Date(header), "ddd, D MMM"))
             ) : (
-              <strong>{capitalCase(header?.toString())}</strong>
+              <strong>{capitalCase(header?.toString() ?? "")}</strong>
             )}
           </h2>
           {!hideEdit && (

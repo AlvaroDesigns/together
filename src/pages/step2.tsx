@@ -8,19 +8,21 @@ import {
 } from "@/components";
 import { CardBudget } from "@/components/Cards";
 import CardItinerary from "@/components/Cards/cardItinerary";
+import GeneratePDF from "@/components/generatePDF";
 
 import { subtitle } from "@/components/primitives";
 import { ENDPOINT } from "@/constants";
 import { sectionSchema } from "@/helpers/schema";
 import { useForm } from "@/hooks";
 import Services from "@/services";
-import { useDataStore } from "@/stores";
+import { useDataStore, useUserStore } from "@/stores";
 import { DetailsTypes, ItineraryTypes } from "@/stores/DataStore/index.types";
-import { VariantTypeSection } from "@/types";
+import { ROLES, VariantTypeSection } from "@/types";
 import { formatDayForDays } from "@/utils";
 import { ArrowsUpDownIcon } from "@heroicons/react/24/outline";
 import { Button as ButtonUi, Link, useDisclosure } from "@heroui/react";
 import { useTheme } from "@heroui/use-theme";
+import { useQueries } from "@tanstack/react-query";
 import axios from "axios";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFieldArray } from "react-hook-form";
@@ -32,6 +34,7 @@ interface RepeatingTypes {
 }
 
 const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
+  const { role } = useUserStore((state) => state.user);
   const { setter, itinerary } = useDataStore((state) => state);
   const items = useDataStore((state) => state.itinerary?.items);
 
@@ -91,6 +94,7 @@ const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
             >
               DÍA {formatDayForDays(itinerary?.startDate, item.startDate)}
             </p>
+            {role === ROLES.ADMIN && <GeneratePDF />}
             {index === 0 && (
               <Link
                 isExternal
@@ -137,6 +141,35 @@ export default function Step2() {
       reset({ items }); // Usa el método reset de `useForm`
     }
   }, [items]);
+
+  const useOperativeAndDetails = (itinerary?: {
+    title: string;
+    id: string;
+  }) => {
+    return useQueries({
+      queries: [
+        {
+          queryKey: ["operative", itinerary?.title],
+          queryFn: () =>
+            Services().get(
+              `${ENDPOINT.OPERATIVE}?query=${itinerary?.title}`,
+              "weather"
+            ),
+          enabled: !!itinerary?.title, // Solo ejecuta si title existe
+        },
+        {
+          queryKey: ["details", itinerary?.id],
+          queryFn: () =>
+            Services().get(`${ENDPOINT.DETAILS}/${itinerary?.id}`, "details"),
+          enabled: !!itinerary?.id, // Solo ejecuta si id existe
+        },
+      ],
+    });
+  };
+
+  const results = useOperativeAndDetails(itinerary);
+
+  const [operativeQuery, detailsQuery] = results;
 
   useEffect(() => {
     axios
