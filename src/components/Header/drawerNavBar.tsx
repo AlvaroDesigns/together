@@ -2,7 +2,7 @@ import { useUserStore } from "@/stores";
 import {
   ArrowLeftIcon,
   ArrowLeftStartOnRectangleIcon,
-  Bars3BottomLeftIcon,
+  Bars3BottomRightIcon,
   ChevronRightIcon,
   LockClosedIcon,
   NewspaperIcon,
@@ -75,7 +75,7 @@ export default function DrawerNavBar() {
     <>
       <Button
         className="min-w-0 p-0 text-default-700"
-        endContent={<Bars3BottomLeftIcon className="m-1 size-6" />}
+        endContent={<Bars3BottomRightIcon className="size-6" />}
         variant="light"
         onPress={handleOnDraweOpen}
       />

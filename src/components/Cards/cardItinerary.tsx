@@ -75,7 +75,7 @@ const RenderFlight = (data: CardTypes) => {
     arrivalTime,
   } = data;
 
-  const time = arrivalTime?.split("-");
+  const time = typeof arrivalTime === "string" ? arrivalTime.split("-") : null;
 
   return (
     <div className="flex items-center mb-1">
@@ -99,7 +99,7 @@ const RenderFlight = (data: CardTypes) => {
           )}+flight+${numberFlight?.substring(2)}`}
           color="foreground"
         >
-          {numberFlight}
+          {numberFlight?.toUpperCase()}
         </Link>
         <h3
           className={`${title({
@@ -142,7 +142,7 @@ const RenderTransfer = (data: CardTypes) => {
         height={100}
         className="min-w-[100px] object-cover"
         alt="transfer"
-        fallbackSrc="dummy.jpg"
+        fallbackSrc="../../../unnamed-min.jpg"
         src={`/${name?.toLocaleLowerCase()}.jpg`}
       />
       <div className="ml-4">
@@ -240,7 +240,7 @@ const RenderOther = (data: CardTypes) => {
   const preview = description?.slice(0, 15);
 
   const text = description?.map((item: string) => item);
-  console.log(text, text?.length > 30);
+
   return (
     <div className="flex flex-col">
       {description[0]?.length > 50 ? (

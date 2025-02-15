@@ -2,8 +2,6 @@
  * Constants
  *************************/
 
-/* QueryParams */
-
 export const AUHT_NAME = "auth";
 export const ON_BOARDNG = "onBoarding";
 export const MAIL: string = "noreplay@together.alvarodesigns.com";

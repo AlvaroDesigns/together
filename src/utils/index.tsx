@@ -113,7 +113,7 @@ export const capitalCase = (value: string) => {
 };
 
 export const resolverAirFly = (code: string | undefined) => {
-  const logi = `{https://cdn.logitravel.com/webmobile/vuelos/images/logo_${code}.png}`;
-  const gs = `https://www.gstatic.com/flights/airline_logos/70px/${code}.png`;
+  const logi = `{https://cdn.logitravel.com/webmobile/vuelos/images/logo_${code?.toUpperCase()}.png}`;
+  const gs = `https://www.gstatic.com/flights/airline_logos/70px/${code?.toUpperCase()}.png`;
   return gs || logi;
 };

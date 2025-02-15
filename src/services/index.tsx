@@ -115,6 +115,25 @@ const Services = (headers?: object) => {
         return response;
       });
     },
+    delete: async (
+      url: string,
+      id?: string
+    ): Promise<AxiosResponse<any, any>> => {
+      const signal = createAbortController(id);
+
+      return await instance.get(url, { signal }).catch(({ response } = {}) => {
+        if (response) {
+          const { message } = response.data;
+          const status = response.status;
+
+          return {
+            message,
+            status,
+          };
+        }
+        return response;
+      });
+    },
   };
 };
 export default Services;

@@ -94,7 +94,7 @@ const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
             >
               DÍA {formatDayForDays(itinerary?.startDate, item.startDate)}
             </p>
-            {role === ROLES.ADMIN && <GeneratePDF />}
+            {role === ROLES.ADMIN && index === 0 && <GeneratePDF />}
             {index === 0 && (
               <Link
                 isExternal

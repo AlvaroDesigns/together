@@ -28,7 +28,7 @@ export const DrawerUpdate = ({
   const { items } = itinerary || {};
   const product = items?.find((item: { id: number }) => item.id === editId);
 
-  const { control, reset, handleSubmit, watch, errors } = useForm({
+  const { control, reset, handleSubmit, watch } = useForm({
     values: { type: VARIANT_TYPE_SECTION.FLIGHT, ...product },
     schema: sectionSchema,
   });
@@ -61,8 +61,8 @@ export const DrawerUpdate = ({
       .post(`${ENDPOINT.DETAILS}/${itinerary?.id}`, {
         type: value.type,
         days: 1,
-        startDate: value.startDate || itinerary?.startDate,
-        endDate: data.endDate || value?.endDate,
+        startDate: formatDay(value.startDate) || itinerary?.startDate,
+        endDate: formatDay(data.endDate) || value?.endDate,
         departure: data?.depart?.iata || value.departure,
         departureLabel: data?.depart?.cityName,
         destination: data?.arrive?.iata || value.destination,
@@ -73,8 +73,8 @@ export const DrawerUpdate = ({
             : null,
         stars: Number(value.category),
         placeUrl: null,
-        numberFlight: value?.numberFlight,
-        description: value?.description?.split("\n"),
+        numberFlight: value?.numberFlight?.toUpperCase(),
+        description: value?.description?.split("\n").trim(),
         imageUrl: value?.image_url,
         cityName: value?.city,
         region: null,

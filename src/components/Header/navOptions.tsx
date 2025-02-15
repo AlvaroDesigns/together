@@ -71,6 +71,17 @@ export default function NavOptions({
       );
   };
 
+  const handleRemove = () => {
+    Services()
+      .delete(ENDPOINT.USER.replace("#id#", String(userId)))
+      .then(() => {
+        toast.success(LITERALS.REQUEST_OK, { duration: TIMEOUT_MEDIUM });
+      })
+      .catch(() =>
+        toast.error(LITERALS.REQUEST_KO, { duration: TIMEOUT_MEDIUM })
+      );
+  };
+
   return (
     <DrawerCustom
       size="full"
@@ -183,7 +194,7 @@ export default function NavOptions({
                   isExternal
                   className="text-default-600 hover:text-default-600"
                   color="foreground"
-                  href="https://github.com/nextui-org/nextui"
+                  onPress={handleRemove}
                 >
                   Eliminar mi cuenta
                 </Link>
