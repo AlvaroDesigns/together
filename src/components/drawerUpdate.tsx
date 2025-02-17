@@ -29,7 +29,11 @@ export const DrawerUpdate = ({
   const product = items?.find((item: { id: number }) => item.id === editId);
 
   const { control, reset, handleSubmit, watch } = useForm({
-    values: { type: VARIANT_TYPE_SECTION.FLIGHT, ...product },
+    values: {
+      type: VARIANT_TYPE_SECTION.FLIGHT,
+      startDate: itinerary?.startDate,
+      ...product,
+    },
     schema: sectionSchema,
   });
 
@@ -61,8 +65,8 @@ export const DrawerUpdate = ({
       .post(`${ENDPOINT.DETAILS}/${itinerary?.id}`, {
         type: value.type,
         days: 1,
-        startDate: formatDay(value.startDate) || itinerary?.startDate,
-        endDate: formatDay(data.endDate) || value?.endDate,
+        startDate: value.startDate || itinerary?.startDate,
+        endDate: data.endDate || value?.endDate,
         departure: data?.depart?.iata || value.departure,
         departureLabel: data?.depart?.cityName,
         destination: data?.arrive?.iata || value.destination,

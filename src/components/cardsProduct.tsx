@@ -1,9 +1,12 @@
 import { CardHeader, Card as CardUI, Image } from "@heroui/react";
 
 import { Card } from "@/components";
-import { ROUTES } from "@/constants";
+import { ENDPOINT, ROUTES, TIMEOUT_MEDIUM } from "@/constants";
+import { LITERALS } from "@/literals/common";
+import Services from "@/services";
 import { useDataStore, useUserStore } from "@/stores";
 import { useRouter } from "@tanstack/react-router";
+import { toast } from "sonner";
 
 interface ItineraryItem {
   id: number | null | undefined;
@@ -15,6 +18,7 @@ interface ItineraryItem {
 interface CardsProps {
   itinerary: ItineraryItem[] | undefined;
   isDelete?: boolean;
+  onDelete?: () => void;
 }
 
 export const Cards: React.FC<CardsProps> = ({ itinerary, isDelete }) => {
@@ -45,6 +49,21 @@ export const Cards: React.FC<CardsProps> = ({ itinerary, isDelete }) => {
       to: `${ROUTES.ITINERARY}/$productId`,
       params: { productId: `${formatUrl}_${days}_dias` },
     });
+  };
+
+  const handleRemove = (id: string) => {
+    Services()
+      .delete(`${ENDPOINT.ITINERARY}/${id}`)
+      .then(({ status }) => {
+        if (status !== 200) {
+          return toast.error(LITERALS.REQUEST_KO, { duration: TIMEOUT_MEDIUM });
+        }
+
+        toast.success(LITERALS.REQUEST_OK, { duration: TIMEOUT_MEDIUM });
+      })
+      .catch(() =>
+        toast.error(LITERALS.REQUEST_KO, { duration: TIMEOUT_MEDIUM })
+      );
   };
 
   if (itinerary?.length === 0) {
@@ -81,6 +100,7 @@ export const Cards: React.FC<CardsProps> = ({ itinerary, isDelete }) => {
       title={item?.title}
       days={item.days}
       image={item.image}
+      onDelete={() => handleRemove(item?.id)}
       onClick={() => item?.title && handelCardOnPress(item)}
     />
   ));

@@ -121,18 +121,20 @@ const Services = (headers?: object) => {
     ): Promise<AxiosResponse<any, any>> => {
       const signal = createAbortController(id);
 
-      return await instance.get(url, { signal }).catch(({ response } = {}) => {
-        if (response) {
-          const { message } = response.data;
-          const status = response.status;
+      return await instance
+        .delete(url, { signal })
+        .catch(({ response } = {}) => {
+          if (response) {
+            const { message } = response.data;
+            const status = response.status;
 
-          return {
-            message,
-            status,
-          };
-        }
-        return response;
-      });
+            return {
+              message,
+              status,
+            };
+          }
+          return response;
+        });
     },
   };
 };

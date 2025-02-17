@@ -1,11 +1,6 @@
-import { convertToISO } from "@/utils";
+import { convertToISO, formatDay } from "@/utils";
 import { DateInput, DatePicker } from "@heroui/react";
-import {
-  getLocalTimeZone,
-  now,
-  parseAbsoluteToLocal,
-  today,
-} from "@internationalized/date";
+import { parseDate } from "@internationalized/date";
 import { Controller, useForm } from "react-hook-form";
 
 export default function Calendar({
@@ -26,6 +21,11 @@ export default function Calendar({
       name={name}
       control={control}
       render={({ field, fieldState }) => {
+        console.log(
+          field.value
+            ? parseDate(formatDay(new Date(field.value)))
+            : parseDate(formatDay(new Date(startDate)))
+        );
         return variant === "default" ? (
           <DatePicker
             {...field}
@@ -39,18 +39,18 @@ export default function Calendar({
             className="max-w-[284px]"
             value={
               field.value
-                ? parseAbsoluteToLocal(field.value)
-                : parseAbsoluteToLocal(startDate)
+                ? parseDate(formatDay(new Date(field.value)))
+                : parseDate(formatDay(new Date(startDate)))
             }
             minValue={
               startDate
-                ? parseAbsoluteToLocal(startDate)
-                : now(getLocalTimeZone())
+                ? parseDate(formatDay(new Date(startDate)))
+                : parseDate(formatDay(new Date()))
             }
             maxValue={
               endDate
-                ? parseAbsoluteToLocal(endDate)
-                : today(getLocalTimeZone()).add({ days: 365 })
+                ? parseDate(formatDay(new Date(endDate)))
+                : parseDate(formatDay(new Date())).add({ days: 365 })
             }
             onChange={(e) => field.onChange(convertToISO(e))}
           />
@@ -69,18 +69,18 @@ export default function Calendar({
             className="max-w-[284px]"
             value={
               field.value
-                ? parseAbsoluteToLocal(field.value)
-                : parseAbsoluteToLocal(startDate)
+                ? parseDate(formatDay(new Date(field.value)))
+                : parseDate(formatDay(new Date(startDate)))
             }
             minValue={
               startDate
-                ? parseAbsoluteToLocal(startDate)
-                : now(getLocalTimeZone())
+                ? parseDate(formatDay(new Date(startDate)))
+                : parseDate(formatDay(new Date()))
             }
             maxValue={
               endDate
-                ? parseAbsoluteToLocal(endDate)
-                : today(getLocalTimeZone()).add({ days: 365 })
+                ? parseDate(formatDay(new Date(endDate)))
+                : parseDate(formatDay(new Date())).add({ days: 365 })
             }
             onChange={(e) => field.onChange(convertToISO(e))}
           />

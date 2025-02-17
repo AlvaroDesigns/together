@@ -16,6 +16,7 @@ interface CardVerticalProps {
   maxHeight?: number;
   image: string | undefined;
   isDelete?: boolean;
+  onDelete?: () => void;
   onClick?: () => void;
 }
 
@@ -25,6 +26,7 @@ export default function CardVertical({
   maxHeight = 224,
   days,
   onClick,
+  onDelete,
   image,
   isDelete = false,
 }: CardVerticalProps) {
@@ -67,6 +69,7 @@ export default function CardVertical({
                   <Button
                     radius="full"
                     size="sm"
+                    onPress={onDelete}
                     className="p-4 mt-2 text-white bg-primary text-small"
                   >
                     Borrar

@@ -73,8 +73,12 @@ export default function NavOptions({
 
   const handleRemove = () => {
     Services()
-      .delete(ENDPOINT.USER.replace("#id#", String(userId)))
-      .then(() => {
+      .delete(`${ENDPOINT.USER}/${userId}`)
+      .then(({ status }) => {
+        if (status !== 200) {
+          return toast.error(LITERALS.REQUEST_KO, { duration: TIMEOUT_MEDIUM });
+        }
+
         toast.success(LITERALS.REQUEST_OK, { duration: TIMEOUT_MEDIUM });
       })
       .catch(() =>

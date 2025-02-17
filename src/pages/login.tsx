@@ -20,7 +20,6 @@ import {
 import { useRouter } from "@tanstack/react-router";
 import { AxiosResponse } from "axios";
 import { signInWithPopup } from "firebase/auth";
-import Cookies from "js-cookie";
 import { useCallback, useState } from "react";
 import { Controller } from "react-hook-form";
 
@@ -52,7 +51,9 @@ export default function Login() {
         password: value.password,
       })
       .then((res: AxiosResponse) => {
-        const { data } = res || {};
+        const { data, status } = res || {};
+
+        if (status !== 201) return;
 
         /* Set */
         setter({
@@ -63,8 +64,7 @@ export default function Login() {
           },
         });
 
-        Cookies.set(AUHT_NAME, data.access_token, { expires: 7 });
-        setAuth(AUHT_NAME, data.access_token);
+        setAuth(AUHT_NAME, data?.access_token);
         router.navigate({ to: ROUTES.HOME_B2B });
       })
       .finally(() => stopLoading());
@@ -82,6 +82,7 @@ export default function Login() {
             avatar: result.user.photoURL,
             remember: true,
             logger: false,
+            role: ROLES.USER,
           },
         });
         router.navigate({ to: ROUTES.HOME_B2B });

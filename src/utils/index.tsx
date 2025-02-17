@@ -70,8 +70,16 @@ export const parseIsoString = (isoString: string) => {
   return newDate.toISOString();
 };
 
-export const formatDay = (day: Date) => {
-  return format(new Date(day), "YYYY/MM/DD");
+export const formatDay = (day: Date, formatStr?: string, hour?: boolean) => {
+  const f = formatStr || "YYYY-MM-DD";
+
+  if (hour) {
+    // Asegurar que la hora sea 00:00:00
+    const d = day?.setHours(0, 0, 0, 0) || day;
+    return format(new Date(d), f);
+  }
+
+  return format(new Date(day), f);
 };
 
 export const formatDayForDays = (startDate: Date | undefined, day: Date) => {

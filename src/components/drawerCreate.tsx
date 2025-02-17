@@ -6,7 +6,7 @@ import Services from "@/services";
 import { useUserStore } from "@/stores";
 import { getLocalTimeZone, today } from "@internationalized/date";
 
-import { betweenDates } from "@/utils";
+import { betweenDates, formatDay } from "@/utils";
 import { addHour } from "@formkit/tempo";
 import {
   Autocomplete,
@@ -171,8 +171,14 @@ export default function DrawerCreate() {
                 value.dates.start.toISOString(),
                 value.dates.end.toISOString()
               ),
-              startDate: addHour(value?.dates?.start, 1),
-              endDate: addHour(value?.dates?.end, 1),
+              startDate: formatDay(
+                addHour(value?.dates?.start, 1),
+                "YYYY-MM-DD HH:mm:ss"
+              ),
+              endDate: formatDay(
+                addHour(value?.dates?.end, 1),
+                "YYYY-MM-DD HH:mm:ss"
+              ),
               image: res.data?.src,
               date: new Date(),
             })

@@ -28,11 +28,11 @@ function App() {
   }
 */
   return (
-    <main className={`${theme} text-foreground bg-background`}>
+    <div className={`${theme} text-foreground bg-background`}>
       <I18nextProvider i18n={i18n} defaultNS={"translation"}>
         <RouterProvider router={router} />
       </I18nextProvider>
-    </main>
+    </div>
   );
 }
 

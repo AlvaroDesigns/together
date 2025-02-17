@@ -97,7 +97,7 @@ export const profileSchema = (ty: string) =>
 
 export const sectionSchema = yup.object().shape({
   type: yup.string(),
-  startDate: yup.date().when("type", (type, schema) => {
+  startDate: yup.string().when("type", (type, schema) => {
     return type[0] === VARIANT_TYPE_SECTION.OTHER
       ? schema.optional()
       : schema
