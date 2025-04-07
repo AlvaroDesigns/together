@@ -152,7 +152,7 @@ import {
   Text,
   View,
 } from "@react-pdf/renderer";
-import Stars from "./atomos/stars";
+import Stars from "./ui/stars";
 
 // 🎨 Estilos para la Card en el PDF
 const styles = StyleSheet.create({

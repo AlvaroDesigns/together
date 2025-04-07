@@ -1,28 +1,26 @@
-import { Button, Card, CardHeader, Image, Input } from "@heroui/react";
+import { Button, Card, CardHeader, Image, Input } from '@heroui/react';
 
-import { RootLayout, Stars } from "@/components";
-import { subtitle } from "@/components/primitives";
-import { useForm } from "@/hooks";
-import { useUserStore } from "@/stores";
-import { useRouter } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import Cards from "react-credit-cards-2";
-import "react-credit-cards-2/dist/es/styles-compiled.css";
-import { Controller } from "react-hook-form";
+import { RootLayout, Stars } from '@/components';
+import { subtitle } from '@/components/primitives';
+import { useForm } from '@/hooks';
+import { useRouter } from '@tanstack/react-router';
+import { useEffect, useState } from 'react';
+
+import { useProviderStore } from '@/stores/Global/store';
+import { Controller } from 'react-hook-form';
 
 export default function CheckOut() {
-  const { user } = useUserStore((state) => state);
-
+  const { user } = useProviderStore((state) => state);
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [state, setState] = useState({
-    number: "",
-    expiry: "",
-    cvc: "",
-    name: "",
-    focus: "",
+    number: '',
+    expiry: '',
+    cvc: '',
+    name: '',
+    focus: '',
   });
 
   const { control, errors, handleSubmit } = useForm({
@@ -67,9 +65,7 @@ export default function CheckOut() {
       <section className="m-4">
         <Card className="items-start w-full col-span-12 gap-4 p-4 mt-4 sm:col-span-7">
           <div className="flex flex-row whitespace-nowrap">
-            <p className={subtitle({ weight: "semibold" })}>
-              Datos del huesped
-            </p>
+            <p className={subtitle({ weight: 'semibold' })}>Datos del huesped</p>
           </div>
           <Controller
             name="name"
@@ -83,10 +79,10 @@ export default function CheckOut() {
                 fullWidth={true}
                 label="Nombre"
                 isInvalid={Boolean(fieldState.error?.message)}
-                color={fieldState.error?.message ? "danger" : "default"}
+                color={fieldState.error?.message ? 'danger' : 'default'}
                 errorMessage={fieldState.error?.message}
                 value={field.value}
-                classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
+                classNames={{ inputWrapper: '!min-h-[60px] h-10' }}
                 placeholder="Ej: Luis"
               />
             )}
@@ -103,10 +99,10 @@ export default function CheckOut() {
                 label="Apellidos"
                 fullWidth={true}
                 isInvalid={Boolean(fieldState.error?.message)}
-                color={fieldState.error?.message ? "danger" : "default"}
+                color={fieldState.error?.message ? 'danger' : 'default'}
                 errorMessage={fieldState.error?.message}
                 value={field.value}
-                classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
+                classNames={{ inputWrapper: '!min-h-[60px] h-10' }}
                 placeholder="Ej: Martinez"
               />
             )}
@@ -123,10 +119,10 @@ export default function CheckOut() {
                 label="Email"
                 fullWidth={true}
                 isInvalid={Boolean(fieldState.error?.message)}
-                color={fieldState.error?.message ? "danger" : "default"}
+                color={fieldState.error?.message ? 'danger' : 'default'}
                 errorMessage={fieldState.error?.message}
                 value={field.value}
-                classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
+                classNames={{ inputWrapper: '!min-h-[60px] h-10' }}
                 placeholder="Ej: luis@together.alvarodesigns.com"
               />
             )}
@@ -156,10 +152,10 @@ export default function CheckOut() {
                   </div>
                 }
                 isInvalid={Boolean(fieldState.error?.message)}
-                color={fieldState.error?.message ? "danger" : "default"}
+                color={fieldState.error?.message ? 'danger' : 'default'}
                 errorMessage={fieldState.error?.message}
                 value={field.value}
-                classNames={{ inputWrapper: "!min-h-[60px] h-10" }}
+                classNames={{ inputWrapper: '!min-h-[60px] h-10' }}
                 placeholder="Ej: 666 121 212"
               />
             )}
@@ -169,9 +165,7 @@ export default function CheckOut() {
       <section className="m-4">
         <Card className="flex items-start justify-start gap-4 p-4 mt-4 text-left">
           <div className="flex flex-row whitespace-nowrap">
-            <p className={subtitle({ weight: "semibold" })}>
-              Detalles del pago
-            </p>
+            <p className={subtitle({ weight: 'semibold' })}>Detalles del pago</p>
           </div>
           <Input
             name="name"
@@ -211,25 +205,16 @@ export default function CheckOut() {
               onChange={(e) => setState({ ...state, cvc: e.target.value })}
             />
           </div>
-          <Cards
-            number={state.number}
-            expiry={state.expiry}
-            cvc={state.cvc}
-            name={state.name}
-          />
         </Card>
       </section>
       <section className="m-4">
         <Card className="flex items-start justify-start gap-4 p-4 mt-4 text-left">
           <div className="flex flex-row whitespace-nowrap">
-            <p className={subtitle({ weight: "semibold" })}>
-              Términos y condiciones
-            </p>
+            <p className={subtitle({ weight: 'semibold' })}>Términos y condiciones</p>
           </div>
           <div className="flex flex-row">
-            Al enviar esta reserva, reconozco haber leído las Condiciones de uso
-            y la Declaración de privacidad de Together.alvarodesigns.com, las
-            cuales acepto.
+            Al enviar esta reserva, reconozco haber leído las Condiciones de uso y la
+            Declaración de privacidad de Together.alvarodesigns.com, las cuales acepto.
           </div>
         </Card>
       </section>

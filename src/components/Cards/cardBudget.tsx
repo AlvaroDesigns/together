@@ -1,10 +1,11 @@
-import { TRIP_LITERAL } from "@/data";
-import { countries } from "@/data/currency";
-import { budgetSchema } from "@/helpers/schema";
-import { useForm } from "@/hooks";
-import { VARIANT_TYPE_SECTION } from "@/types";
-import { capitalCase } from "@/utils";
-import { InformationCircleIcon, PlusIcon } from "@heroicons/react/24/outline";
+import { TRIP_LITERAL } from '@/data';
+import { countries } from '@/data/currency';
+import { budgetSchema } from '@/helpers/schema';
+import { useForm } from '@/hooks';
+import { VARIANT_TYPE_SECTION } from '@/types';
+import { capitalCase } from '@/utils';
+import { sendEventSuccess } from '@/utils/events';
+import { InformationCircleIcon, PlusIcon } from '@heroicons/react/24/outline';
 import {
   Accordion,
   AccordionItem,
@@ -20,13 +21,12 @@ import {
   Select,
   SelectItem,
   useDisclosure,
-} from "@heroui/react";
-import { useCallback, useState } from "react";
-import { Controller } from "react-hook-form";
-import { toast, Toaster } from "sonner";
-import Button from "../button";
-import DrawerCustom from "../drawerCustom";
-import { subtitle, title } from "../primitives";
+} from '@heroui/react';
+import { useCallback, useState } from 'react';
+import { Controller } from 'react-hook-form';
+import Button from '../button';
+import { subtitle, title } from '../primitives';
+import DrawerCustom from '../ui/drawerCustom';
 
 interface Option {
   name: string;
@@ -37,13 +37,24 @@ interface Option {
 interface CardBudgetProps {
   options: Option[];
   data: unknown;
+  mt?: string | number;
+  mb?: string | number;
+  ml?: string | number;
+  mr?: string | number;
 }
 
-export default function CardBudget({ options = [], data }: CardBudgetProps) {
+export default function CardBudget({
+  options = [],
+  data,
+  mt,
+  mb,
+  ml,
+  mr,
+}: CardBudgetProps) {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-  const [budgets, setBudgets] = useState<
-    Array<{ expensive: number; types: string[] }>
-  >((data as Array<{ expensive: number; types: string[] }>) || []);
+  const [budgets, setBudgets] = useState<Array<{ expensive: number; types: string[] }>>(
+    (data as Array<{ expensive: number; types: string[] }>) || [],
+  );
 
   const { control, handleSubmit } = useForm({
     values: {},
@@ -60,7 +71,7 @@ export default function CardBudget({ options = [], data }: CardBudgetProps) {
           label: `${type} - ${
             ex.type === VARIANT_TYPE_SECTION.FLIGHT ? ex.numberFlight : ex.name
           }`,
-          key: `${type} - ${ex.type === "FLIGHT" ? ex.numberFlight : ex.name}`,
+          key: `${type} - ${ex.type === 'FLIGHT' ? ex.numberFlight : ex.name}`,
           id: `${ex.name}-${ex.startDate}`,
         };
       });
@@ -72,35 +83,38 @@ export default function CardBudget({ options = [], data }: CardBudgetProps) {
     (data: any) => {
       const newBudget = {
         expensive: Number(data.expensive),
-        types: data.types?.split(" - "),
+        types: data.types?.split(' - '),
       };
 
       setBudgets([...budgets, newBudget]);
       onClose();
       setTimeout(() => {
-        toast.success(`Se ha añadido tu gasto correctamente`, {
-          duration: 5000,
-        });
+        sendEventSuccess();
       });
     },
-    [budgets]
+    [budgets],
   );
 
-  const totalBudget = budgets.reduce(
-    (sum, budget) => sum + budget.expensive,
-    0
-  );
+  const totalBudget = budgets.reduce((sum, budget) => sum + budget.expensive, 0);
 
   return (
-    <>
+    <div
+      className="flex flex-col"
+      style={{
+        marginTop: mt,
+        marginBottom: mb,
+        marginLeft: ml,
+        marginRight: mr,
+      }}
+    >
       <Card isFooterBlurred className="w-full col-span-12 sm:col-span-7">
         <CardHeader>
           <h2
             className={`${subtitle({
-              size: "sm",
+              size: 'sm',
             })} flex items-center gap-2`}
           >
-            {capitalCase("Presupuesto")}
+            {capitalCase('Presupuesto')}
 
             <div className="relative flex items-center">
               <Popover placement="bottom" shadow="md">
@@ -136,40 +150,38 @@ export default function CardBudget({ options = [], data }: CardBudgetProps) {
           <div className="flex flex-row items-center w-full h-16 p-4 rounded-lg border-1 dark:border-default-400/50 order-b">
             <h2
               className={`${title({
-                size: "sm",
+                size: 'sm',
               })} flex items-center justify-between`}
             >
               {capitalCase(String(totalBudget))} €
             </h2>
           </div>
-          <Accordion isCompact className="p-0" defaultExpandedKeys={["none"]}>
+          <Accordion isCompact className="p-0" defaultExpandedKeys={['none']}>
             <AccordionItem
               key="budget"
               aria-label="budget"
               title="Gastos"
               className="px-0"
               classNames={{
-                base: "p-0",
+                base: 'p-0',
                 trigger:
-                  "flex items-center justify-between focus:outline-none focus:outline-none-0 !hover:bg-transparent bg-transparent p-0",
-                title: "p-3",
+                  'flex items-center justify-between focus:outline-none focus:outline-none-0 !hover:bg-transparent bg-transparent p-0',
+                title: 'p-3',
               }}
             >
               <ul className="flex flex-col gap-1 px-4">
                 {budgets.map((budget, index) => (
                   <li
                     className={`flex flex-row justify-between dark:border-default-400/50 ${
-                      index === budgets.length - 1 ? "" : "border-b-1 pb-3"
-                    } ${index === budgets.length - 1 ? "pt-1" : "pb-0 "}`}
+                      index === budgets.length - 1 ? '' : 'border-b-1 pb-3'
+                    } ${index === budgets.length - 1 ? 'pt-1' : 'pb-0 '}`}
                     key={budget.types.at(1)}
                   >
                     <div>
                       <h6>{budget.types.at(1)}</h6>
-                      <p className="text-xs text-gray-400">
-                        {budget.types.at(0)}
-                      </p>
+                      <p className="text-xs text-gray-400">{budget.types.at(0)}</p>
                     </div>
-                    <p>{budget?.expensive ? `${budget.expensive} €` : ""}</p>
+                    <p>{budget?.expensive ? `${budget.expensive} €` : ''}</p>
                   </li>
                 ))}
               </ul>
@@ -201,7 +213,7 @@ export default function CardBudget({ options = [], data }: CardBudgetProps) {
                     label="Selecciona"
                     placeholder="Ej: Avión"
                     isInvalid={Boolean(fieldState.error?.message)}
-                    color={fieldState.error?.message ? "danger" : "default"}
+                    color={fieldState.error?.message ? 'danger' : 'default'}
                     errorMessage={fieldState.error?.message}
                   >
                     {(op) => <SelectItem>{op.label}</SelectItem>}
@@ -217,10 +229,10 @@ export default function CardBudget({ options = [], data }: CardBudgetProps) {
                     variant="bordered"
                     type="number"
                     isInvalid={Boolean(fieldState.error?.message)}
-                    color={fieldState.error?.message ? "danger" : "default"}
+                    color={fieldState.error?.message ? 'danger' : 'default'}
                     errorMessage={fieldState.error?.message}
                     classNames={{
-                      inputWrapper: "!min-h-[60px] h-10",
+                      inputWrapper: '!min-h-[60px] h-10',
                     }}
                     endContent={
                       <div className="flex items-center">
@@ -254,14 +266,6 @@ export default function CardBudget({ options = [], data }: CardBudgetProps) {
           }
         />
       </Card>
-      <Toaster
-        richColors
-        toastOptions={{
-          className: "my-toast",
-        }}
-        mobileOffset={{ bottom: "16px" }}
-        position="bottom-center"
-      />
-    </>
+    </div>
   );
 }

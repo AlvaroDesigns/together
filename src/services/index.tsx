@@ -1,49 +1,33 @@
-import { AUHT_NAME, ROUTES } from "@/constants";
-import { getAuth, removeAuth } from "@/utils";
-import axios, { AxiosResponse } from "axios";
+import { VITE_API_BFF_URL } from '@/config/env';
+import { AUHT_NAME, ROUTES } from '@/constants';
+import { getAuth, removeAuth } from '@/utils';
+import axios from 'axios';
+
+type ServicesType = 'POST' | 'GET' | 'PATCH' | 'DELETE';
+interface ServicesRequest {
+  method: ServicesType;
+  url: string;
+  payload?: any;
+}
 
 const controllers: { [key: string]: AbortController } = {};
 
-const Services = (headers?: object) => {
+const Services = ({ method, url, payload }: ServicesRequest) => {
   /**
    * BASE URL
    */
-  const BASE_URL = import.meta.env.VITE_API_BFF_URL;
+
+  const BASE_URL = VITE_API_BFF_URL;
   /**
    * GET TOKEN
    */
-  const TOKEN = getAuth(AUHT_NAME) ? getAuth(AUHT_NAME) : "";
-  /**
-   * Axios
-   **/
-  const instance = axios.create({
-    baseURL: BASE_URL,
-    headers: {
-      ...headers,
-      "Access-Control-Allow-Origin": BASE_URL,
-      "Access-Control-Allow-Credentials": true,
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${TOKEN}`,
-      Accept: "*/*",
-    },
-  });
-  /**
-   * Interceptors
-   **/
-  instance.interceptors.response.use(
-    (response) => {
-      return response;
-    },
-    (error) => {
-      if (error.response && error.response.status === 401) {
-        removeAuth(AUHT_NAME);
-        window.location.href = ROUTES.HOME_B2C;
-      }
-      return Promise.reject(error);
-    }
-  );
 
-  const createAbortController = (id = "service") => {
+  const TOKEN = getAuth(AUHT_NAME) ? getAuth(AUHT_NAME) : '';
+  /**
+   * Controller
+   **/
+
+  const createAbortController = (id = 'service') => {
     if (controllers[id]) {
       controllers[id].abort();
     }
@@ -51,91 +35,61 @@ const Services = (headers?: object) => {
     controllers[id] = new AbortController();
     return controllers[id].signal;
   };
+  /**
+   * Axios
+   **/
 
-  return {
-    post: async (
-      url: string,
-      payload?: object,
-      id?: string
-    ): Promise<AxiosResponse<any>> => {
-      const signal = createAbortController(id);
+  const instance = axios.create({
+    baseURL: BASE_URL,
+    method,
+    data: payload,
+    url,
+    signal: createAbortController(`service-${crypto.randomUUID()}`),
+    headers: {
+      'Access-Control-Allow-Origin': BASE_URL,
+      'Access-Control-Allow-Credentials': true,
+      'Content-Type': 'application/json',
 
-      return await instance
-        .post(url, JSON.stringify(payload), { signal })
-        .catch(({ response } = {}) => {
-          if (response) {
-            const { message } = response.data;
-            const status = response.status;
-
-            return {
-              message,
-              status,
-            };
-          }
-
-          return response;
-        });
+      Authorization: `Bearer ${TOKEN}`,
+      Accept: '*/*',
     },
-    patch: async (
-      url: string,
-      payload?: object,
-      id?: string
-    ): Promise<AxiosResponse<any, any>> => {
-      const signal = createAbortController(id);
+  });
+  /**
+   * Interceptors
+   **/
 
-      return await instance
-        .patch(url, JSON.stringify(payload), { signal })
-        .catch(({ response } = {}) => {
-          if (response) {
-            const { message } = response.data;
-            const status = response.status;
-
-            return {
-              message,
-              status,
-            };
-          }
-
-          return response;
-        });
+  instance.interceptors.request.use(
+    (config) => {
+      return config;
     },
-    get: async (url: string, id?: string): Promise<AxiosResponse<any, any>> => {
-      const signal = createAbortController(id);
-
-      return await instance.get(url, { signal }).catch(({ response } = {}) => {
-        if (response) {
-          const { message } = response.data;
-          const status = response.status;
-
-          return {
-            message,
-            status,
-          };
-        }
-        return response;
-      });
+    (error) => {
+      return Promise.reject(error);
     },
-    delete: async (
-      url: string,
-      id?: string
-    ): Promise<AxiosResponse<any, any>> => {
-      const signal = createAbortController(id);
+  );
 
-      return await instance
-        .delete(url, { signal })
-        .catch(({ response } = {}) => {
-          if (response) {
-            const { message } = response.data;
-            const status = response.status;
-
-            return {
-              message,
-              status,
-            };
-          }
-          return response;
-        });
+  instance.interceptors.response.use(
+    (response) => {
+      // console.log('Response', response);
+      return response;
     },
-  };
+    (error) => {
+      if (error.response && error.response.status === 401) {
+        removeAuth(AUHT_NAME);
+        window.location.href = ROUTES.HOME_B2C;
+      }
+      console.error('Error response', error);
+      return Promise.reject(error);
+    },
+  );
+  /**
+   * Request
+   **/
+
+  return instance.request({
+    method,
+    url,
+    data: payload,
+  });
 };
+
 export default Services;

@@ -1,48 +1,39 @@
-import {
-  CardOut,
-  CardSkeleton,
-  CardWeather,
-  DrawerUpdate,
-  Hero,
-  RootLayout,
-} from "@/components";
-import { CardBudget } from "@/components/Cards";
-import CardItinerary from "@/components/Cards/cardItinerary";
-import GeneratePDF from "@/components/generatePDF";
+import { CardOut, CardSkeleton, CardWeather, Hero } from '@/components';
+import { CardBudget } from '@/components/Cards';
+import CardItinerary from '@/components/Cards/cardItinerary';
+import AddSecction from '@/components/Drawer/add-secction';
+import GeneratePDF from '@/components/generatePDF';
 
-import { subtitle } from "@/components/primitives";
-import { ENDPOINT } from "@/constants";
-import { sectionSchema } from "@/helpers/schema";
-import { useForm } from "@/hooks";
-import Services from "@/services";
-import { useDataStore, useUserStore } from "@/stores";
-import { DetailsTypes, ItineraryTypes } from "@/stores/DataStore/index.types";
-import { ROLES, VariantTypeSection } from "@/types";
-import { formatDayForDays } from "@/utils";
-import { ArrowsUpDownIcon } from "@heroicons/react/24/outline";
-import { Button as ButtonUi, Link, useDisclosure } from "@heroui/react";
-import { useTheme } from "@heroui/use-theme";
-import axios from "axios";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useFieldArray } from "react-hook-form";
-
+import { subtitle } from '@/components/primitives';
+import Btn from '@/components/ui/btn';
+import { ENDPOINT } from '@/constants';
+import { sectionSchema } from '@/helpers/schema';
+import { useFetch, useForm } from '@/hooks';
+import { DetailsTypes } from '@/stores/DataStore/index.types';
+import { useProviderStore } from '@/stores/Global/store';
+import { ROLES, VariantTypeSection } from '@/types';
+import { formatDayForDays } from '@/utils';
+import { sendEventError } from '@/utils/events';
+import { ArrowsUpDownIcon } from '@heroicons/react/24/outline';
+import { Link, useDisclosure } from '@heroui/react';
+import { useTheme } from '@heroui/use-theme';
+import { useCallback, useEffect, useMemo } from 'react';
+import { useFieldArray } from 'react-hook-form';
 interface RepeatingTypes {
-  control: ReturnType<typeof useForm>["control"];
-  watch: ReturnType<typeof useForm>["watch"];
+  control: ReturnType<typeof useForm>['control'];
+  watch: ReturnType<typeof useForm>['watch'];
   onOpen: () => void;
 }
 
 const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
-  const { role } = useUserStore((state) => state.user);
-  const { setter, itinerary } = useDataStore((state) => state);
-  const items = useDataStore((state) => state.itinerary?.items);
-
+  const { setChangeItinerary, setterItinerary, itinerary, user } = useProviderStore();
+  const { items } = itinerary || {};
   const { fields, remove, swap } = useFieldArray({
     control,
-    name: "items",
+    name: 'items',
   });
 
-  const watchFieldArray: DetailsTypes[] = watch("items");
+  const watchFieldArray: DetailsTypes[] = watch('items');
   const controlledFields: DetailsTypes[] = useMemo(
     () =>
       fields?.map((field, index) => {
@@ -51,89 +42,113 @@ const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
           ...watchFieldArray[index],
         };
       }),
-    [fields, watchFieldArray]
+    [fields, watchFieldArray],
   );
 
   const onEdit = useCallback(
-    (id: number) => {
+    (id: number | undefined) => {
       if (Array.isArray(items) && items.length === 0) {
-        return console.log("No data");
+        console.error('Together Lab: No data items');
+        return sendEventError();
       }
 
-      setter({ editId: id, isEdits: true });
+      setterItinerary({ ...itinerary, editId: id });
+      setChangeItinerary(true);
       setTimeout(() => onOpen(), 100);
     },
-    [items, onOpen, setter]
+    [items, onOpen],
   );
 
   const handleRemove = useCallback(
     (index: number | undefined) => {
       remove(index);
     },
-    [controlledFields]
+    [controlledFields],
   );
 
-  const invertList = () => {
-    const length = fields.length;
+  const invertList = useCallback(() => {
+    const length = fields?.length || 0;
     for (let i = 0; i < Math.floor(length / 2); i++) {
       swap(i, length - i - 1);
     }
-  };
+  }, [fields, swap]);
 
-  return (
-    <>
-      {controlledFields.map((item, index: number) => (
-        <div className="mb-4" key={`${item.id}-${item.type}`}>
-          <div className="flex items-center mb-1">
-            <p
-              className={`${subtitle({
-                weight: "bold",
-                size: "sm",
-              })} flex items-center py-2`}
-            >
-              DÍA {formatDayForDays(itinerary?.startDate, item.startDate)}
-            </p>
-            {role === ROLES.ADMIN && index === 0 && <GeneratePDF />}
-            {index === 0 && (
-              <Link
-                isExternal
-                showAnchorIcon
-                className="text-default-600 hover:text-default-600"
-                color="foreground"
-                onPress={invertList}
-                anchorIcon={
-                  <ArrowsUpDownIcon className="ml-2 mr-1 dark:text-gray-400 size-[22px]" />
-                }
-              />
-            )}
-          </div>
-          <CardItinerary
-            key={`card-${index}`}
-            data={item}
-            type={item.type as VariantTypeSection}
-            onPressEdit={() => onEdit(item?.id)}
-            onPressDelete={() => handleRemove(index)}
-          />
+  return controlledFields.map((item, index: number) => {
+    return (
+      <div className="mb-4" key={`${item.id}-${item.type}`}>
+        <div className="flex items-center mb-1">
+          <p
+            className={`${subtitle({
+              weight: 'bold',
+              size: 'sm',
+            })} flex items-center py-2`}
+          >
+            DÍA {formatDayForDays(itinerary?.startDate, item.startDate)}
+          </p>
+          {user.role === ROLES.ADMIN && index === 0 && <GeneratePDF />}
+          {index === 0 && (
+            <Link
+              isExternal
+              showAnchorIcon
+              className="text-default-600 hover:text-default-600"
+              color="foreground"
+              onPress={invertList}
+              anchorIcon={
+                <ArrowsUpDownIcon className="ml-2 mr-1 dark:text-gray-400 size-[22px]" />
+              }
+            />
+          )}
         </div>
-      ))}
-    </>
-  );
+        <CardItinerary
+          key={`card-${index}`}
+          data={item}
+          type={item.type as VariantTypeSection}
+          onPressEdit={() => onEdit(Number(item?.id))}
+          onPressDelete={() => handleRemove(index)}
+        />
+      </div>
+    );
+  });
 };
 
 export default function Step2() {
   const { theme } = useTheme();
+  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
 
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-  const { setter, itinerary } = useDataStore((state) => state);
-  const { items, budget } = useDataStore((state) => state.itinerary);
-
-  const [isLoadingPage, setIsLoadingPage] = useState(true);
-  const [data, setData] = useState<ItineraryTypes | null>(null);
+  const { home, itinerary, setterItinerary } = useProviderStore();
+  const { items } = itinerary || {};
 
   const { control, watch, reset } = useForm({
     values: { items: items || [] },
     schema: sectionSchema,
   });
+
+  const { data: weatherData, isLoading: isLoadingWeather } = useFetch({
+    method: 'GET',
+    url: `${ENDPOINT.OPERATIVE}?query="Madrid-Spain"`,
+    // dependencies: [home?.productId], // Dependencia para actualizar cuando cambie productId
+  });
+
+  const { data: detailsData, isLoading: isLoadingDetails } = useFetch({
+    method: 'GET',
+    url: `${ENDPOINT.DETAILS}/${home?.productId}`, // Evita llamadas si productId es null
+    // dependencies: [home?.productId], // Dependencia para actualizar cuando cambie productId
+  });
+
+  useEffect(() => {
+    if (weatherData && detailsData) {
+      const weather = {
+        ...weatherData?.intervals[0].values,
+      };
+
+      /* Set */
+      setterItinerary({
+        ...detailsData,
+        weather,
+        items: detailsData?.items,
+      });
+    }
+  }, [weatherData, detailsData]);
 
   useEffect(() => {
     if (items) {
@@ -141,56 +156,17 @@ export default function Step2() {
     }
   }, [items]);
 
-  useEffect(() => {
-    axios
-      .all([
-        Services().get(
-          `${ENDPOINT.OPERATIVE}?query=${itinerary?.title}`,
-          "weather"
-        ),
-        Services().get(`${ENDPOINT.DETAILS}/${itinerary?.id}`, "details"),
-      ])
-      .then(
-        axios.spread((weatherData, details) => {
-          const { data: weatherDataInfo } = weatherData || {};
-          const { data } = details || {};
-
-          const weather = {
-            ...weatherDataInfo?.intervals[0].values,
-          };
-
-          /* Set */
-          setter({
-            itinerary: {
-              ...data,
-              weather,
-              items: data?.items.sort(
-                (a: { startDate: any }, b: { startDate: any }) =>
-                  new Date(a.startDate ?? 0).getTime() -
-                  new Date(b.startDate ?? 0).getTime()
-              ),
-            },
-          });
-          setData({ ...data, weather });
-        })
-      )
-      .finally(() => setTimeout(() => setIsLoadingPage(false), 1000));
-  }, []);
-
-  const handlelOpen = useCallback(() => {
-    onOpen();
-  }, []);
-
   return (
-    <RootLayout>
+    <>
       <Hero
-        loading={!items}
+        loading={isLoadingDetails && isLoadingWeather}
         startDate={itinerary?.startDate}
         endDate={itinerary?.endDate}
         title={itinerary?.title}
         days={itinerary?.days}
         image={itinerary?.image}
       />
+
       <section
         className="flex"
         data-height="250"
@@ -200,7 +176,7 @@ export default function Step2() {
         <svg
           className="absolute w-full left-0 top-[240px] h-[70px] transform rotate-180 scale-y-[-1]"
           aria-hidden="true"
-          fill={`${theme === "dark" ? "#000" : "#fff"}`}
+          fill={`${theme === 'dark' ? '#000' : '#fff'}`}
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1000 100"
           preserveAspectRatio="none"
@@ -208,18 +184,19 @@ export default function Step2() {
           <path d="M 0 0 c 0 0 200 50 500 50 s 500 -50 500 -50 v 101 h -1000 v -100 z" />
         </svg>
       </section>
-      {data?.weather && data?.weather?.temperatureMax && (
-        <section className="relative flex flex-col mx-4 mt-4 mb-3">
-          <CardWeather
-            humidity={data?.weather?.humidityAvg}
-            max={data?.weather?.temperatureMax}
-            min={data?.weather?.temperatureMin}
-          />
-        </section>
-      )}
+
+      <section className="relative flex flex-col mx-4 mt-2 mb-3">
+        <CardWeather
+          isActive={Boolean(itinerary?.weather?.temperatureMax)}
+          humidity={itinerary?.weather?.humidityAvg}
+          max={itinerary?.weather?.temperatureMax}
+          min={itinerary?.weather?.temperatureMin}
+        />
+      </section>
+
       <section className="relative flex flex-col mx-4 mb-2">
-        {!isLoadingPage && data?.items ? (
-          data?.items?.length > 0 ? (
+        {!isLoadingDetails && !isLoadingWeather && items ? (
+          items?.length > 0 ? (
             <Repeating control={control} watch={watch} onOpen={onOpen} />
           ) : (
             <div className="my-2">
@@ -230,25 +207,15 @@ export default function Step2() {
           <CardSkeleton count={5} />
         )}
       </section>
-      <section className="relative flex mx-4">
-        <ButtonUi
-          radius="full"
-          color="primary"
-          className="bg-gradient-to-r shadow-medium z-50 text-md bg-primary text-white h-14 min-h-[60px] fixed bottom-5 w-[calc(100%-33px)] hover:border-transparent"
-          onPress={handlelOpen}
-        >
+
+      <CardBudget options={items || []} data={[]} mb="2rem" mr="1rem" ml="1rem" />
+
+      <div className="z-10 fixed bottom-4 left-1/2 -translate-x-1/2 w-[calc(100%-32px)]">
+        <Btn type="submit" onPress={onOpen}>
           Añadir sección
-        </ButtonUi>
-        <DrawerUpdate
-          data-testid="drawer-update"
-          isOpen={isOpen}
-          onClose={onClose}
-          onOpenChange={onOpenChange}
-        />
-      </section>
-      <section className="relative flex flex-col mx-4 mb-8">
-        <CardBudget options={items || []} data={budget} />
-      </section>
-    </RootLayout>
+        </Btn>
+        <AddSecction isOpen={isOpen} onOpenChange={onOpenChange} onClose={onClose} />
+      </div>
+    </>
   );
 }

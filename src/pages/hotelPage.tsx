@@ -1,9 +1,10 @@
-import { Maps, RootLayout, Stars } from "@/components";
+import { Maps, RootLayout, Stars } from '@/components';
 
-import { subtitle, title } from "@/components/primitives";
-import { ROUTES } from "@/constants";
-import { FACILITIES } from "@/data";
-import { router } from "@/routes";
+import { subtitle, title } from '@/components/primitives';
+import { ROUTES } from '@/constants';
+import { FACILITIES } from '@/data';
+import { sendEventSuccess } from '@/utils/events';
+
 import {
   CheckIcon,
   ChevronRightIcon,
@@ -11,24 +12,17 @@ import {
   MapPinIcon,
   ShareIcon,
   WifiIcon,
-} from "@heroicons/react/24/outline";
-import {
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  Divider,
-  Image,
-} from "@heroui/react";
-import { useEffect } from "react";
-import { Toaster, toast } from "sonner";
+} from '@heroicons/react/24/outline';
+import { Button, Card, CardBody, CardHeader, Divider, Image } from '@heroui/react';
+import { useNavigate } from '@tanstack/react-router';
+import { useEffect } from 'react';
 
 export default function HotelPage() {
+  const navigate = useNavigate();
+
   useEffect(() => {
     setTimeout(() => {
-      toast.info(`Hay 2 usuarios mirando ahora mismo.`, {
-        duration: 4000,
-      });
+      sendEventSuccess();
     });
   }, []);
 
@@ -55,9 +49,9 @@ export default function HotelPage() {
           <div className="flex flex-col w-full gap-1">
             <h1
               className={`${title({
-                color: "base",
-                size: "s",
-                weight: "bold",
+                color: 'base',
+                size: 's',
+                weight: 'bold',
               })} flex items-center gap-1 `}
             >
               Axor Feria
@@ -65,8 +59,8 @@ export default function HotelPage() {
             </h1>
             <h3
               className={`${subtitle({
-                weight: "light",
-                size: "xs",
+                weight: 'light',
+                size: 'xs',
               })} flex items-center gap-1`}
             >
               <MapPinIcon className="dark:text-gray-400 text-primary size-4" />
@@ -88,8 +82,8 @@ export default function HotelPage() {
         <Card className="grid gap-4 p-3 border-b-1 dark:border-default-200/50 ">
           <h3
             className={`${subtitle({
-              weight: "bold",
-              size: "sm",
+              weight: 'bold',
+              size: 'sm',
             })} `}
           >
             Servicios
@@ -112,8 +106,8 @@ export default function HotelPage() {
         <Card className="grid gap-4 p-3 border-b-1 dark:border-default-200/50">
           <h3
             className={`${subtitle({
-              weight: "bold",
-              size: "sm",
+              weight: 'bold',
+              size: 'sm',
             })} `}
           >
             Destacados
@@ -130,8 +124,8 @@ export default function HotelPage() {
         <Card className="grid gap-4 p-3 border-b-1 dark:border-default-200/50">
           <h3
             className={`${subtitle({
-              weight: "bold",
-              size: "sm",
+              weight: 'bold',
+              size: 'sm',
             })}`}
           >
             Ubicación
@@ -143,8 +137,8 @@ export default function HotelPage() {
         <Card className="flex gap-4 p-3 border-b-1 dark:border-default-200/50">
           <h3
             className={`${subtitle({
-              weight: "bold",
-              size: "sm",
+              weight: 'bold',
+              size: 'sm',
             })}`}
           >
             Hora de entrada y de salida
@@ -154,20 +148,14 @@ export default function HotelPage() {
               <ClockIcon className="dark:text-gray-400 text-primary size-11" />
               <div className="flex flex-col">
                 <p className="text-base font-semibold text-primary">Check in</p>
-                <p className="text-sm text-gray-500">
-                  A partir de las 12:00 horas
-                </p>
+                <p className="text-sm text-gray-500">A partir de las 12:00 horas</p>
               </div>
             </div>
             <div className="flex flex-row gap-2">
               <ClockIcon className="dark:text-gray-400 text-primary size-11" />
               <div className="flex flex-col mr-1">
-                <p className="text-base font-semibold text-primary">
-                  Check out
-                </p>
-                <p className="text-sm text-gray-500">
-                  Antes de las 12:00 horas
-                </p>
+                <p className="text-base font-semibold text-primary">Check out</p>
+                <p className="text-sm text-gray-500">Antes de las 12:00 horas</p>
               </div>
             </div>
           </div>
@@ -177,8 +165,8 @@ export default function HotelPage() {
         <div className="grid gap-4">
           <h3
             className={`${subtitle({
-              weight: "bold",
-              size: "sm",
+              weight: 'bold',
+              size: 'sm',
             })} ml-2`}
           >
             Elige tu Habitación
@@ -227,7 +215,7 @@ export default function HotelPage() {
                     <Button
                       size="md"
                       className="text-white bg-primary focus:outline-none"
-                      onPress={() => router.navigate({ to: ROUTES.CHECK_OUT })}
+                      onPress={() => navigate({ to: ROUTES.CHECK_OUT })}
                       endContent={<ChevronRightIcon className="size-5" />}
                     >
                       Reservar
@@ -259,9 +247,7 @@ export default function HotelPage() {
                         size="md"
                         className="text-white bg-primary focus:outline-none"
                         endContent={<ChevronRightIcon className="size-5" />}
-                        onPress={() =>
-                          router.navigate({ to: ROUTES.CHECK_OUT })
-                        }
+                        onPress={() => navigate({ to: ROUTES.CHECK_OUT })}
                       >
                         Reservar
                       </Button>
@@ -285,9 +271,7 @@ export default function HotelPage() {
                   />
                 </div>
                 <div className="text-left">
-                  <h3 className="text-lg font-semibold">
-                    Habitación Superior Twin
-                  </h3>
+                  <h3 className="text-lg font-semibold">Habitación Superior Twin</h3>
                 </div>
               </CardHeader>
               <Divider />
@@ -315,7 +299,7 @@ export default function HotelPage() {
                     <Button
                       size="md"
                       className="text-white bg-primary focus:outline-none"
-                      onPress={() => router.navigate({ to: ROUTES.CHECK_OUT })}
+                      onPress={() => navigate({ to: ROUTES.CHECK_OUT })}
                       endContent={<ChevronRightIcon className="size-5" />}
                     >
                       Reservar
@@ -347,9 +331,7 @@ export default function HotelPage() {
                         size="md"
                         className="text-white bg-primary focus:outline-none"
                         endContent={<ChevronRightIcon className="size-5" />}
-                        onPress={() =>
-                          router.navigate({ to: ROUTES.CHECK_OUT })
-                        }
+                        onPress={() => navigate({ to: ROUTES.CHECK_OUT })}
                       >
                         Reservar
                       </Button>
@@ -361,14 +343,6 @@ export default function HotelPage() {
           </div>
         </div>
       </section>
-      <Toaster
-        richColors
-        toastOptions={{
-          className: "my-toast",
-        }}
-        mobileOffset={{ bottom: "16px" }}
-        position="bottom-center"
-      />
     </RootLayout>
   );
 }

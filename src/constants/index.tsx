@@ -2,15 +2,19 @@
  * Constants
  *************************/
 
-export const AUHT_NAME = "auth";
-export const ON_BOARDNG = "onBoarding";
-export const MAIL: string = "noreplay@together.alvarodesigns.com";
+export const AUHT_NAME = 'tl-auth';
+export const ON_BOARDNG = 'tl-onBoarding';
+export const COOKIES_ACCEPTED = 'tl-cookiesAccepted';
+export const COOKIES_SELECTED = 'tl-cookiesseSelected';
+export const COOKIES_REJECTED = 'tl-cookiesRejected';
+
+export const MAIL: string = 'noreplay@together.alvarodesigns.com';
 
 /* Calendar */
 export const MAX_DATE_CLIENT: number = 206;
 export const MIN_DATE_CLIENT: number = 768;
-export const FORMAT_DATE_DDMMYYYY: string = "dd/MM/yyyy";
-export const FORMAT_DATE_YYYYMMDD: string = "yyyy-MM-dd";
+export const FORMAT_DATE_DDMMYYYY: string = 'dd/MM/yyyy';
+export const FORMAT_DATE_YYYYMMDD: string = 'yyyy-MM-dd';
 
 export const TIMEOUT_LARGE: number = 5000;
 export const TIMEOUT_MEDIUM: number = 3000;
@@ -32,33 +36,33 @@ export const REGEX: Record<string, RegExp> = {
 };
 
 /* URLS */
-export const BASE_ROUTE: string = "/seguro-orfandad";
+export const BASE_ROUTE: string = '/seguro-orfandad';
 export const ROUTES: Record<string, string> = {
-  HOME_B2C: "/",
-  HOME_B2B: "/home",
-  LOGIN: "/login",
-  AVAILABILITY: "/availability",
-  CHECK_OUT: "/checkout",
-  AVAILABILITY_PUBLIC: "/availability_public",
-  REGISTER: "/registrame",
-  ITINERARY: "/itinerary",
-  HOTELS: "/hotels",
-  CONDITIONS: "/conditions",
-  PRIVACY: "/privacy",
-  COOKIES: "/cookies",
+  HOME_B2C: '/',
+  HOME_B2B: '/home',
+  LOGIN: '/login',
+  AVAILABILITY: '/availability',
+  CHECK_OUT: '/checkout',
+  AVAILABILITY_PUBLIC: '/availability_public',
+  REGISTER: '/registrame',
+  ITINERARY: '/itinerary',
+  HOTELS: '/hotels',
+  CONDITIONS: '/conditions',
+  PRIVACY: '/privacy',
+  COOKIES: '/cookies',
 };
 
 export const ENDPOINT: Record<string, string> = {
-  AUTH: "auth/login",
-  REGISTER: "auth/register",
-  USER: "v1/user",
-  ITINERARY: "v1/itinerary",
-  DETAILS: "v1/itinerary/details",
-  FLIGHTS: "v1/operative/fight",
-  DIRECTIONS: "v1/operative/directions",
-  OPERATIVE: "v1/operative/weather",
-  IMAGE: "v1/operative/image",
-  EMAIL: "v1/operative/email",
+  AUTH: 'auth/login',
+  REGISTER: 'auth/register',
+  USER: 'v1/user',
+  ITINERARY: 'v1/itinerary',
+  DETAILS: 'v1/itinerary/details',
+  FLIGHTS: 'v1/operative/fight',
+  DIRECTIONS: 'v1/operative/directions',
+  OPERATIVE: 'v1/operative/weather',
+  IMAGE: 'v1/operative/image',
+  EMAIL: 'v1/operative/email',
   ACCOUNT: `v1/user/#id#/details`,
   SECURE: `v1/user/#id#/password`,
   LANGUAGE: `v1/user/#id#/language`,
