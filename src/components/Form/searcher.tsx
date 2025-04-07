@@ -1,12 +1,7 @@
-import { COUNTER_DATA } from "@/data";
-import {
-  Autocomplete,
-  AutocompleteItem,
-  DateRangePicker,
-  Form,
-} from "@heroui/react";
-import { parseDate } from "@internationalized/date";
-import { Counter } from "../atomos/counter";
+import { COUNTER_DATA } from '@/data';
+import { Autocomplete, AutocompleteItem, DateRangePicker, Form } from '@heroui/react';
+import { parseDate } from '@internationalized/date';
+import { Counter } from '../ui/counter';
 
 export default function Searcher() {
   const COUNTERS = COUNTER_DATA();
@@ -27,14 +22,14 @@ export default function Searcher() {
         fullWidth
         defaultItems={[
           {
-            label: "Otter",
-            key: "otter",
-            description: "A carnivorous mammal in the subfamily Lutrinae",
+            label: 'Otter',
+            key: 'otter',
+            description: 'A carnivorous mammal in the subfamily Lutrinae',
           },
           {
-            label: "Crocodile",
-            key: "crocodile",
-            description: "A large semiaquatic reptile",
+            label: 'Crocodile',
+            key: 'crocodile',
+            description: 'A large semiaquatic reptile',
           },
         ]}
         label="Donde"
@@ -46,8 +41,8 @@ export default function Searcher() {
         isRequired
         fullWidth
         defaultValue={{
-          start: parseDate("2025-04-01"),
-          end: parseDate("2025-04-08"),
+          start: parseDate('2025-04-01'),
+          end: parseDate('2025-04-08'),
         }}
         label="Cuando"
       />

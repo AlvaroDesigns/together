@@ -1,5 +1,5 @@
-import { Card, CardBody, Image } from "@heroui/react";
-import { Stars } from "../atomos/stars";
+import { Stars } from '@/components/ui/stars';
+import { Card, CardBody, Image } from '@heroui/react';
 
 interface CardHotelListProps {
   name: string;
@@ -18,7 +18,7 @@ export default function CardHotelList({
   rating,
   image,
   price,
-  currency = "€",
+  currency = '€',
   address,
   onPress,
 }: CardHotelListProps) {
@@ -57,9 +57,7 @@ export default function CardHotelList({
               </div>
               <div className="flex flex-col gap-2 pt-2">
                 <div className="flex flex-col justify-center w-full">
-                  <p className="text-small text-foreground/50">
-                    Cancelación Gratuita
-                  </p>
+                  <p className="text-small text-foreground/50">Cancelación Gratuita</p>
                   <p className="text-small text-foreground/50">Wifi</p>
                 </div>
                 <div className="flex flex-row items-center justify-between w-full gap-2">

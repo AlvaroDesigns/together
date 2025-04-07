@@ -1,14 +1,14 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm as useReactForm } from "react-hook-form";
-import { ObjectSchema } from "yup";
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm as useReactForm } from 'react-hook-form';
+import { ObjectSchema } from 'yup';
 
 interface Props {
   schema: ObjectSchema<Record<string, any>>;
-  mod?: "all" | "onBlur" | "onChange" | "onSubmit" | "onTouched" | undefined;
+  mod?: 'all' | 'onBlur' | 'onChange' | 'onSubmit' | 'onTouched' | undefined;
   values?: any;
 }
 
-export const useForm = ({ values = {}, schema, mod = "all" }: Props) => {
+export const useForm = ({ values = {}, schema, mod = 'all' }: Props) => {
   const {
     control,
     watch,

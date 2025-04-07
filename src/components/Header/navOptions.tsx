@@ -1,26 +1,19 @@
-import {
-  Accordion,
-  AccordionItem,
-  Image,
-  Input,
-  Link,
-  Switch,
-} from "@heroui/react";
+import { Button as ButtonT, DrawerCustom } from '@/components';
+import { subtitle } from '@/components/primitives';
+import ShareButton from '@/components/ui/share';
+import { ENDPOINT, MAIL } from '@/constants';
+import { profileSchema } from '@/helpers/schema';
+import { useForm } from '@/hooks';
+import { SUBMIT } from '@/literals/common';
 
-import { Button as ButtonT, DrawerCustom, Password } from "@/components";
-import { ENDPOINT, MAIL, TIMEOUT_MEDIUM } from "@/constants";
-import { profileSchema } from "@/helpers/schema";
-import { useForm } from "@/hooks";
-import { LITERALS, SUBMIT } from "@/literals/common";
-import Services from "@/services";
-import { useUserStore } from "@/stores";
-import { Account } from "@/templates/account";
-import { VARIANT_TYPE_PROFILE } from "@/types";
-import { Controller } from "react-hook-form";
-import { useTranslation } from "react-i18next";
-import { toast, Toaster } from "sonner";
-import ShareButton from "../atomos/share";
-import { subtitle } from "../primitives";
+import { resolverForm } from '@/components/Controller/resolver';
+import Services from '@/services';
+import { useProviderStore } from '@/stores/Global/store';
+import { Account } from '@/templates/account';
+import { VARIANT_TYPE_PROFILE } from '@/types';
+import { sendEventError, sendEventSuccess } from '@/utils/events';
+import { Accordion, AccordionItem, Image, Link, Switch } from '@heroui/react';
+import { useTranslation } from 'react-i18next';
 
 interface NavOptionsProps {
   user: any;
@@ -29,12 +22,8 @@ interface NavOptionsProps {
   onOpenChange: (isOpen: boolean) => void;
 }
 
-export default function NavOptions({
-  isOpen,
-  name,
-  onOpenChange,
-}: NavOptionsProps) {
-  const { user } = useUserStore((state) => state);
+export default function NavOptions({ isOpen, name, onOpenChange }: NavOptionsProps) {
+  const { user } = useProviderStore((state) => state);
   const { t } = useTranslation();
   const { userId, name: userName, email } = user;
 
@@ -46,44 +35,100 @@ export default function NavOptions({
   const onSubmit = (value: any) => {
     if ((name as keyof object) === VARIANT_TYPE_PROFILE.FRIENDS) {
       ShareButton({
-        url: "http://together.alvarodesigns.com",
-        title: "¡Mira este enlace interesante!",
+        url: 'http://together.alvarodesigns.com',
+        title: '¡Mira este enlace interesante!',
       });
+      return;
     }
 
     /* Call API */
-    const URL = ENDPOINT[name as keyof object].replace("#id#", String(userId));
+    const URL = ENDPOINT[name as keyof object].replace('#id#', String(userId));
 
-    Services()
-      .patch(URL, value)
+    Services({
+      method: 'PATCH',
+      url: URL,
+      payload: value,
+    })
       .then(() => {
-        toast.success(LITERALS.REQUEST_OK, { duration: TIMEOUT_MEDIUM });
-
-        Services().post(ENDPOINT.EMAIL, {
-          from: MAIL,
-          to: email,
-          subject: "Cambio de datos importantes en tu cuenta Together Labs",
-          html: Account({ name: userName as string }),
+        Services({
+          method: 'POST',
+          url: ENDPOINT.EMAIL,
+          payload: {
+            from: MAIL,
+            to: email,
+            subject: 'Cambio de datos importantes en tu cuenta Together Labs',
+            html: Account({ name: userName as string }),
+          },
         });
+
+        sendEventSuccess();
       })
-      .catch(() =>
-        toast.error(LITERALS.REQUEST_KO, { duration: TIMEOUT_MEDIUM })
-      );
+      .catch(() => sendEventError());
   };
 
   const handleRemove = () => {
-    Services()
-      .delete(`${ENDPOINT.USER}/${userId}`)
+    Services({
+      method: 'DELETE',
+      url: `${ENDPOINT.USER}/${userId}`,
+    })
       .then(({ status }) => {
         if (status !== 200) {
-          return toast.error(LITERALS.REQUEST_KO, { duration: TIMEOUT_MEDIUM });
+          return sendEventError();
         }
 
-        toast.success(LITERALS.REQUEST_OK, { duration: TIMEOUT_MEDIUM });
+        sendEventSuccess();
       })
-      .catch(() =>
-        toast.error(LITERALS.REQUEST_KO, { duration: TIMEOUT_MEDIUM })
-      );
+      .catch(() => sendEventError());
+  };
+
+  const DATA = {
+    ACCOUNT: [
+      {
+        key: 'Input',
+        name: 'name',
+        control,
+        placeholder: 'Ej. Pedro',
+        label: 'Nombre',
+      },
+
+      {
+        key: 'Input',
+        name: 'email',
+        control,
+        placeholder: 'Introduce tu correo electronico',
+        label: 'Correo',
+      },
+      {
+        key: 'Input',
+        name: 'phone',
+        control,
+        placeholder: '616616616',
+        label: 'Teléfono',
+      },
+      {
+        key: 'Divider',
+      },
+    ],
+    SECURE: [
+      {
+        key: 'Password',
+        name: 'password',
+        label: 'Nueva contraseña',
+        placeholder: '*******',
+        control,
+      },
+
+      {
+        key: 'Password',
+        name: 'newPassword',
+        label: 'Repetir nueva contraseña',
+        placeholder: '*******',
+        control,
+      },
+      {
+        key: 'Divider',
+      },
+    ],
   };
 
   return (
@@ -103,156 +148,63 @@ export default function NavOptions({
                 src="../../share.png"
               />
               <p className="px-6 mt-6">
-                Comparte este enlace con tus amigos y familiares para que puedan
-                disfrutar de la experiencia de viajar juntos.
+                Comparte este enlace con tus amigos y familiares para que puedan disfrutar
+                de la experiencia de viajar juntos.
               </p>
             </>
           )}
           {name === VARIANT_TYPE_PROFILE.ACCOUNT && (
-            <div className="flex flex-col w-full gap-4 px-4 py-2">
-              <div className="flex flex-row whitespace-nowrap">
+            <div className="flex flex-col w-full gap-4 py-2">
+              <div className="flex flex-row px-4 whitespace-nowrap">
                 <p className={subtitle()}>Información personal</p>
               </div>
-              <Controller
-                name="name"
-                control={control}
-                render={({ field, fieldState }) => (
-                  <Input
-                    {...field}
-                    isRequired
-                    variant="bordered"
-                    type="text"
-                    label="Nombre"
-                    classNames={{
-                      inputWrapper: "!min-h-[60px] h-10",
-                    }}
-                    fullWidth={true}
-                    isInvalid={Boolean(fieldState.error?.message)}
-                    color={fieldState.error?.message ? "danger" : "default"}
-                    errorMessage={fieldState.error?.message}
-                    value={field.value}
-                    placeholder="Ej. Pedro"
+              {DATA.ACCOUNT.map((item) => resolverForm(item))}
+              <div className="px-4">
+                <div className="flex flex-row mb-4 whitespace-nowrap">
+                  <p className={subtitle()}>Idioma</p>
+                </div>
+                <div className="flex flex-row gap-4">
+                  <p className={subtitle({ fullWidth: false })}>ES</p>
+                  <Switch
+                    defaultSelected
+                    isDisabled
+                    isSelected={false}
+                    aria-label="Idioma"
                   />
-                )}
-              />
-              <Controller
-                name="email"
-                control={control}
-                render={({ field, fieldState }) => (
-                  <Input
-                    {...field}
-                    isRequired
-                    variant="bordered"
-                    type="email"
-                    label="Correo"
-                    classNames={{
-                      inputWrapper: "!min-h-[60px] h-10",
-                    }}
-                    fullWidth={true}
-                    isInvalid={Boolean(fieldState.error?.message)}
-                    color={fieldState.error?.message ? "danger" : "default"}
-                    errorMessage={fieldState.error?.message}
-                    value={field.value}
-                    placeholder="Introduce tu correo electronico"
-                  />
-                )}
-              />
-              <Controller
-                name="phone"
-                control={control}
-                render={({ field, fieldState }) => (
-                  <Input
-                    {...field}
-                    isRequired
-                    variant="bordered"
-                    type="number"
-                    label="Teléfono"
-                    classNames={{
-                      inputWrapper: "!min-h-[60px] h-10",
-                    }}
-                    fullWidth={true}
-                    startContent="+34"
-                    isInvalid={Boolean(fieldState.error?.message)}
-                    color={fieldState.error?.message ? "danger" : "default"}
-                    errorMessage={fieldState.error?.message}
-                    value={field.value}
-                    placeholder="616616616"
-                  />
-                )}
-              />
-              <div className="flex flex-row whitespace-nowrap">
-                <p className={subtitle()}>Idioma</p>
-              </div>
-              <div className="flex flex-row gap-4">
-                <p className={subtitle({ fullWidth: false })}>ES</p>
-                <Switch
-                  defaultSelected
-                  isDisabled
-                  isSelected={false}
-                  aria-label="Idioma"
-                />
-                <p className={subtitle({ fullWidth: false })}>EN</p>
-              </div>
-              <div className="flex flex-row justify-center mt-2 whitespace-nowrap">
-                <Link
-                  isExternal
-                  className="text-default-600 hover:text-default-600"
-                  color="foreground"
-                  onPress={handleRemove}
-                >
-                  Eliminar mi cuenta
-                </Link>
+                  <p className={subtitle({ fullWidth: false })}>EN</p>
+                </div>
+                <div className="flex flex-row justify-center mt-6 whitespace-nowrap">
+                  <Link
+                    isExternal
+                    className="text-default-600 hover:text-default-600"
+                    color="foreground"
+                    onPress={handleRemove}
+                  >
+                    Eliminar mi cuenta
+                  </Link>
+                </div>
               </div>
             </div>
           )}
           {name === VARIANT_TYPE_PROFILE.SECURE && (
             <div className="flex flex-col items-center justify-center w-full gap-4 px-4 py-2 dark:text-gray-300">
-              <Controller
-                name="password"
-                control={control}
-                render={({ field, fieldState }) => (
-                  <Password
-                    placeholder=""
-                    field={field}
-                    message={fieldState.error?.message}
-                    value={field.value}
-                    label="Nueva contraseña"
-                  />
-                )}
-              />
-              <Controller
-                name="newPassword"
-                control={control}
-                render={({ field, fieldState }) => (
-                  <Password
-                    field={field}
-                    placeholder=""
-                    message={fieldState.error?.message}
-                    value={field.value}
-                    label="Repetir nueva contraseña"
-                  />
-                )}
-              />
+              {DATA.SECURE.map((item) => resolverForm(item))}
             </div>
           )}
           {name === VARIANT_TYPE_PROFILE.FAQS && (
             <Accordion selectionMode="multiple">
-              <AccordionItem
-                key="1"
-                aria-label="Accordion-1"
-                title="Itinerario de viaje"
-              >
+              <AccordionItem key="1" aria-label="Accordion-1" title="Itinerario de viaje">
                 <div className="px-5">
                   <h4>
-                    En la web, está disponible una la opción de invertir la
-                    lista de opciones. De esta manera puede ver rapidamente la
-                    parte final del viaje.
+                    En la web, está disponible una la opción de invertir la lista de
+                    opciones. De esta manera puede ver rapidamente la parte final del
+                    viaje.
                   </h4>
                   <ul className="flex flex-col gap-2 my-3">
                     <li>1. Accede al itinerario de viaje.</li>
                     <li>
-                      2. Haga clic en el botón “Vista invertida” que debería
-                      aparecer en la esquina superior derecha.
+                      2. Haga clic en el botón “Vista invertida” que debería aparecer en
+                      la esquina superior derecha.
                     </li>
                   </ul>
                 </div>
@@ -264,37 +216,24 @@ export default function NavOptions({
               >
                 <div className="px-5">
                   <h4>
-                    Puede reenviar todos los correos electrónicos de reserva a
-                    una dirección de correo electrónico única. Se agregarán de
-                    inmediato los detalles de su vuelo, hotel o vehículo de
-                    alquiler a su plan de viaje.
+                    Puede reenviar todos los correos electrónicos de reserva a una
+                    dirección de correo electrónico única. Se agregarán de inmediato los
+                    detalles de su vuelo, hotel o vehículo de alquiler a su plan de viaje.
                   </h4>
                 </div>
               </AccordionItem>
-              <AccordionItem
-                key="3"
-                aria-label="Accordion-3"
-                title="Añadir un gasto"
-              >
+              <AccordionItem key="3" aria-label="Accordion-3" title="Añadir un gasto">
                 <div className="px-5">
                   <h4>
-                    Puedes registrar los gastos de una factura de un lugar de tu
-                    plan de viaje, de una actividad o de una reserva para llevar
-                    un registro de tus gastos. Consulta el total de todos tus
-                    gastos de viaje y si has utilizado todo tu presupuesto.
+                    Puedes registrar los gastos de una factura de un lugar de tu plan de
+                    viaje, de una actividad o de una reserva para llevar un registro de
+                    tus gastos. Consulta el total de todos tus gastos de viaje y si has
+                    utilizado todo tu presupuesto.
                   </h4>
                 </div>
               </AccordionItem>
             </Accordion>
           )}
-          <Toaster
-            richColors
-            toastOptions={{
-              className: "my-toast",
-            }}
-            mobileOffset={{ bottom: "16px" }}
-            position="bottom-center"
-          />
         </div>
       }
       isOpen={isOpen}

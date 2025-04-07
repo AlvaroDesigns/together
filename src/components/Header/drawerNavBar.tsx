@@ -1,4 +1,3 @@
-import { useUserStore } from "@/stores";
 import {
   ArrowLeftIcon,
   ArrowLeftStartOnRectangleIcon,
@@ -8,7 +7,7 @@ import {
   NewspaperIcon,
   ShieldCheckIcon,
   UserIcon,
-} from "@heroicons/react/24/outline";
+} from '@heroicons/react/24/outline';
 import {
   Avatar,
   Button,
@@ -20,15 +19,17 @@ import {
   Link,
   Listbox,
   ListboxItem,
-} from "@heroui/react";
+} from '@heroui/react';
 
-import { AUHT_NAME, ROUTES } from "@/constants";
-import { PROFILE_DATA } from "@/data";
-import { removeAuth } from "@/utils";
-import { useRouter } from "@tanstack/react-router";
-import { useState } from "react";
-import { version } from "../../../package.json";
-import NavOptions from "./navOptions";
+import { siteConfig } from '@/config/site';
+import { AUHT_NAME } from '@/constants';
+import { PROFILE_DATA } from '@/data';
+import { useProviderStore } from '@/stores/Global/store';
+import { removeAuth } from '@/utils';
+import { useNavigate } from '@tanstack/react-router';
+import { useState } from 'react';
+import { version } from '../../../package.json';
+import NavOptions from './navOptions';
 
 const ICONS = {
   account: <UserIcon className="m-1 size-6" />,
@@ -39,18 +40,20 @@ const ICONS = {
 };
 
 export default function DrawerNavBar() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [onClose, setOnClose] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [name, setName] = useState<string | null>(null);
-  const { reset, user } = useUserStore((state) => state);
+  const { user, reset } = useProviderStore();
+
+  const { routes } = siteConfig;
 
   const OPTIONS = PROFILE_DATA();
 
   const handelLogOut = () => {
     reset();
     removeAuth(AUHT_NAME);
-    setTimeout(() => router.navigate({ to: ROUTES.HOME_B2C }), 500);
+    setTimeout(() => navigate({ to: routes.home }), 500);
   };
 
   const handleOpenOptions = (key: string) => {
@@ -86,7 +89,7 @@ export default function DrawerNavBar() {
         size="full"
         isOpen={onClose}
         classNames={{
-          base: "data-[placement=right]:sm:m-2 data-[placement=left]:sm:m- 2",
+          base: 'data-[placement=right]:sm:m-2 data-[placement=left]:sm:m- 2',
         }}
       >
         <DrawerContent>
@@ -107,14 +110,12 @@ export default function DrawerNavBar() {
                 <div className="flex flex-col items-center justify-center w-full pt-4">
                   <Avatar
                     showFallback
-                    className="w-32 h-32 text-6xl"
-                    name={(user?.name ?? "").charAt(0)}
+                    className="w-24 h-24 text-6xl"
+                    name={(user?.name ?? '').charAt(0)}
                     src={user?.avatar ?? undefined}
                   />
                   <div className="flex flex-col items-center mt-4 dark:text-gray-300 default whitespace-nowrap">
-                    <span className="text-xl font-semibold">
-                      ¡Hola, {user.name}!
-                    </span>
+                    <span className="text-xl font-semibold">¡Hola, {user.name}!</span>
                     <span className="text-base ">{user.email}</span>
                   </div>
                 </div>
@@ -134,13 +135,9 @@ export default function DrawerNavBar() {
                             showDivider
                             onPress={() => handleOpenOptions(item.key)}
                             startContent={ICONS[item.key as keyof object]}
-                            endContent={
-                              <ChevronRightIcon className="m-1 size-6" />
-                            }
+                            endContent={<ChevronRightIcon className="m-1 size-6" />}
                           >
-                            <span className="my-5 text-medium">
-                              {item.title}
-                            </span>
+                            <span className="my-5 text-medium">{item.title}</span>
                           </ListboxItem>
                         ))}
                         <ListboxItem
@@ -152,9 +149,7 @@ export default function DrawerNavBar() {
                           startContent={
                             <ArrowLeftStartOnRectangleIcon className="m-1 size-6" />
                           }
-                          endContent={
-                            <ChevronRightIcon className="m-1 size-6" />
-                          }
+                          endContent={<ChevronRightIcon className="m-1 size-6" />}
                         >
                           <span className="text-medium">Cerrar Sesión</span>
                         </ListboxItem>

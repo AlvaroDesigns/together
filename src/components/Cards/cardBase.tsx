@@ -1,8 +1,7 @@
-import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
-
-import { subtitle } from "@/components/primitives";
-import { capitalCase, isDate } from "@/utils";
-import { format } from "@formkit/tempo";
+import { subtitle } from '@/components/primitives';
+import { capitalCase, isDate } from '@/utils';
+import { format } from '@formkit/tempo';
+import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 import {
   Accordion,
   AccordionItem,
@@ -12,7 +11,7 @@ import {
   CardHeader,
   Divider,
   Link,
-} from "@heroui/react";
+} from '@heroui/react';
 
 interface CardBaseProps {
   header: string | Date | null;
@@ -34,23 +33,17 @@ export default function CardBase({
   const key = `card-base-${crypto.randomUUID()}`;
 
   return (
-    <Card
-      isFooterBlurred
-      className="w-full col-span-12 sm:col-span-7"
-      key={key}
-    >
+    <Card isFooterBlurred className="w-full col-span-12 sm:col-span-7" key={key}>
       <CardHeader className="z-10 flex-col items-start">
         <div className="flex items-center justify-between w-full mb-3">
           <h2
             className={`${subtitle({
-              size: "sm",
+              size: 'sm',
             })} flex items-center justify-between`}
           >
-            {isDate(header) && header ? (
-              capitalCase(format(new Date(header), "ddd, D MMM"))
-            ) : (
-              <strong>{capitalCase(header?.toString() ?? "")}</strong>
-            )}
+            {isDate(header) && header
+              ? capitalCase(format(new Date(header), 'ddd, D MMM'))
+              : capitalCase(header?.toString() ?? '')}
           </h2>
           {!hideEdit && (
             <Link
@@ -79,9 +72,7 @@ export default function CardBase({
         </div>
         <Divider />
       </CardHeader>
-      <CardBody className="flex flex-row items-center pt-0 mt-1 mb-1">
-        {body}
-      </CardBody>
+      <CardBody className="flex flex-row items-center pt-0 mt-1 mb-1">{body}</CardBody>
       {footer && footer?.length > 0 && (
         <CardFooter className="pt-0 text-left">
           <div className="w-full ">
@@ -92,13 +83,11 @@ export default function CardBase({
                 title="Ver más información"
                 classNames={{
                   trigger:
-                    "bg-transparent px-0 hover:border-transparent focus:outline-0 focus-visible:outline-0 pb-0",
-                  content: "flex flex-col gap-4 mt-2",
+                    'bg-transparent px-0 hover:border-transparent focus:outline-0 focus-visible:outline-0 pb-0',
+                  content: 'flex flex-col gap-4 mt-2',
                 }}
               >
-                {footer?.map((item) => (
-                  <p>{item}</p>
-                ))}
+                {footer?.map((item) => <p>{item}</p>)}
               </AccordionItem>
             </Accordion>
           </div>

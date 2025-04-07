@@ -1,4 +1,6 @@
-import { addHour, format, parse } from "@formkit/tempo";
+import { DetailsTypes } from '@/stores/DataStore/index.types';
+import { addHour, format, parse } from '@formkit/tempo';
+import { differenceInDays } from 'date-fns';
 
 // Carga y muestra mensajes almacenados en localStorage
 export const getAuth = (name: string) => {
@@ -15,7 +17,20 @@ export const removeAuth = (name: string) => {
 };
 
 export const formatString = (text: string) => {
-  return text.toLowerCase().replace(/ /g, "_");
+  return text.toLowerCase().replace(/ /g, '_');
+};
+
+export const productItemId = (editId: number, items: DetailsTypes[] | any) => {
+  return items?.find((item: DetailsTypes) => Number(item.id) === editId);
+};
+
+export const formatIso = (date: Date | string | null) => {
+  if (!date) return null;
+
+  const parsedDate = new Date(date);
+  parsedDate.setHours(parsedDate.getHours() + 2);
+
+  return parsedDate.toISOString();
 };
 
 export const elipsis = (texto: string, maxLength: number) => {
@@ -23,7 +38,7 @@ export const elipsis = (texto: string, maxLength: number) => {
     return texto;
   }
 
-  return texto.length > maxLength ? texto.slice(0, maxLength) + "..." : texto;
+  return texto.length > maxLength ? texto.slice(0, maxLength) + '...' : texto;
 };
 
 export const isDate = (date: Date | string | null) => {
@@ -44,24 +59,28 @@ export const convertToISO = (dateObj: {
   second: number;
   millisecond: number;
 }) => {
-  const {
-    year,
-    month,
-    day,
-    hour = 0,
-    minute = 0,
-    second = 0,
-    millisecond = 0,
-  } = dateObj;
-  const date = new Date(
-    Date.UTC(year, month - 1, day, hour, minute, second, millisecond)
-  );
+  const { year, month, day, hour = 0, minute = 0 } = dateObj;
+  const date = new Date(Date.UTC(year, month - 1, day, hour, minute));
   return date.toISOString();
+};
+
+export const convertFromISO = (isoDate: string) => {
+  const date = new Date(isoDate);
+
+  return {
+    year: date.getUTCFullYear(),
+    month: date.getUTCMonth() + 1, // getUTCMonth() es 0-indexed, por lo que sumamos 1
+    day: date.getUTCDate(),
+    hour: date.getUTCHours(),
+    minute: date.getUTCMinutes(),
+    second: date.getUTCSeconds(),
+    millisecond: date.getUTCMilliseconds(),
+  };
 };
 
 export const parseIsoString = (isoString: string) => {
   // Paso 1: Parsear la fecha
-  const date = parse(isoString, "iso");
+  const date = parse(isoString, 'iso');
 
   // Paso 2: Incrementar 1 hora
   const newDate = addHour(date, 1);
@@ -71,7 +90,7 @@ export const parseIsoString = (isoString: string) => {
 };
 
 export const formatDay = (day: Date, formatStr?: string, hour?: boolean) => {
-  const f = formatStr || "YYYY-MM-DD";
+  const f = formatStr || 'YYYY-MM-DD';
 
   if (hour) {
     // Asegurar que la hora sea 00:00:00
@@ -79,18 +98,32 @@ export const formatDay = (day: Date, formatStr?: string, hour?: boolean) => {
     return format(new Date(d), f);
   }
 
-  return format(new Date(day), f);
+  return format(day instanceof Date ? new Date(day) : new Date(), f, 'Es');
 };
 
 export const formatDayForDays = (startDate: Date | undefined, day: Date) => {
   if (startDate === null || startDate === undefined || day === null) {
-    return "No disponible";
+    return 'No disponible';
   }
 
   return datesForDay(
-    format(new Date(startDate), "YYYY/MM/DD"),
-    format(new Date(day), "YYYY/MM/DD")
+    format(new Date(startDate), 'YYYY/MM/DD'),
+    format(new Date(day), 'YYYY/MM/DD'),
   );
+};
+
+export const calculateItineraryDay = (
+  itineraryStartDate: Date,
+  activityStartDate: Date,
+) => {
+  // Calcular la diferencia en días
+  const dayDifference = differenceInDays(
+    new Date(activityStartDate),
+    new Date(itineraryStartDate),
+  );
+
+  // El día del itinerario es la diferencia + 1 (porque el día inicial es el día 1)
+  return dayDifference + 1;
 };
 
 export const betweenDates = (start: string, end: string) => {
@@ -108,8 +141,7 @@ export const datesForDay = (start: string | Date, end: string) => {
   const differenceInMs = new Date(end).getTime() - new Date(start).getTime();
 
   // Convertir a días
-  const differenceInDays =
-    Math.floor(differenceInMs / (1000 * 60 * 60 * 24)) + 1;
+  const differenceInDays = Math.floor(differenceInMs / (1000 * 60 * 60 * 24)) + 1;
 
   return differenceInDays;
 };
