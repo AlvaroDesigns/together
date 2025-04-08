@@ -1,3 +1,4 @@
+import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Card, CardFooter, Image } from '@heroui/react';
 
 interface CardVerticalProps {
@@ -6,7 +7,7 @@ interface CardVerticalProps {
   days?: number;
   maxHeight?: number;
   image: string | undefined;
-  isDelete?: boolean;
+  onDelete?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   onClick?: () => void;
 }
 
@@ -16,6 +17,7 @@ export default function CardVertical({
   maxHeight = 224,
   days,
   onClick,
+  onDelete,
   image,
 }: CardVerticalProps) {
   return (
@@ -35,6 +37,14 @@ export default function CardVertical({
           />
           <div className="absolute inset-0 opacity-50 bg-gradient-to-t from-black to-transparent" />
         </div>
+        {onDelete && (
+          <div
+            className="absolute right-0 z-10 flex items-start justify-end pr-2 mt-2"
+            onClick={onDelete}
+          >
+            <XMarkIcon className="m-1 size-6 text-white/90" />
+          </div>
+        )}
         <div className="flex flex-col items-start ">
           <CardFooter className="absolute bottom-0 z-10 flex flex-col items-start border-default-600">
             {days && <p className="uppercase text-tiny text-white/80">{days} días</p>}

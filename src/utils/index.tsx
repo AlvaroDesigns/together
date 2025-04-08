@@ -1,4 +1,3 @@
-import { DetailsTypes } from '@/stores/DataStore/index.types';
 import { addHour, format, parse } from '@formkit/tempo';
 import { differenceInDays } from 'date-fns';
 
@@ -20,8 +19,12 @@ export const formatString = (text: string) => {
   return text.toLowerCase().replace(/ /g, '_');
 };
 
-export const productItemId = (editId: number, items: DetailsTypes[] | any) => {
-  return items?.find((item: DetailsTypes) => Number(item.id) === editId);
+export const productItemId = (editId: number, items: [] | any) => {
+  return items?.find((item: { id: number }) => Number(item.id) === editId);
+};
+
+export const productFilterItemId = (editId: number, items: [] | any) => {
+  return items?.filter((item: { id: number }) => Number(item.id) !== editId);
 };
 
 export const formatIso = (date: Date | string | null) => {

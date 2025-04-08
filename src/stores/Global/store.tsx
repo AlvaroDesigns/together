@@ -17,6 +17,7 @@ const userData: User = {
 
 const homeData: Home = {
   products: [],
+  productId: undefined,
 };
 
 const itineraryData: Itinerary = {

@@ -1,3 +1,5 @@
+import { InputController } from '@/components/Controller/input';
+import { PasswordController } from '@/components/Controller/password';
 import Btn from '@/components/ui/btn';
 import { siteConfig } from '@/config/site';
 import { AUHT_NAME, ENDPOINT } from '@/constants';
@@ -15,8 +17,6 @@ import { Link, useNavigate } from '@tanstack/react-router';
 import { AxiosResponse } from 'axios';
 import { useCallback, useTransition } from 'react';
 import { Controller } from 'react-hook-form';
-import { InputController } from '../Controller/input';
-import { PasswordController } from '../Controller/password';
 
 export function LoginForm() {
   const { setterUser, user } = useProviderStore();

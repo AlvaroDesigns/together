@@ -13,7 +13,9 @@ export default function RootLayout({
   return (
     <div className="relative flex flex-col h-screen">
       {!isLoginRoute && <Header />}
-      <div className="container flex-grow mx-auto max-w-7xl">{children}</div>
+      <div className="container flex-grow mx-auto bg-white max-w-7xl dark:bg-black">
+        {children}
+      </div>
       {!isLoginRoute && <Footer />}
       <BannerCookies />
     </div>

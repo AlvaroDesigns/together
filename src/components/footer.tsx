@@ -6,7 +6,7 @@ export default function Footer() {
 
   return (
     <>
-      <footer className="border-t dark:border-default-200/50 mt-auto w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto sm:pb-20">
+      <footer className="border-t dark:border-default-200/50 dark:bg-black mt-auto w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto sm:pb-20">
         <div className="text-center">
           <div className="flex items-center justify-center">
             <Image

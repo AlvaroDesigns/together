@@ -1,4 +1,3 @@
-import { useTheme } from '@heroui/use-theme';
 import { I18nextProvider } from 'react-i18next';
 
 import './App.css';
@@ -26,7 +25,6 @@ declare module '@tanstack/react-router' {
 }
 
 function App() {
-  const { theme } = useTheme();
   const { user } = useProviderStore();
 
   router.update({
@@ -37,7 +35,7 @@ function App() {
   });
 
   return (
-    <div className={`${theme} text-foreground bg-background`}>
+    <div className="text-foreground bg-background">
       <I18nextProvider i18n={i18n} defaultNS={'translation'}>
         <RouterProvider router={router} />
       </I18nextProvider>

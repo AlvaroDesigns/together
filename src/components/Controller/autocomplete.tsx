@@ -88,6 +88,7 @@ export const AutocompleteController = ({
             items={results}
             labelPlacement="outside"
             onInputChange={(value) => {
+              console.log('value', value);
               setQuery(value);
               field.onChange(value);
             }}
@@ -110,7 +111,7 @@ export const AutocompleteController = ({
             {(item: AutocompleteItemProps) => (
               <AutocompleteItem
                 key={`${item?.key}-${item?.countryName}-${item.latitude}`}
-                textValue={`${item?.key}-${item?.countryName}`}
+                textValue={item?.name}
                 className="capitalize"
               >
                 <div>
