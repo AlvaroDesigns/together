@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.1.2](https://github.com/AlvaroDesigns/together/compare/v6.1.1...v6.1.2) (2025-04-08)
+
+
+### Bug Fixes
+
+* corrections errors ([bbc05ec](https://github.com/AlvaroDesigns/together/commit/bbc05ece7dc696424634f503e349678594e9f7c8))
+* eliminar código comentado en el formulario de itinerario ([8f58ea2](https://github.com/AlvaroDesigns/together/commit/8f58ea2da3624be57754a7dd65fc4814d906746d))
+
 ### [6.1.1](https://github.com/AlvaroDesigns/together/compare/v6.1.0...v6.1.1) (2025-04-08)
 
 
