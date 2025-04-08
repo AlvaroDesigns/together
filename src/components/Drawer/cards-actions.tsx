@@ -99,7 +99,7 @@ export default function CardsActions() {
         size="md"
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        header="Crear Itinerario"
+        header="¿Que quieres hacer?"
         body={
           <div className="flex flex-col mx-2 mb-2">
             <Listbox
