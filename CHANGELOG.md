@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.1.3](https://github.com/AlvaroDesigns/together/compare/v6.1.2...v6.1.3) (2025-04-08)
+
+
+### Bug Fixes
+
+* mejorar la presentación del componente Hero y ajustar la lógica de fechas ([2f50fa7](https://github.com/AlvaroDesigns/together/commit/2f50fa7c2156168ab718a6d53c41f9423de041fa))
+
 ### [6.1.2](https://github.com/AlvaroDesigns/together/compare/v6.1.1...v6.1.2) (2025-04-08)
 
 
