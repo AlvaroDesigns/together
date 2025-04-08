@@ -47,8 +47,8 @@ export const TimePickerController = ({
             <TimeInput
               {...field}
               defaultValue={addHour(new Date())}
-              isReadOnly
               variant="bordered"
+              hourCycle={24}
               labelPlacement="outside"
               fullWidth={true}
               className="cursor-pointer"
@@ -60,6 +60,7 @@ export const TimePickerController = ({
               color={fieldState.error?.message ? 'danger' : 'default'}
               errorMessage={fieldState.error?.message}
               value={field.value}
+              onChange={field.onChange}
               endContent={
                 <CalendarDaysIcon className="absolute cursor-pointer pointer-events-none right-3 size-5 text-default-400" />
               }

@@ -20,7 +20,7 @@ const RenderHotel = (data: CardTypes) => {
         width={100}
         height={100}
         className="min-w-[100px]"
-        alt="AIR company"
+        alt="hotel"
         fallbackSrc="../../../dummy.jpg"
         src={imageUrl ?? '../../../dummy.jpg'}
       />
@@ -72,14 +72,15 @@ const RenderFlight = (data: CardTypes) => {
 
   return (
     <div className="flex items-center mb-1">
-      <Image
-        width={45}
-        height={45}
-        alt="AIR company"
-        className="min-w-11"
-        fallbackSrc="dummy.jpg"
-        src={resolverAirFly(numberFlight?.substring(0, 2))}
-      />
+      <div className="min-w-[100px] flex items-center justify-center">
+        <Image
+          width={45}
+          height={45}
+          alt="AIR company"
+          fallbackSrc="dummy.jpg"
+          src={resolverAirFly(numberFlight?.substring(0, 2))}
+        />
+      </div>
       <div className="flex flex-col ml-3">
         <Link
           showAnchorIcon
@@ -173,7 +174,6 @@ const RenderTransfer = (data: CardTypes) => {
     </div>
   );
 };
-
 const RenderTrip = (data: CardTypes) => {
   const { name, imageUrl, arrivalTime, placeUrl } = data;
 
@@ -185,8 +185,8 @@ const RenderTrip = (data: CardTypes) => {
           height={100}
           className="min-w-[100px]"
           alt="Trip"
-          fallbackSrc="dummy.jpg"
-          src={imageUrl}
+          fallbackSrc="../../../dummy.jpg"
+          src={imageUrl ?? '../../../dummy.jpg'}
         />
         <div className="ml-4">
           <h3
