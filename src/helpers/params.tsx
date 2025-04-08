@@ -12,7 +12,7 @@ export const params = (value: any) => {
       value?.depart?.time && value?.arrive?.time
         ? `${value?.depart?.time}-${value?.arrive?.time}`
         : null,
-    startDate: formatIso(value.startDate),
+    startDate: formatIso(value.startDate) || new Date().toISOString(),
     endDate: formatIso(value?.endDate),
     stars: Number(value.stars),
     placeUrl: null,

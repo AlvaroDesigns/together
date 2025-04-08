@@ -15,7 +15,6 @@ import { formatDayForDays } from '@/utils';
 import { sendEventError } from '@/utils/events';
 import { ArrowsUpDownIcon } from '@heroicons/react/24/outline';
 import { Link, useDisclosure } from '@heroui/react';
-import { useTheme } from '@heroui/use-theme';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useFieldArray } from 'react-hook-form';
 interface RepeatingTypes {
@@ -111,7 +110,6 @@ const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
 };
 
 export default function Step2() {
-  const { theme } = useTheme();
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
 
   const { home, itinerary, setterItinerary, resetItinerary } = useProviderStore();
@@ -170,24 +168,6 @@ export default function Step2() {
         days={itinerary?.days}
         image={itinerary?.image}
       />
-
-      <section
-        className="flex"
-        data-height="250"
-        data-style="curve"
-        data-position="bottom"
-      >
-        <svg
-          className="absolute w-full left-0 top-[240px] h-[70px] transform rotate-180 scale-y-[-1]"
-          aria-hidden="true"
-          fill={`${theme === 'dark' ? '#000' : '#fff'}`}
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1000 100"
-          preserveAspectRatio="none"
-        >
-          <path d="M 0 0 c 0 0 200 50 500 50 s 500 -50 500 -50 v 101 h -1000 v -100 z" />
-        </svg>
-      </section>
 
       <section className="relative flex flex-col mx-4 mt-2 mb-3">
         <CardWeather
