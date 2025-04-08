@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.1.1](https://github.com/AlvaroDesigns/together/compare/v6.1.0...v6.1.1) (2025-04-08)
+
+
+### Bug Fixes
+
+* actualizar el encabezado del componente CardsActions ([a587014](https://github.com/AlvaroDesigns/together/commit/a587014b54917b1393f5d864e3407a5e22748e60))
+
 ## [6.1.0](https://github.com/AlvaroDesigns/together/compare/v6.0.1...v6.1.0) (2025-04-08)
 
 
