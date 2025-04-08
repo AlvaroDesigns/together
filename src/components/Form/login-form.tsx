@@ -10,16 +10,16 @@ import { ROLES } from '@/types';
 
 import { setAuth } from '@/utils';
 import { sendEventError } from '@/utils/events';
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
-import { Checkbox, Form, Input, Link } from '@heroui/react';
-import { useNavigate } from '@tanstack/react-router';
+import { Checkbox, Form } from '@heroui/react';
+import { Link, useNavigate } from '@tanstack/react-router';
 import { AxiosResponse } from 'axios';
-import { useCallback, useState, useTransition } from 'react';
+import { useCallback, useTransition } from 'react';
 import { Controller } from 'react-hook-form';
+import { InputController } from '../Controller/input';
+import { PasswordController } from '../Controller/password';
 
 export function LoginForm() {
   const { setterUser, user } = useProviderStore();
-  const [hide, setHide] = useState(true);
   const [isPending, startTransition] = useTransition();
 
   const navigate = useNavigate();
@@ -62,58 +62,22 @@ export function LoginForm() {
 
   return (
     <Form className="gap-4" onSubmit={handleSubmit(onSubmit)}>
-      <Controller
+      <InputController
+        fullWidth
+        labelPlacement
+        control={control}
         name="email"
-        control={control}
-        render={({ field, fieldState }) => (
-          <Input
-            {...field}
-            isRequired
-            variant="bordered"
-            type="email"
-            label="Correo"
-            classNames={{
-              inputWrapper: '!min-h-[60px] h-10 rounded-lg',
-            }}
-            fullWidth={true}
-            isInvalid={Boolean(fieldState.error?.message)}
-            color={fieldState.error?.message ? 'danger' : 'default'}
-            errorMessage={fieldState.error?.message}
-            value={field.value}
-            placeholder="Introduce tu correo electronico"
-          />
-        )}
+        label="Correo"
+        placeholder="Introduce tu correo electronico"
+        type="email"
       />
-      <Controller
+      <PasswordController
+        fullWidth
+        labelPlacement
         name="password"
+        label="Contraseña"
+        placeholder="Por favor, introduce tu contraseña"
         control={control}
-        render={({ field, fieldState }) => (
-          <Input
-            {...field}
-            isRequired
-            variant="bordered"
-            classNames={{
-              inputWrapper: '!min-h-[60px] rounded-lg',
-            }}
-            type={hide ? 'password' : 'text'}
-            label="Contraseña"
-            fullWidth={true}
-            isInvalid={Boolean(fieldState.error?.message)}
-            color={fieldState.error?.message ? 'danger' : 'default'}
-            errorMessage={fieldState.error?.message}
-            endContent={
-              <div onClick={() => setHide(!hide)}>
-                {hide ? (
-                  <EyeIcon className="m-1 size-6" />
-                ) : (
-                  <EyeSlashIcon className="m-1 size-6" />
-                )}
-              </div>
-            }
-            value={field.value}
-            placeholder="Por favor, introduce tu contraseña"
-          />
-        )}
       />
       <div className="flex flex-row items-center justify-between w-full my-2">
         <Controller
@@ -132,19 +96,18 @@ export function LoginForm() {
             </Checkbox>
           )}
         />
-        <Link
-          size="md"
-          color="foreground"
-          className="text-gray-600 dark:text-gray-500"
-          href="#"
-        >
-          Forgot password
+        <Link className="font-normal " to="#">
+          <p>Forgot password</p>
         </Link>
       </div>
       <Btn type="submit" isLoading={isPending}>
         Iniciar sesión
       </Btn>
-      <Btn variant="bordered" onPress={() => navigate({ to: routes.register })}>
+      <Btn
+        variant="bordered"
+        type="button"
+        onPress={() => navigate({ to: routes.register })}
+      >
         Registrarme
       </Btn>
     </Form>

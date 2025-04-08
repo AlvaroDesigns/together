@@ -13,6 +13,10 @@ interface InputControllerProps {
   mb?: string | number;
   ml?: string | number;
   mr?: string | number;
+  fullWidth?: boolean;
+  labelPlacement?: boolean;
+  startContent?: React.ReactNode;
+  endContent?: React.ReactNode;
 }
 
 export const InputController = ({
@@ -25,6 +29,10 @@ export const InputController = ({
   mb,
   ml,
   mr,
+  fullWidth,
+  labelPlacement = false,
+  startContent,
+  endContent,
 }: InputControllerProps) => {
   return (
     <div
@@ -34,25 +42,30 @@ export const InputController = ({
         marginBottom: mb,
         marginLeft: ml,
         marginRight: mr,
+        width: fullWidth ? '100%' : 'auto',
       }}
     >
-      <Label>{label}</Label>
+      {!labelPlacement && <Label>{label}</Label>}
       <Controller
         name={name}
         control={control}
         render={({ field, fieldState }) => (
           <Input
             {...field}
+            isRequired
             variant="bordered"
             id={field.name}
             type={type}
             fullWidth={true}
+            label={labelPlacement ? label : undefined}
             isInvalid={Boolean(fieldState.error?.message)}
             color={fieldState.error?.message ? 'danger' : 'default'}
             errorMessage={fieldState.error?.message}
             classNames={{ inputWrapper: '!min-h-[60px] h-10' }}
-            value={field.value}
             placeholder={placeholder}
+            value={field.value}
+            startContent={startContent}
+            endContent={endContent}
           />
         )}
       />

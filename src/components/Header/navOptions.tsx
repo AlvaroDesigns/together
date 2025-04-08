@@ -1,12 +1,13 @@
-import { Button as ButtonT, DrawerCustom } from '@/components';
+import { DrawerCustom } from '@/components';
+import { resolverForm } from '@/components/Controller/resolver';
 import { subtitle } from '@/components/primitives';
+import Btn from '@/components/ui/btn';
 import ShareButton from '@/components/ui/share';
 import { ENDPOINT, MAIL } from '@/constants';
 import { profileSchema } from '@/helpers/schema';
 import { useForm } from '@/hooks';
 import { SUBMIT } from '@/literals/common';
 
-import { resolverForm } from '@/components/Controller/resolver';
 import Services from '@/services';
 import { useProviderStore } from '@/stores/Global/store';
 import { Account } from '@/templates/account';
@@ -125,9 +126,6 @@ export default function NavOptions({ isOpen, name, onOpenChange }: NavOptionsPro
         placeholder: '*******',
         control,
       },
-      {
-        key: 'Divider',
-      },
     ],
   };
 
@@ -240,9 +238,7 @@ export default function NavOptions({ isOpen, name, onOpenChange }: NavOptionsPro
       onOpenChange={onOpenChange}
       footer={
         name !== VARIANT_TYPE_PROFILE.FAQS && (
-          <ButtonT variant="light" onPress={handleSubmit(onSubmit)}>
-            {SUBMIT[name as keyof object]}
-          </ButtonT>
+          <Btn onPress={handleSubmit(onSubmit)}>{SUBMIT[name as keyof object]}</Btn>
         )
       }
     />

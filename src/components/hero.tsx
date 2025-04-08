@@ -1,5 +1,5 @@
-import { format } from "@formkit/tempo";
-import { Card, CardBody, Skeleton } from "@heroui/react";
+import { format } from '@formkit/tempo';
+import { Card, CardBody, Skeleton } from '@heroui/react';
 
 interface HeroProps {
   startDate: string | Date | undefined;
@@ -42,14 +42,12 @@ export default function Hero({
           ) : (
             <>
               <p className="mt-1 text-white">
-                {startDate && format(new Date(startDate), "DD MMM YYYY")}{" "}
-                {endDate && `a ${format(new Date(endDate), "DD MMM YYYY")}`}
+                {startDate && format(new Date(startDate), 'DD MMM YYYY')}{' '}
+                {endDate && `a ${format(new Date(endDate), 'DD MMM YYYY')}`}
               </p>
-              <h1 className="font-sans text-4xl font-bold text-white">
-                {title}
-              </h1>
+              <h1 className="font-sans text-4xl font-bold text-white">{title}</h1>
               <p className="mt-1 text-white">
-                {days} Días · A tu aire flexible
+                {days && `${days} Días · A tu aire flexible`}
               </p>
             </>
           )}
@@ -59,11 +57,7 @@ export default function Hero({
             <div className="h-64 rounded-lg bg-default-300" />
           </Skeleton>
         ) : image ? (
-          <img
-            alt={title}
-            className="z-0 object-cover w-full h-full"
-            src={image}
-          />
+          <img alt={title} className="z-0 object-cover w-full h-full" src={image} />
         ) : (
           <img
             alt={title}

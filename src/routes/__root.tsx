@@ -1,4 +1,5 @@
 import { RootLayout, Status } from '@/components';
+import { DEV } from '@/config/env';
 import { ROUTES } from '@/constants';
 import { createRootRouteWithContext, Link, Outlet } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/router-devtools';
@@ -14,7 +15,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       <RootLayout>
         <Outlet />
       </RootLayout>
-      <TanStackRouterDevtools />
+      {DEV && <TanStackRouterDevtools />}
     </>
   ),
   notFoundComponent: () => {

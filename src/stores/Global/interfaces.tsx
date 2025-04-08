@@ -68,5 +68,6 @@ export interface StoreState {
   setterUser: (value: Partial<User>) => void;
   setterHome: (value: Partial<Home>) => void;
   setterItinerary: (value: Partial<Itinerary>) => void;
+  resetItinerary: (value: Partial<Itinerary>) => void;
   reset: () => void;
 }

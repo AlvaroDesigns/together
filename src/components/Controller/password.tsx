@@ -19,6 +19,7 @@ interface PasswordProps {
   ml?: string | number;
   mr?: string | number;
   fullWidth?: boolean;
+  labelPlacement?: boolean;
 }
 
 export const PasswordController = ({
@@ -32,6 +33,7 @@ export const PasswordController = ({
   label,
   placeholder,
   fullWidth,
+  labelPlacement = false,
 }: PasswordProps) => {
   const [hide, setHide] = useState(true);
 
@@ -46,7 +48,7 @@ export const PasswordController = ({
         width: fullWidth ? '100%' : 'auto',
       }}
     >
-      <Label>{label}</Label>
+      {!labelPlacement && <Label>{label}</Label>}
       <Controller
         name={name}
         control={control}
@@ -54,6 +56,7 @@ export const PasswordController = ({
           <Input
             {...field}
             isRequired
+            label={labelPlacement ? label : undefined}
             variant="bordered"
             classNames={{
               inputWrapper: '!min-h-[60px]',

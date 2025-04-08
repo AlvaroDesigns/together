@@ -9,7 +9,6 @@ import Btn from '@/components/ui/btn';
 import { ENDPOINT } from '@/constants';
 import { sectionSchema } from '@/helpers/schema';
 import { useFetch, useForm } from '@/hooks';
-import { DetailsTypes } from '@/stores/DataStore/index.types';
 import { useProviderStore } from '@/stores/Global/store';
 import { ROLES, VariantTypeSection } from '@/types';
 import { formatDayForDays } from '@/utils';
@@ -33,8 +32,8 @@ const Repeating = ({ control, watch, onOpen }: RepeatingTypes) => {
     name: 'items',
   });
 
-  const watchFieldArray: DetailsTypes[] = watch('items');
-  const controlledFields: DetailsTypes[] = useMemo(
+  const watchFieldArray: any[] = watch('items');
+  const controlledFields: any[] = useMemo(
     () =>
       fields?.map((field, index) => {
         return {
@@ -115,7 +114,7 @@ export default function Step2() {
   const { theme } = useTheme();
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
 
-  const { home, itinerary, setterItinerary } = useProviderStore();
+  const { home, itinerary, setterItinerary, resetItinerary } = useProviderStore();
   const { items } = itinerary || {};
 
   const { control, watch, reset } = useForm({
@@ -136,6 +135,11 @@ export default function Step2() {
   });
 
   useEffect(() => {
+    console.log('home', home);
+    if (itinerary?.image) {
+      resetItinerary({ id: home?.productId });
+    }
+
     if (weatherData && detailsData) {
       const weather = {
         ...weatherData?.intervals[0].values,

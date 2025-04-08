@@ -63,6 +63,13 @@ const storeCreator: StateCreator<StoreState, [], []> = (set) => ({
         ...value,
       },
     })),
+  resetItinerary: (value: Partial<Itinerary>) =>
+    set(() => ({
+      itinerary: {
+        ...itineraryData,
+        id: value.id,
+      },
+    })),
   reset: () =>
     set(
       () => ({

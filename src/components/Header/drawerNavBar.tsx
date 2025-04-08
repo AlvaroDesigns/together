@@ -120,7 +120,7 @@ export default function DrawerNavBar() {
                   </div>
                 </div>
                 <div className="flex flex-col gap-2 py-4">
-                  <div className="w-full px-1 py-2 text-medium border-small rounded-small border-default-200 dark:border-default-100">
+                  <div className="w-full px-1 text-medium border-small rounded-small border-default-200 dark:border-default-100">
                     <Listbox
                       aria-label="Listbox menu with descriptions"
                       variant="flat"
@@ -131,7 +131,7 @@ export default function DrawerNavBar() {
                           <ListboxItem
                             key={item.key}
                             textValue={item.key}
-                            className="flex items-center pb-3"
+                            className="flex items-center"
                             showDivider
                             onPress={() => handleOpenOptions(item.key)}
                             startContent={ICONS[item.key as keyof object]}
@@ -143,7 +143,7 @@ export default function DrawerNavBar() {
                         <ListboxItem
                           textValue="delete"
                           key="delete"
-                          className="flex items-center pt-3 text-danger"
+                          className="flex items-center text-danger"
                           color="danger"
                           onPress={handelLogOut}
                           startContent={
