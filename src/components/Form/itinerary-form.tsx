@@ -21,7 +21,6 @@ export default function ItineraryForm({
   type = VARIANT_TYPE_SECTION.FLIGHT,
 }: SectionFormProps) {
   const { itinerary } = useProviderStore((state) => state);
-  // const { editId, items } = itinerary || {};
 
   const TRIP = TRIP_DATA();
   const TRANSFER = TRANSFER_DATA();
@@ -33,7 +32,6 @@ export default function ItineraryForm({
     }
   };
 
-  //  const product = productItemId(Number(editId), items);
   const DATA: Record<VariantTypeSection, any[]> = {
     FLIGHT: [
       {
