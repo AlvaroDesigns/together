@@ -156,7 +156,9 @@ export default function NavOptions({ isOpen, name, onOpenChange }: NavOptionsPro
               <div className="flex flex-row px-4 whitespace-nowrap">
                 <p className={subtitle()}>Información personal</p>
               </div>
-              {DATA.ACCOUNT.map((item) => resolverForm(item))}
+
+              {DATA.ACCOUNT.map((item, i) => resolverForm(item, i))}
+
               <div className="px-4">
                 <div className="flex flex-row mb-4 whitespace-nowrap">
                   <p className={subtitle()}>Idioma</p>
@@ -186,7 +188,7 @@ export default function NavOptions({ isOpen, name, onOpenChange }: NavOptionsPro
           )}
           {name === VARIANT_TYPE_PROFILE.SECURE && (
             <div className="flex flex-col items-center justify-center w-full gap-4 px-4 py-2 dark:text-gray-300">
-              {DATA.SECURE.map((item) => resolverForm(item))}
+              {DATA.SECURE.map((item, i) => resolverForm(item, i))}
             </div>
           )}
           {name === VARIANT_TYPE_PROFILE.FAQS && (

@@ -133,7 +133,6 @@ export default function Step2() {
   });
 
   useEffect(() => {
-    console.log('home', home);
     if (itinerary?.image) {
       resetItinerary({ id: home?.productId });
     }

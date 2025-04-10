@@ -52,10 +52,9 @@ export const InputController = ({
         render={({ field, fieldState }) => (
           <Input
             {...field}
-            isRequired
+            type={type}
             variant="bordered"
             id={field.name}
-            type={type}
             fullWidth={true}
             label={labelPlacement ? label : undefined}
             isInvalid={Boolean(fieldState.error?.message)}
@@ -63,7 +62,14 @@ export const InputController = ({
             errorMessage={fieldState.error?.message}
             classNames={{ inputWrapper: '!min-h-[60px] h-10' }}
             placeholder={placeholder}
-            value={field.value}
+            value={field.value ?? ''}
+            onChange={field.onChange}
+            onBlur={(e) => {
+              field.onBlur();
+              if (e.target.value === null) {
+                field.onChange(''); // Establecer cadena vacía si el valor es null
+              }
+            }}
             startContent={startContent}
             endContent={endContent}
           />

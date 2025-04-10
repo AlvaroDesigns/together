@@ -37,10 +37,8 @@ interface Payload {
   isLoading?: boolean;
 }
 
-export const resolverForm = (payload: Payload) => {
+export const resolverForm = (payload: Payload, id: number | string) => {
   const { key, ...rest } = payload;
-
-  const id = crypto.randomUUID();
 
   const handlerMap = {
     [INPUT]: <InputController key={`${key}-${id}`} ml="1rem" mr="1rem" {...rest} />,
@@ -58,7 +56,7 @@ export const resolverForm = (payload: Payload) => {
     [PASSWORD]: (
       <PasswordController fullWidth key={`${key}-${id}`} ml="1rem" mr="1rem" {...rest} />
     ),
-    [DIVIDER]: <Divider className="mt-5 mb-3" />,
+    [DIVIDER]: <Divider className="mt-5 mb-3" key={`${key}-${id}`} />,
   };
 
   return handlerMap[key] || null;

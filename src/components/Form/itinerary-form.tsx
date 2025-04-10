@@ -313,7 +313,7 @@ export default function ItineraryForm({
       </div>
       <Divider className="mt-5" />
       <div key={type} className="flex flex-col mt-2">
-        {DATA[type].map((payload) => resolverForm(payload))}
+        {DATA[type].map((payload, i) => resolverForm(payload, i))}
       </div>
     </div>
   );

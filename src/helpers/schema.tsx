@@ -68,28 +68,28 @@ export const profileSchema = (ty: string) =>
             .string()
             .min(5, LITERALS.NUMBER_VALUE.replace('[number]', '5'))
             .required(LITERALS.REQUEST_LABEL)
-        : yup.string().nullable().optional(),
+        : yup.string().optional().default(undefined),
     email:
       ty === VARIANT_TYPE_PROFILE.ACCOUNT
         ? yup
             .string()
             .min(5, LITERALS.NUMBER_VALUE.replace('[number]', '5'))
             .required(LITERALS.REQUEST_LABEL)
-        : yup.string().nullable().optional(),
+        : yup.string().optional().default(undefined),
     phone:
       ty === VARIANT_TYPE_PROFILE.ACCOUNT
         ? yup
             .string()
             .min(5, LITERALS.NUMBER_VALUE.replace('[number]', '5'))
             .required(LITERALS.REQUEST_LABEL)
-        : yup.string().nullable().optional(),
+        : yup.string().optional().default(undefined),
     password:
       ty === VARIANT_TYPE_PROFILE.SECURE
         ? yup
             .string()
             .min(5, LITERALS.NUMBER_VALUE.replace('[number]', '5'))
             .required(LITERALS.REQUEST_LABEL)
-        : yup.string().nullable().optional(),
+        : yup.string().optional().default(undefined),
     newPassword:
       ty === VARIANT_TYPE_PROFILE.SECURE
         ? yup
@@ -97,7 +97,7 @@ export const profileSchema = (ty: string) =>
             .min(5, LITERALS.NUMBER_VALUE.replace('[number]', '5'))
             .oneOf([yup.ref('password'), undefined], LITERALS.PASSWORDS_MUST_MATCH)
             .required(LITERALS.REQUEST_LABEL)
-        : yup.string().nullable().optional(),
+        : yup.string().optional().default(undefined),
   });
 
 export const sectionSchema = yup.object().shape({

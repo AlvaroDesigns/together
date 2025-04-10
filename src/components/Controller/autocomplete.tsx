@@ -88,7 +88,6 @@ export const AutocompleteController = ({
             items={results}
             labelPlacement="outside"
             onInputChange={(value) => {
-              console.log('value', value);
               setQuery(value);
               field.onChange(value);
             }}
