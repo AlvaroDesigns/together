@@ -1,7 +1,7 @@
 {
   "name": "together",
   "private": true,
-  "version": "6.1.3",
+  "version": "6.1.4",
   "type": "module",
   "homepage": "https://github.com/AlvaroDesigns/together",
   "scripts": {
@@ -49,6 +49,7 @@
     "react-map-gl": "^8.0.1",
     "react-pdf": "^9.2.1",
     "use-debounce": "^10.0.4",
+    "uuid": "^11.1.0",
     "yup": "^1.6.1",
     "zustand": "^5.0.3"
   },

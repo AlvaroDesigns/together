@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.1.4](https://github.com/AlvaroDesigns/together/compare/v6.1.3...v6.1.4) (2025-04-10)
+
+
+### Bug Fixes
+
+* eliminar registros de consola y ajustar la lógica de los formularios ([f3f7cc3](https://github.com/AlvaroDesigns/together/commit/f3f7cc394f6202bedc26ed145b5775f836c94f54))
+
 ### [6.1.3](https://github.com/AlvaroDesigns/together/compare/v6.1.2...v6.1.3) (2025-04-08)
 
 
